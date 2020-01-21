@@ -326,34 +326,38 @@
             </div>
             <div class="col-md-6">
                 <p class="h5 text-center">Individual Hotel Cost</p>
-                <table class="table table-bordered">
+                <table class="table table-bordered" id="hotelTable">
                     <thead>
                         <tr>
                             <th></th>
                             <th>XX Bed</th>
-                            <th>X Bed</th>
                             <th>Half Twin</th>
+                            <th>X Bed</th>
+                            <th>Single Supplement</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
                             <td>CAT A</td>
                             <td>{{percentage catAXXTotal discountAccomodation}}</td>
-                            <td>{{percentage catAXTotal discountAccomodation}}</td>
                             <td>{{customDivision catAXXTotal discountAccomodation 2}}</td>
+                            <td>{{percentage catAXTotal discountAccomodation}}</td>
+                            <td></td>
                         </tr>
                         <tr>
                             <td>CAT B</td>
                             <td>{{percentage catBXXTotal discountAccomodation}}</td>
-                            <td>{{percentage catBXTotal discountAccomodation}}</td>
                             <td>{{customDivision catBXXTotal discountAccomodation 2}}</td>
+                            <td>{{percentage catBXTotal discountAccomodation}}</td>
+                            <td></td>
                         </tr>
 
                         <tr>
                             <td>CAT C</td>
                             <td>{{percentage catCXXTotal discountAccomodation}}</td>
-                            <td>{{percentage catCXTotal discountAccomodation}}</td>
                             <td>{{customDivision catCXXTotal discountAccomodation 2}}</td>
+                            <td>{{percentage catCXTotal discountAccomodation}}</td>
+                            <td></td>
                         </tr>
                     </tbody>
                 </table>
@@ -380,7 +384,7 @@
                     <th>{{category4}}</th>
                     {{/if}}
                     <th>Total</th>
-                    <th>After VAT (13%)</th>
+                    @*<th>After VAT (13%)</th>*@
                 </tr>
             </thead>
             <tbody>
@@ -402,17 +406,17 @@
                     <td rowspan="3">{{category4Total}}</td>
                     {{/if}}
                     <td></td>
-                    <td></td>
+                    @*<td></td>*@
                 </tr>
                 <tr>
                     <td>{{customDivision catBXXTotal discountAccomodation 2}}</td>
                     <td></td>
-                    <td></td>
+                    @*<td></td>*@
                 </tr>
                 <tr>
                     <td>{{customDivision catCXXTotal discountAccomodation 2}}</td>
                     <td></td>
-                    <td></td>
+                    @*<td></td>*@
                 </tr>
                 <tr>
                     <td rowspan="3">06-09</td>
@@ -432,17 +436,17 @@
                     <td rowspan="3">{{category4Total}}</td>
                     {{/if}}
                     <td></td>
-                    <td></td>
+                    @*<td></td>*@
                 </tr>
                 <tr>
                     <td>{{customDivision catBXXTotal discountAccomodation 2}}</td>
                     <td></td>
-                    <td></td>
+                    @*<td></td>*@
                 </tr>
                 <tr>
                     <td>{{customDivision catCXXTotal discountAccomodation 2}}</td>
                     <td></td>
-                    <td></td>
+                    @*<td></td>*@
                 </tr>
                 <tr>
                     <td rowspan="3">10-14</td>
@@ -462,17 +466,17 @@
                     <td rowspan="3">{{category4Total}}</td>
                     {{/if}}
                     <td></td>
-                    <td></td>
+                    @*<td></td>*@
                 </tr>
                 <tr>
                     <td>{{customDivision catBXXTotal discountAccomodation 2}}</td>
                     <td></td>
-                    <td></td>
+                    @*<td></td>*@
                 </tr>
                 <tr>
                     <td>{{customDivision catCXXTotal discountAccomodation 2}}</td>
                     <td></td>
-                    <td></td>
+                    @*<td></td>*@
                 </tr>
                 <tr>
                     <td rowspan="3">15-19</td>
@@ -492,17 +496,17 @@
                     <td rowspan="3">{{category4Total}}</td>
                     {{/if}}
                     <td></td>
-                    <td></td>
+                    @*<td></td>*@
                 </tr>
                 <tr>
                     <td>{{customDivision catBXXTotal discountAccomodation 2}}</td>
                     <td></td>
-                    <td></td>
+                    @*<td></td>*@
                 </tr>
                 <tr>
                     <td>{{customDivision catCXXTotal discountAccomodation 2}}</td>
                     <td></td>
-                    <td></td>
+                    @*<td></td>*@
                 </tr>
                 <tr>
                     <td rowspan="3">20-24</td>
@@ -522,17 +526,17 @@
                     <td rowspan="3">{{category4Total}}</td>
                     {{/if}}
                     <td></td>
-                    <td></td>
+                    @*<td></td>*@
                 </tr>
                 <tr>
                     <td>{{customDivision catBXXTotal discountAccomodation 2}}</td>
                     <td></td>
-                    <td></td>
+                    @*<td></td>*@
                 </tr>
                 <tr>
                     <td>{{customDivision catCXXTotal discountAccomodation 2}}</td>
                     <td></td>
-                    <td></td>
+                    @*<td></td>*@
                 </tr>
                 <tr>
                     <td rowspan="3">25+</td>
@@ -552,17 +556,17 @@
                     <td rowspan="3">{{category4Total}}</td>
                     {{/if}}
                     <td></td>
-                    <td></td>
+                    @*<td></td>*@
                 </tr>
                 <tr>
                     <td>{{customDivision catBXXTotal discountAccomodation 2}}</td>
                     <td></td>
-                    <td></td>
+                    @*<td></td>*@
                 </tr>
                 <tr>
                     <td>{{customDivision catCXXTotal discountAccomodation 2}}</td>
                     <td></td>
-                    <td></td>
+                    @*<td></td>*@
                 </tr>
             </tbody>
         </table>
@@ -685,10 +689,7 @@
                 data.t6total += item.t6cost;
             };
 
-            if (item.hotelA) {
-                data.catAXTotal += item.hotelA.hotelRoomRate.singleBed;
-                data.catAXXTotal += item.hotelA.hotelRoomRate.doubleBed;
-                data.catAETotal += item.hotelA.hotelRoomRate.extraBed;
+            if (item.hotelA) {               
 
                 if (data.mealType == 'AP') {
 
@@ -697,18 +698,17 @@
                     item.hotelA.hotelRoomRate.extraBed += item.hotelA.hotelRoomRate.ap * 3;
                 }
                 else if (data.mealType == 'MAP') {
-
                     item.hotelA.hotelRoomRate.singleBed += item.hotelA.hotelRoomRate.map;
                     item.hotelA.hotelRoomRate.doubleBed += item.hotelA.hotelRoomRate.map * 2;
                     item.hotelA.hotelRoomRate.extraBed += item.hotelA.hotelRoomRate.map * 3;
-
                 }
+
+                 data.catAXTotal += item.hotelA.hotelRoomRate.singleBed;
+                data.catAXXTotal += item.hotelA.hotelRoomRate.doubleBed;
+                data.catAETotal += item.hotelA.hotelRoomRate.extraBed;
             }
 
-            if (item.hotelB) {
-                data.catBXTotal += item.hotelB.hotelRoomRate.singleBed;
-                data.catBXXTotal += item.hotelB.hotelRoomRate.doubleBed;
-                data.catBETotal += item.hotelB.hotelRoomRate.extraBed;
+            if (item.hotelB) {                
 
                 if (data.mealType == 'AP') {
                     item.hotelB.hotelRoomRate.singleBed += item.hotelB.hotelRoomRate.ap;
@@ -717,18 +717,17 @@
                 }
                 else if (data.mealType == 'MAP') {
 
-
                     item.hotelB.hotelRoomRate.singleBed += item.hotelB.hotelRoomRate.map;
                     item.hotelB.hotelRoomRate.doubleBed += item.hotelB.hotelRoomRate.map * 2;
                     item.hotelB.hotelRoomRate.extraBed += item.hotelB.hotelRoomRate.map * 3;
-
                 }
+
+                data.catBXTotal += item.hotelB.hotelRoomRate.singleBed;
+                data.catBXXTotal += item.hotelB.hotelRoomRate.doubleBed;
+                data.catBETotal += item.hotelB.hotelRoomRate.extraBed;
             }
 
-            if (item.hotelC) {
-                data.catCXTotal += item.hotelC.hotelRoomRate.singleBed;
-                data.catCXXTotal += item.hotelC.hotelRoomRate.doubleBed;
-                data.catCETotal += item.hotelC.hotelRoomRate.extraBed;
+            if (item.hotelC) {                
 
                 if (data.mealType == 'AP') {
                     item.hotelC.hotelRoomRate.singleBed += item.hotelC.hotelRoomRate.ap;
@@ -736,13 +735,14 @@
                     item.hotelC.hotelRoomRate.extraBed += item.hotelC.hotelRoomRate.ap * 3;
                 }
                 else if (data.mealType == 'MAP') {
-
-
                     item.hotelC.hotelRoomRate.singleBed += item.hotelC.hotelRoomRate.map;
                     item.hotelC.hotelRoomRate.doubleBed += item.hotelC.hotelRoomRate.map * 2;
                     item.hotelC.hotelRoomRate.extraBed += item.hotelC.hotelRoomRate.map * 3;
-
                 }
+
+                data.catCXTotal += item.hotelC.hotelRoomRate.singleBed;
+                data.catCXXTotal += item.hotelC.hotelRoomRate.doubleBed;
+                data.catCETotal += item.hotelC.hotelRoomRate.extraBed;
             }
 
             data.category1Total += item.category1Cost;
@@ -763,6 +763,14 @@
         var result1 = template1(data);
 
         $('#pppTemplate').html(result1);
+
+        for (let i = 0; i < 3; i++) {
+
+            let singleBed = parseFloat($('#hotelTable tbody td:nth-child(4)')[i].innerHTML);
+            let halfTwin = parseFloat($('#hotelTable tbody td:nth-child(3)')[i].innerHTML);
+            let singleSupplement = (singleBed - halfTwin).toFixed(2);
+            $('#hotelTable tbody td:nth-child(5)')[i].innerHTML = singleSupplement;
+        }
 
         let lowerTransportIterator = 0
         let upperTransportIterator = 0
@@ -850,7 +858,7 @@
             $(`#pppTable tr:nth-child(${i + 1}) td:nth-child(${flag + 5})`)[0].innerText = val
 
 
-            $(`#pppTable tr:nth-child(${i + 1}) td:nth-child(${flag + 6})`)[0].innerText = (1.13 * val).toFixed(2);
+            //$(`#pppTable tr:nth-child(${i + 1}) td:nth-child(${flag + 6})`)[0].innerText = (1.13 * val).toFixed(2);
         };
 
         //For second calc
@@ -869,7 +877,7 @@
             $(`#pppTable tr:nth-child(${i + 1}) td:nth-child(2)`)[0].innerText = val;
 
 
-            $(`#pppTable tr:nth-child(${i + 1}) td:nth-child(3)`)[0].innerText = (1.13 * val).toFixed(2);
+            //$(`#pppTable tr:nth-child(${i + 1}) td:nth-child(3)`)[0].innerText = (1.13 * val).toFixed(2);
         };
 
         //For third calc
@@ -887,7 +895,7 @@
             $(`#pppTable tr:nth-child(${i + 2}) td:nth-child(2)`)[0].innerText = val;
 
 
-            $(`#pppTable tr:nth-child(${i + 2}) td:nth-child(3)`)[0].innerText = (1.13 * val).toFixed(2);
+            //$(`#pppTable tr:nth-child(${i + 2}) td:nth-child(3)`)[0].innerText = (1.13 * val).toFixed(2);
         };
 
           for (let i = 0; i < upperTransportIterator * 3; i++) {

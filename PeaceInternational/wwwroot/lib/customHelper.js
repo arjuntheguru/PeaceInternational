@@ -107,7 +107,7 @@ Handlebars.registerHelper('percentage', function (a, b) {
 Handlebars.registerHelper('customDivision', function (a, b, c) {
 
     let result = (100 - b) / 100 * a;
-    return Math.ceil(result/c);
+    return Math.ceil(result/c).toFixed(2);
 
 })
 

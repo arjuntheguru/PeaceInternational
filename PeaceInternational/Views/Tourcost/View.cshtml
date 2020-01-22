@@ -866,7 +866,7 @@
 
             let val = parseFloat($(`#pppTable tr:nth-child(${i}) td:nth-child(2)`)[0].innerText) +
                 parseFloat($(`#pppTable tr:nth-child(${i + 1}) td:nth-child(1)`)[0].innerText) +
-                parseFloat($(`#pppTable tr:nth-child(${i}) td:nth-child(4)`)[0].innerText);
+                parseFloat($(`#pppTable tr:nth-child(${i}) td:nth-child(4)`)[0].innerText);         
 
             val += flag >= 1 ? parseFloat($(`#pppTable tr:nth-child(${i}) td:nth-child(5)`)[0].innerText) : 0;
             val += flag >= 2 ? parseFloat($(`#pppTable tr:nth-child(${i}) td:nth-child(6)`)[0].innerText) : 0;
@@ -874,8 +874,7 @@
             val += flag >= 4 ? parseFloat($(`#pppTable tr:nth-child(${i}) td:nth-child(8)`)[0].innerText) : 0;
 
 
-            $(`#pppTable tr:nth-child(${i + 1}) td:nth-child(2)`)[0].innerText = val;
-
+            $(`#pppTable tr:nth-child(${i + 1}) td:nth-child(2)`)[0].innerText = val;           
 
             //$(`#pppTable tr:nth-child(${i + 1}) td:nth-child(3)`)[0].innerText = (1.13 * val).toFixed(2);
         };
@@ -899,7 +898,7 @@
         };
 
           for (let i = 0; i < upperTransportIterator * 3; i++) {
-            $(`#pppTable tbody tr:eq(${15 - i})`).remove()
+            $(`#pppTable tbody tr:eq(${17 - i})`).remove()
         }
 
         for (let i = 0; i < lowerTransportIterator * 3; i++) {

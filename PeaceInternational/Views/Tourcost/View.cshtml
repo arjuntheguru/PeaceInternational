@@ -601,22 +601,22 @@
 
         data.guideTotalCost = 0;
 
-        if (data.guideType != null) {
-            if (data.guideType == 1) {
-                data.guideTotalCost = data.guide.halfDayRate * data.guideDays;
+        if (data.guideId != null) {
+
+            if (data.guideDaysHalfDay != null) {
+                data.guideTotalCost += data.guide.halfDayRate * data.guideDaysHalfDay;
             }
-            else {
-                if (data.guideType == 2) {
-                    data.guideTotalCost = data.guide.fullDayRate * data.guideDays;
-                }
-                else {
-                    data.guideTotalCost = data.guide.overNight * data.guideDays;
-                }
+
+            if (data.guideDaysFullDay != null) {
+                data.guideTotalCost += data.guide.fullDayRate * data.guideDaysFullDay;
+            }
+
+            if (data.guideDaysEscort != null) {
+                data.guideTotalCost += data.guide.overNight * data.guideDaysEscort;
             }
         }
 
-        data.image = "img/logo2.jpg";
-        data.guideType = data.guideType == 1 ? "Half Day" : data.guideType == 2 ? "Full Day" : "Escort";
+        data.image = "img/logo2.jpg";       
         data.isLuxury = data.isLuxury ? "Yes" : "No";
         data.t1total = 0;
         data.t2total = 0;

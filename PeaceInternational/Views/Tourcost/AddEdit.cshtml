@@ -19,7 +19,7 @@
     /* Firefox */
     input[type=number] {
         -moz-appearance: textfield;
-    }  
+    }
 </style>
 <div class="row">
     <div class="col-md-10">
@@ -45,7 +45,7 @@
                         <h5 class="card-title">Meal Plan</h5>
                         <div class="form-group">
                             <div class="custom-control custom-radio">
-                                <input type="radio" id="mealRadioInline2" asp-for="Tourcost.MealType"  class="custom-control-input" value="AP">
+                                <input type="radio" id="mealRadioInline2" asp-for="Tourcost.MealType" class="custom-control-input" value="AP">
                                 <label class="custom-control-label" for="mealRadioInline2">AP</label>
                             </div>
                             <div class="custom-control custom-radio">
@@ -68,7 +68,7 @@
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label asp-for="Tourcost.MinPAX"> Min PAX. <span class="text-danger">*</span></label>
-                                    <input asp-for="Tourcost.MinPAX" class="form-control" min="3"/>
+                                    <input asp-for="Tourcost.MinPAX" class="form-control" min="3" />
                                 </div>
                             </div>
                             <div class="col-md-6">
@@ -92,28 +92,27 @@
                                     <option selected value="">Select</option>
                                 </select>
                             </div>
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <div class="custom-control custom-radio">
-                                        <input type="radio" id="guideInline1" asp-for="Tourcost.GuideType" class="custom-control-input" value=1>
-                                        <label class="custom-control-label" for="guideInline1">Half Day</label>
+                            <div class="form-row">
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label asp-for="Tourcost.GuideDaysHalfDay"> Half </label>
+                                        <input asp-for="Tourcost.GuideDaysHalfDay" class="form-control" placeholder="Days"/>
                                     </div>
-                                    <div class="custom-control custom-radio">
-                                        <input type="radio" id="guideInline2" asp-for="Tourcost.GuideType" class="custom-control-input" value=2>
-                                        <label class="custom-control-label" for="guideInline2">Full Day</label>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label asp-for="Tourcost.GuideDaysFullDay"> Full </label>
+                                        <input asp-for="Tourcost.GuideDaysFullDay" class="form-control" placeholder="Days"/>
                                     </div>
-                                    <div class="custom-control custom-radio">
-                                        <input type="radio" id="guideInline3" name="Tourcost.GuideType" class="custom-control-input" value=3>
-                                        <label class="custom-control-label" for="guideInline3">Escort</label>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label asp-for="Tourcost.GuideDaysEscort"> Escort </label>
+                                        <input asp-for="Tourcost.GuideDaysEscort" class="form-control" placeholder="Days" />
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label asp-for="Tourcost.GuideDays"> Days </label>
-                                    <input asp-for="Tourcost.GuideDays" class="form-control" />
-                                </div>
-                            </div>
+
                         </div>
                     </div>
                 </div>
@@ -226,7 +225,8 @@
 
 @section Scripts{
     <partial name="_ValidationScriptsPartial" />
-    <script type="text/javascript">       
+    <script type="text/javascript">
+
 
         $('input[name="Tourcost.GuideType"]').click(function (e) {
 
@@ -294,7 +294,7 @@
             for (let i = 0; i < days; i++) {
                 html += `<div class="form-row" id="detailRow${i}">
                             <input type="hidden" id="TourcostDetail_${i}__Id" name="TourcostDetail[${i}].Id" class="form-control"/>
-                            <div class="col-md-1">                               
+                            <div class="col-md-1">
                                 <input id="TourcostDetail_${i}__Day" name="TourcostDetail[${i}].Day" class="form-control" value="D${i + 1}"/>
                             </div>
                             <div class="col">
@@ -340,7 +340,7 @@
             $('#tourCostDetailBody').html(html);
 
             for (let i = 0; i < days; i++) {
-                $(`#TourcostDetail_${i}__Sector1Id`).rules("add", "required");             
+                $(`#TourcostDetail_${i}__Sector1Id`).rules("add", "required");
                 //$(`#TourcostDetail_${i}__HotelAId`).rules("add", "required");
                 //$(`#TourcostDetail_${i}__HotelBId`).rules("add", "required");
                 //$(`#TourcostDetail_${i}__HotelCId`).rules("add", "required");
@@ -558,7 +558,7 @@
                 setData();
 
                 for (let i = 0; i < data.tourcost.days; i++) {
-                    $(`#TourcostDetail_${i}__Id`).val(data.tourcostDetail[i].id);       
+                    $(`#TourcostDetail_${i}__Id`).val(data.tourcostDetail[i].id);
                     $(`#TourcostDetail_${i}__Day`).val(data.tourcostDetail[i].day);
                     $(`#TourcostDetail_${i}__Sector1Id`).val(data.tourcostDetail[i].sector1Id);
                     $(`#TourcostDetail_${i}__Sector2Id`).val(data.tourcostDetail[i].sector2Id);
@@ -839,7 +839,7 @@
 
                             $(`#detailRow${i}`).children().eq(11).remove();
                         }
-                       
+
                         $(row).insertAfter($(`#detailRow${i}`).children().eq(10));
                     }
                 }

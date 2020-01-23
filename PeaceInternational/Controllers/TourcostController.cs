@@ -193,8 +193,9 @@ namespace PeaceInternational.Web.Controllers
             tourcost.Category2 = tourcostDTO.Tourcost.Category2;
             tourcost.Category3 = tourcostDTO.Tourcost.Category3;
             tourcost.Category4 = tourcostDTO.Tourcost.Category4;
-            tourcost.GuideType = tourcostDTO.Tourcost.GuideType;
-            tourcost.GuideDays = tourcostDTO.Tourcost.GuideDays;
+            tourcost.GuideDaysHalfDay = tourcostDTO.Tourcost.GuideDaysHalfDay;
+            tourcost.GuideDaysFullDay = tourcostDTO.Tourcost.GuideDaysFullDay;
+            tourcost.GuideDaysEscort = tourcostDTO.Tourcost.GuideDaysEscort;
             tourcost.DiscountAccomodation = tourcostDTO.Tourcost.DiscountAccomodation;
             tourcost.DiscountTransportation = tourcostDTO.Tourcost.DiscountTransportation;
             tourcost.Comment = tourcostDTO.Tourcost.Comment;

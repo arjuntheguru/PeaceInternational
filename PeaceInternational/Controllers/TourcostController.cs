@@ -130,10 +130,10 @@ namespace PeaceInternational.Web.Controllers
             }
 
             ViewBag.Guide = new SelectList(await _guideCrudService.GetAllAsync(), "Id", "Name");
-            ViewBag.Sector = new SelectList(await _sectorCrudService.GetAllAsync(), "Id", "Name");
-            ViewBag.HotelCatA = new SelectList(await _hotelCrudService.GetAllAsync(p => p.Category == 'A'), "Id", "Code");
-            ViewBag.HotelCatB = new SelectList(await _hotelCrudService.GetAllAsync(p => p.Category == 'B'), "Id", "Code");
-            ViewBag.HotelCatC = new SelectList(await _hotelCrudService.GetAllAsync(p => p.Category == 'C'), "Id", "Code");
+            ViewBag.Sector = new SelectList(_sectorCrudService.GetAllAsync().Result.OrderBy(p => p.Name), "Id", "Name");
+            ViewBag.HotelCatA = new SelectList( _hotelCrudService.GetAllAsync(p => p.Category == 'A').Result.OrderBy(p => p.Name), "Id", "Code");
+            ViewBag.HotelCatB = new SelectList( _hotelCrudService.GetAllAsync(p => p.Category == 'B').Result.OrderBy(p => p.Name), "Id", "Code");
+            ViewBag.HotelCatC = new SelectList( _hotelCrudService.GetAllAsync(p => p.Category == 'C').Result.OrderBy(p => p.Name), "Id", "Code");
 
             return View(tourcost);
         }

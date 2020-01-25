@@ -92,500 +92,8 @@
 
 @section Scripts{
     <partial name="_ValidationScriptsPartial" />
-
-    <script id="tourcost-template" type="text/x-handlebars-template">
-        <div class="border border-secondary p-2">
-            <div class="row">
-                <div class="col">
-                    <p class="h6 text-monospace"><label class="font-weight-bold">Name of Group/FIT :</label>{{clientName}}</p>
-                </div>
-                <div class="col">
-                    <p class="h6 text-monospace"><label class="font-weight-bold">Peace International Tours & Travel Pvt. Ltd.</label></p>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col">
-                    <p><label class="font-weight-bold">PAX :</label> {{minPAX}} - {{maxPAX}}</p>
-                </div>
-                <div class="col">
-                    <p><label class="font-weight-bold">Days :</label> {{days}}</p>
-                </div>
-                <div class="col">
-                    <p><label class="font-weight-bold">Discount (T) :</label> {{discountTransportation}}  % </p>
-                </div>
-                <div class="col">
-                    <p><label class="font-weight-bold">Discount (A) :</label> {{discountAccomodation}} % </p>
-                </div>
-            </div>
-
-        </div>
-        <br />
-        <div>
-            <table class="table table-bordered">
-                <thead>
-                    <tr>
-                        <th rowspan="3">Days</th>
-                        <th rowspan="3" class="wrap">Sector</th>
-                        <th colspan="6" rowspan="2">Transport</th>
-                        <th colspan="12">Accomodation</th>
-                    </tr>
-                    <tr>
-
-                        <th colspan="4">CAT A</th>
-                        <th colspan="4">CAT B</th>
-                        <th colspan="4">CAT C</th>
-                    </tr>
-                    <tr>
-                        <th>T1</th>
-                        <th>T2</th>
-                        <th>T3</th>
-                        <th>T4</th>
-                        <th>T5</th>
-                        <th>T6</th>
-                        <th>NAME</th>
-                        <th>X BED</th>
-                        <th>XX BED</th>
-                        <th>E BED</th>
-                        <th>NAME</th>
-                        <th>X BED</th>
-                        <th>XX BED</th>
-                        <th>E BED</th>
-                        <th>NAME</th>
-                        <th>X BED</th>
-                        <th>XX BED</th>
-                        <th>E BED</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {{#each tourcostDetail}}
-                    <tr>
-                        <td>{{this.day}}</td>
-                        <td class="wrap">{{this.sector1.code}}{{this.sector2.code}}{{this.sector3.code}}</td>
-                        <td>{{this.t1cost}}</td>
-                        <td>{{this.t2cost}}</td>
-                        <td>{{this.t3cost}}</td>
-                        <td>{{this.t4cost}}</td>
-                        <td>{{this.t5cost}}</td>
-                        <td>{{this.t6cost}}</td>
-                        <td>{{this.hotelA.code}}</td>
-                        <td>{{this.hotelA.hotelRoomRate.singleBed}}</td>
-                        <td>{{this.hotelA.hotelRoomRate.doubleBed}}</td>
-                        <td>{{this.hotelA.hotelRoomRate.extraBed}}</td>
-                        <td>{{this.hotelB.code}}</td>
-                        <td>{{this.hotelB.hotelRoomRate.singleBed}}</td>
-                        <td>{{this.hotelB.hotelRoomRate.doubleBed}}</td>
-                        <td>{{this.hotelB.hotelRoomRate.extraBed}}</td>
-                        <td>{{this.hotelC.code}}</td>
-                        <td>{{this.hotelC.hotelRoomRate.singleBed}}</td>
-                        <td>{{this.hotelC.hotelRoomRate.doubleBed}}</td>
-                        <td>{{this.hotelC.hotelRoomRate.extraBed}}</td>
-                    </tr>
-                    {{/each}}
-                    {{#for tourcostDetail.length 15 1}}
-                    <tr>
-                        <td height="32"></td>
-                        <td height="32"></td>
-                        <td height="32"></td>
-                        <td height="32"></td>
-                        <td height="32"></td>
-                        <td height="32"></td>
-                        <td height="32"></td>
-                        <td height="32"></td>
-                        <td height="32"></td>
-                        <td height="32"></td>
-                        <td height="32"></td>
-                        <td height="32"></td>
-                        <td height="32"></td>
-                        <td height="32"></td>
-                        <td height="32"></td>
-                        <td height="32"></td>
-                        <td height="32"></td>
-                        <td height="32"></td>
-                        <td height="32"></td>
-                        <td height="32"></td>
-                    </tr>
-                    {{/for}}
-                    <tr>
-                        <td colspan="2" class="font-weight-bold">Gross Total</td>
-                        <td>{{t1total}}</td>
-                        <td>{{t2total}}</td>
-                        <td>{{t3total}}</td>
-                        <td>{{t4total}}</td>
-                        <td>{{t5total}}</td>
-                        <td>{{t6total}}</td>
-                        <td></td>
-                        <td>{{catAXTotal}}</td>
-                        <td>{{catAXXTotal}}</td>
-                        <td>{{catAETotal}}</td>
-                        <td></td>
-                        <td>{{catBXTotal}}</td>
-                        <td>{{catBXXTotal}}</td>
-                        <td>{{catBETotal}}</td>
-                        <td></td>
-                        <td>{{catCXTotal}}</td>
-                        <td>{{catCXXTotal}}</td>
-                        <td>{{catCETotal}}</td>
-                    </tr>
-                    <tr>
-                        <td colspan="2" class="font-weight-bold">Net Total</td>
-                        <td>{{percentage t1total discountTransportation }}</td>
-                        <td>{{percentage t2total discountTransportation }}</td>
-                        <td>{{percentage t3total discountTransportation }}</td>
-                        <td>{{percentage t4total discountTransportation }}</td>
-                        <td>{{percentage t5total discountTransportation }}</td>
-                        <td>{{percentage t6total discountTransportation }}</td>
-                        <td></td>
-                        <td>{{percentage catAXTotal discountAccomodation }}</td>
-                        <td>{{percentage catAXXTotal discountAccomodation }}</td>
-                        <td>{{percentage catAETotal discountAccomodation }}</td>
-                        <td></td>
-                        <td>{{percentage catBXTotal discountAccomodation }}</td>
-                        <td>{{percentage catBXXTotal discountAccomodation }}</td>
-                        <td>{{percentage catBETotal discountAccomodation }}</td>
-                        <td></td>
-                        <td>{{percentage catCXTotal discountAccomodation }}</td>
-                        <td>{{percentage catCXXTotal discountAccomodation }}</td>
-                        <td>{{percentage catCETotal discountAccomodation }}</td>
-                    </tr>
-
-                    <tr>
-                        {{#if category1}}
-                        <td colspan="2" class="font-weight-bold">{{category1}}</td>
-                        <td colspan="2">{{category1Total}}</td>
-                        {{/if}}
-                        {{#if category2}}
-                        <td colspan="2" class="font-weight-bold">{{category2}}</td>
-                        <td colspan="2">{{category2Total}}</td>
-                        {{/if}}
-                        {{#if category3}}
-                        <td colspan="2" class="font-weight-bold">{{category3}}</td>
-                        <td colspan="2">{{category3Total}}</td>
-                        {{/if}}
-                        {{#if category4}}
-                        <td colspan="2" class="font-weight-bold">{{category4}}</td>
-                        <td colspan="2">{{category4Total}}</td>
-                        {{/if}}
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-    </script>
-    <script id="ppp-template" type="text/x-handlebars-template">
-
-        <div class="row">
-            <div class="col-md-6">
-                <p class="h5 text-center">Individual Transport Cost</p>
-                <table class="table table-bordered" id="itcTable">
-                    <thead>
-                        <tr>
-                            <th>Transport</th>
-                            <th>PAX</th>
-                            <th>Total Price</th>
-                            <th>Per Person</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>T1</td>
-                            <td>03-05</td>
-                            <td>{{percentage t1total discountTransportation }}</td>
-                            <td>{{customDivision t1total discountTransportation 3}}</td>
-                        </tr>
-                        <tr>
-                            <td>T2</td>
-                            <td>06-09</td>
-                            <td>{{percentage t2total discountTransportation }}</td>
-                            <td>{{customDivision t2total discountTransportation 6}}</td>
-                        </tr>
-                        <tr>
-                            <td>T3</td>
-                            <td>10-14</td>
-                            <td>{{percentage t3total discountTransportation }}</td>
-                            <td>{{customDivision t3total discountTransportation 10}}</td>
-                        </tr>
-                        <tr>
-                            <td>T4</td>
-                            <td>15-19</td>
-                            <td>{{percentage t4total discountTransportation }}</td>
-                            <td>{{customDivision t4total discountTransportation 15}}</td>
-                        </tr>
-                        <tr>
-                            <td>T5</td>
-                            <td>20-24</td>
-                            <td>{{percentage t5total discountTransportation }}</td>
-                            <td>{{customDivision t5total discountTransportation 20}}</td>
-                        </tr>
-                        <tr>
-                            <td>T6</td>
-                            <td>25+</td>
-                            <td>{{percentage t6total discountTransportation }}</td>
-                            <td>{{customDivision t6total discountTransportation 25}}</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-            <div class="col-md-6">
-                <p class="h5 text-center">Individual Hotel Cost</p>
-                <table class="table table-bordered" id="hotelTable">
-                    <thead>
-                        <tr>
-                            <th></th>
-                            <th>XX Bed</th>
-                            <th>Half Twin</th>
-                            <th>X Bed</th>
-                            <th>Single Supplement</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>CAT A</td>
-                            <td>{{percentage catAXXTotal discountAccomodation}}</td>
-                            <td>{{customDivision catAXXTotal discountAccomodation 2}}</td>
-                            <td>{{percentage catAXTotal discountAccomodation}}</td>
-                            <td></td>
-                        </tr>
-                        <tr>
-                            <td>CAT B</td>
-                            <td>{{percentage catBXXTotal discountAccomodation}}</td>
-                            <td>{{customDivision catBXXTotal discountAccomodation 2}}</td>
-                            <td>{{percentage catBXTotal discountAccomodation}}</td>
-                            <td></td>
-                        </tr>
-
-                        <tr>
-                            <td>CAT C</td>
-                            <td>{{percentage catCXXTotal discountAccomodation}}</td>
-                            <td>{{customDivision catCXXTotal discountAccomodation 2}}</td>
-                            <td>{{percentage catCXTotal discountAccomodation}}</td>
-                            <td></td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-        <p class="h5 text-center">Per Person Price</p>
-        <table class="table table-bordered" id="pppTable">
-            <thead>
-                <tr>
-                    <th>Bracket</th>
-                    <th>Transport</th>
-                    <th>Hotel</th>
-                    <th>Guide</th>
-                    {{#if category1}}
-                    <th>{{category1}}</th>
-                    {{/if}}
-                    {{#if category2}}
-                    <th>{{category2}}</th>
-                    {{/if}}
-                    {{#if category3}}
-                    <th>{{category3}}</th>
-                    {{/if}}
-                    {{#if category4}}
-                    <th>{{category4}}</th>
-                    {{/if}}
-                    <th>Total</th>
-                    @*<th>After VAT (13%)</th>*@
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td rowspan="3">03-05</td>
-                    <td rowspan="3">{{customDivision t1total discountTransportation 3}}</td>
-                    <td>{{customDivision catAXXTotal discountAccomodation 2}}</td>
-                    <td rowspan="3">{{guideTotalCost}}</td>
-                    {{#if category1}}
-                    <td rowspan="3">{{category1Total}}</td>
-                    {{/if}}
-                    {{#if category2}}
-                    <td rowspan="3">{{category2Total}}</td>
-                    {{/if}}
-                    {{#if category3}}
-                    <td rowspan="3">{{category3Total}}</td>
-                    {{/if}}
-                    {{#if category4}}
-                    <td rowspan="3">{{category4Total}}</td>
-                    {{/if}}
-                    <td></td>
-                    @*<td></td>*@
-                </tr>
-                <tr>
-                    <td>{{customDivision catBXXTotal discountAccomodation 2}}</td>
-                    <td></td>
-                    @*<td></td>*@
-                </tr>
-                <tr>
-                    <td>{{customDivision catCXXTotal discountAccomodation 2}}</td>
-                    <td></td>
-                    @*<td></td>*@
-                </tr>
-                <tr>
-                    <td rowspan="3">06-09</td>
-                    <td rowspan="3">{{customDivision t2total discountTransportation 6}}</td>
-                    <td>{{customDivision catAXXTotal discountAccomodation 2}}</td>
-                    <td rowspan="3">{{guideTotalCost}}</td>
-                    {{#if category1}}
-                    <td rowspan="3">{{category1Total}}</td>
-                    {{/if}}
-                    {{#if category2}}
-                    <td rowspan="3">{{category2Total}}</td>
-                    {{/if}}
-                    {{#if category3}}
-                    <td rowspan="3">{{category3Total}}</td>
-                    {{/if}}
-                    {{#if category4}}
-                    <td rowspan="3">{{category4Total}}</td>
-                    {{/if}}
-                    <td></td>
-                    @*<td></td>*@
-                </tr>
-                <tr>
-                    <td>{{customDivision catBXXTotal discountAccomodation 2}}</td>
-                    <td></td>
-                    @*<td></td>*@
-                </tr>
-                <tr>
-                    <td>{{customDivision catCXXTotal discountAccomodation 2}}</td>
-                    <td></td>
-                    @*<td></td>*@
-                </tr>
-                <tr>
-                    <td rowspan="3">10-14</td>
-                    <td rowspan="3">{{customDivision t3total discountTransportation 10}}</td>
-                    <td>{{customDivision catAXXTotal discountAccomodation 2}}</td>
-                    <td rowspan="3">{{guideTotalCost}}</td>
-                    {{#if category1}}
-                    <td rowspan="3">{{category1Total}}</td>
-                    {{/if}}
-                    {{#if category2}}
-                    <td rowspan="3">{{category2Total}}</td>
-                    {{/if}}
-                    {{#if category3}}
-                    <td rowspan="3">{{category3Total}}</td>
-                    {{/if}}
-                    {{#if category4}}
-                    <td rowspan="3">{{category4Total}}</td>
-                    {{/if}}
-                    <td></td>
-                    @*<td></td>*@
-                </tr>
-                <tr>
-                    <td>{{customDivision catBXXTotal discountAccomodation 2}}</td>
-                    <td></td>
-                    @*<td></td>*@
-                </tr>
-                <tr>
-                    <td>{{customDivision catCXXTotal discountAccomodation 2}}</td>
-                    <td></td>
-                    @*<td></td>*@
-                </tr>
-                <tr>
-                    <td rowspan="3">15-19</td>
-                    <td rowspan="3">{{customDivision t4total discountTransportation 15}}</td>
-                    <td>{{customDivision catAXXTotal discountAccomodation 2}}</td>
-                    <td rowspan="3">{{guideTotalCost}}</td>
-                    {{#if category1}}
-                    <td rowspan="3">{{category1Total}}</td>
-                    {{/if}}
-                    {{#if category2}}
-                    <td rowspan="3">{{category2Total}}</td>
-                    {{/if}}
-                    {{#if category3}}
-                    <td rowspan="3">{{category3Total}}</td>
-                    {{/if}}
-                    {{#if category4}}
-                    <td rowspan="3">{{category4Total}}</td>
-                    {{/if}}
-                    <td></td>
-                    @*<td></td>*@
-                </tr>
-                <tr>
-                    <td>{{customDivision catBXXTotal discountAccomodation 2}}</td>
-                    <td></td>
-                    @*<td></td>*@
-                </tr>
-                <tr>
-                    <td>{{customDivision catCXXTotal discountAccomodation 2}}</td>
-                    <td></td>
-                    @*<td></td>*@
-                </tr>
-                <tr>
-                    <td rowspan="3">20-24</td>
-                    <td rowspan="3">{{customDivision t5total discountTransportation 20}}</td>
-                    <td>{{customDivision catAXXTotal discountAccomodation 2}}</td>
-                    <td rowspan="3">{{guideTotalCost}}</td>
-                    {{#if category1}}
-                    <td rowspan="3">{{category1Total}}</td>
-                    {{/if}}
-                    {{#if category2}}
-                    <td rowspan="3">{{category2Total}}</td>
-                    {{/if}}
-                    {{#if category3}}
-                    <td rowspan="3">{{category3Total}}</td>
-                    {{/if}}
-                    {{#if category4}}
-                    <td rowspan="3">{{category4Total}}</td>
-                    {{/if}}
-                    <td></td>
-                    @*<td></td>*@
-                </tr>
-                <tr>
-                    <td>{{customDivision catBXXTotal discountAccomodation 2}}</td>
-                    <td></td>
-                    @*<td></td>*@
-                </tr>
-                <tr>
-                    <td>{{customDivision catCXXTotal discountAccomodation 2}}</td>
-                    <td></td>
-                    @*<td></td>*@
-                </tr>
-                <tr>
-                    <td rowspan="3">25+</td>
-                    <td rowspan="3">{{customDivision t6total discountTransportation 25}}</td>
-                    <td>{{customDivision catAXXTotal discountAccomodation 2}}</td>
-                    <td rowspan="3">{{guideTotalCost}}</td>
-                    {{#if category1}}
-                    <td rowspan="3">{{category1Total}}</td>
-                    {{/if}}
-                    {{#if category2}}
-                    <td rowspan="3">{{category2Total}}</td>
-                    {{/if}}
-                    {{#if category3}}
-                    <td rowspan="3">{{category3Total}}</td>
-                    {{/if}}
-                    {{#if category4}}
-                    <td rowspan="3">{{category4Total}}</td>
-                    {{/if}}
-                    <td></td>
-                    @*<td></td>*@
-                </tr>
-                <tr>
-                    <td>{{customDivision catBXXTotal discountAccomodation 2}}</td>
-                    <td></td>
-                    @*<td></td>*@
-                </tr>
-                <tr>
-                    <td>{{customDivision catCXXTotal discountAccomodation 2}}</td>
-                    <td></td>
-                    @*<td></td>*@
-                </tr>
-            </tbody>
-        </table>
-        <div class="card">
-            <div class="card-body">
-                <p class="h5"><span class="font-weight-bold">Comment: </span>{{comment}}</p>
-            </div>
-        </div>
-        <br />
-        <div class="form-row">
-            <div class="col-md-8" id="imgDiv">
-
-            </div>
-            <div class="col-md-4">
-                <p class="float-right h5 mr-5"><span class="font-weight-bold">Date : </span>{{splitDate createdDate}}</p>
-                <p class="float-right h5 mr-5"><span class="font-weight-bold">Prepared By : </span>{{createdBy}}</p>
-            </div>
-        </div>
-    </script>
+    <script src="~/js/ppp-template.js"></script>
+    <script src="~/js/tourcost-template.js"></script>
     <script type="text/javascript">
 
         var data =  @Html.Raw(Json.Serialize(Model));
@@ -600,6 +108,10 @@
         });
 
         data.guideTotalCost = 0;
+        data.PAX = 0;
+        if (data.minPAX == data.maxPAX) {
+            data.PAX = data.minPAX
+        }
 
         if (data.guideId != null) {
 
@@ -616,7 +128,7 @@
             }
         }
 
-        data.image = "img/logo2.jpg";       
+        data.image = "img/logo2.jpg";
         data.isLuxury = data.isLuxury ? "Yes" : "No";
         data.t1total = 0;
         data.t2total = 0;
@@ -689,7 +201,7 @@
                 data.t6total += item.t6cost;
             };
 
-            if (item.hotelA) {               
+            if (item.hotelA) {
 
                 if (data.mealType == 'AP') {
 
@@ -708,7 +220,7 @@
                 data.catAETotal += item.hotelA.hotelRoomRate.extraBed;
             }
 
-            if (item.hotelB) {                
+            if (item.hotelB) {
 
                 if (data.mealType == 'AP') {
                     item.hotelB.hotelRoomRate.singleBed += item.hotelB.hotelRoomRate.ap;
@@ -727,7 +239,7 @@
                 data.catBETotal += item.hotelB.hotelRoomRate.extraBed;
             }
 
-            if (item.hotelC) {                
+            if (item.hotelC) {
 
                 if (data.mealType == 'AP') {
                     item.hotelC.hotelRoomRate.singleBed += item.hotelC.hotelRoomRate.ap;
@@ -752,16 +264,11 @@
 
         });
 
-        var source = document.getElementById("tourcost-template").innerHTML;
-        var template = Handlebars.compile(source);
-        var result = template(data);
-
+   
+        var result = Handlebars.templates['tourcost-template'](data);
         $('#tourcostTemplate').html(result);
-
-        var source1 = document.getElementById("ppp-template").innerHTML;
-        var template1 = Handlebars.compile(source1);
-        var result1 = template1(data);
-
+    
+        var result1 = Handlebars.templates['ppp-template'](data);
         $('#pppTemplate').html(result1);
 
         for (let i = 0; i < 3; i++) {
@@ -866,7 +373,7 @@
 
             let val = parseFloat($(`#pppTable tr:nth-child(${i}) td:nth-child(2)`)[0].innerText) +
                 parseFloat($(`#pppTable tr:nth-child(${i + 1}) td:nth-child(1)`)[0].innerText) +
-                parseFloat($(`#pppTable tr:nth-child(${i}) td:nth-child(4)`)[0].innerText);         
+                parseFloat($(`#pppTable tr:nth-child(${i}) td:nth-child(4)`)[0].innerText);
 
             val += flag >= 1 ? parseFloat($(`#pppTable tr:nth-child(${i}) td:nth-child(5)`)[0].innerText) : 0;
             val += flag >= 2 ? parseFloat($(`#pppTable tr:nth-child(${i}) td:nth-child(6)`)[0].innerText) : 0;
@@ -874,7 +381,7 @@
             val += flag >= 4 ? parseFloat($(`#pppTable tr:nth-child(${i}) td:nth-child(8)`)[0].innerText) : 0;
 
 
-            $(`#pppTable tr:nth-child(${i + 1}) td:nth-child(2)`)[0].innerText = val;           
+            $(`#pppTable tr:nth-child(${i + 1}) td:nth-child(2)`)[0].innerText = val;
 
             //$(`#pppTable tr:nth-child(${i + 1}) td:nth-child(3)`)[0].innerText = (1.13 * val).toFixed(2);
         };

@@ -134,6 +134,8 @@ namespace PeaceInternational.Web.Controllers
                         ClientName = invoice.ClientName,
                         Currency = invoice.Currency,
                         PAX = invoice.PAX,
+                        Guide = invoice.Guide,
+                        Vehicle = invoice.Vehicle,
                         TotalDue = invoice.TotalDue,
                         Discount = invoice.Discount,
                         NetAmount = invoice.NetAmount,

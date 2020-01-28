@@ -68,13 +68,13 @@
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label asp-for="Tourcost.MinPAX"> Min PAX. <span class="text-danger">*</span></label>
-                                    <input asp-for="Tourcost.MinPAX" class="form-control" min="1" />
+                                    <input asp-for="Tourcost.MinPAX" class="form-control" min="1" onkeydown="return event.keyCode !== 69"/>
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label asp-for="Tourcost.MaxPAX"> Max PAX. <span class="text-danger">*</span></label>
-                                    <input asp-for="Tourcost.MaxPAX" class="form-control" max="100" />
+                                    <input asp-for="Tourcost.MaxPAX" class="form-control" max="100" onkeydown="return event.keyCode !== 69" />
                                 </div>
                             </div>
                         </div>
@@ -96,7 +96,7 @@
                                 <div class="col-md-4">
                                     <div class="form-group">
                                         <label asp-for="Tourcost.GuideDaysHalfDay"> Half </label>
-                                        <input asp-for="Tourcost.GuideDaysHalfDay" class="form-control" placeholder="Days"/>
+                                        <input asp-for="Tourcost.GuideDaysHalfDay" class="form-control" placeholder="Days" onkeydown="return event.keyCode !== 69"/>
                                     </div>
                                 </div>
                                 <div class="col-md-4">

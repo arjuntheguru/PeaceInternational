@@ -141,7 +141,7 @@
                             </div>
                             <div class="col-md-2 form-group">
                                 <label for="amount"> Amount <span class="text-danger">*</span></label>
-                                <input type="text" class="form-control" name="particularAmount" id="particularAmount" />
+                                <input type="number" class="form-control" name="particularAmount" id="particularAmount" onkeydown="return event.keyCode !== 69"/>
                             </div>
                             <div class="col-md-2 form-group">
                                 <label for="addProduct">Add Particular</label>
@@ -172,7 +172,7 @@
                             </div>
                             <div class="form-group">
                                 <label for="discount">Discount</label>
-                                <input type="number" class="form-control" name="discount" id="discount" />
+                                <input type="number" class="form-control" name="discount" id="discount" onkeydown="return event.keyCode !== 69" />
                             </div>
                             <div class="form-group">
                                 <label for="netAmount">Net Amount<span class="text-danger">*</span></label>

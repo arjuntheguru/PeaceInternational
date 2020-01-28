@@ -182,8 +182,10 @@ const itemListColumnDefs = [
             return `<button type='button' class='btn btn-danger btn-sm m-1 shadow w-100'><i class='fas fa-times'></i></button>`;
         },
         onCellClicked(params) {
-
+           
             itemListGridOptions.api.updateRowData({ remove: [params.data] });
+            $('#particulars').val(params.data.particulars);
+            $('#particularAmount').val(params.data.amount);
             calcTotal();
         }
     }

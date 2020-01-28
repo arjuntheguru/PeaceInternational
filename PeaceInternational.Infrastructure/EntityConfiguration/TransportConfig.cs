@@ -18,8 +18,8 @@ namespace PeaceInternational.Infrastructure.EntityConfiguration
             {
                 Id = 1,
                 Name = "T1",
-                MinPAX = 3,
-                MaxPAX = 5,
+                MinPAX = 1,
+                MaxPAX = 2,
                 CreatedBy = "superadmin"
             });
 
@@ -27,8 +27,8 @@ namespace PeaceInternational.Infrastructure.EntityConfiguration
             {
                 Id = 2,
                 Name = "T2",
-                MinPAX = 6,
-                MaxPAX = 9,
+                MinPAX = 3,
+                MaxPAX = 5,
                 CreatedBy = "superadmin"
             });
 
@@ -36,8 +36,8 @@ namespace PeaceInternational.Infrastructure.EntityConfiguration
             {
                 Id = 3,
                 Name = "T3",
-                MinPAX = 10,
-                MaxPAX = 14,
+                MinPAX = 6,
+                MaxPAX = 9,
                 CreatedBy = "superadmin"
             });
 
@@ -45,7 +45,7 @@ namespace PeaceInternational.Infrastructure.EntityConfiguration
             {
                 Id = 4,
                 Name = "T4",
-                MinPAX = 15,
+                MinPAX = 10,
                 MaxPAX = 19,
                 CreatedBy = "superadmin"
             });
@@ -64,7 +64,7 @@ namespace PeaceInternational.Infrastructure.EntityConfiguration
                 Id = 6,
                 Name = "T6",
                 MinPAX = 25,
-                MaxPAX = 25,
+                MaxPAX = 100,
                 CreatedBy = "superadmin"
             });
         }

@@ -68,7 +68,7 @@
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label asp-for="Tourcost.MinPAX"> Min PAX. <span class="text-danger">*</span></label>
-                                    <input asp-for="Tourcost.MinPAX" class="form-control" min="3" />
+                                    <input asp-for="Tourcost.MinPAX" class="form-control" min="1" />
                                 </div>
                             </div>
                             <div class="col-md-6">
@@ -200,7 +200,7 @@
                 <div class="form-group">
                     <label asp-for="Tourcost.DiscountTransportation"> Discount (T) </label>
                     <div class="input-group mb-3">
-                        <input asp-for="Tourcost.DiscountTransportation" class="form-control" />
+                        <input asp-for="Tourcost.DiscountTransportation" class="form-control"/>
                         <div class="input-group-append">
                             <span class="input-group-text">%</span>
                         </div>
@@ -228,7 +228,7 @@
     <script type="text/javascript">
 
 
-        $('input[name="Tourcost.GuideType"]').click(function (e) {
+        $('input[name="Tourcost.MealType"]').click(function (e) {
 
             if (e.ctrlKey) {
 
@@ -554,6 +554,15 @@
 
             var data = @Html.Raw(Json.Serialize(Model));
             console.log(data);
+
+            if (!$('#Tourcost_DiscountAccomodation').val()) {
+                $('#Tourcost_DiscountAccomodation').val(0);
+            }
+
+            if (!$('#Tourcost_DiscountTransportation').val()) {
+                $('#Tourcost_DiscountTransportation').val(0);
+            }
+
             if (data.tourcostDetail != null) {
                 setData();
 

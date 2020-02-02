@@ -74,10 +74,12 @@ namespace PeaceInternational.Web.Controllers
             {
                 var invoice = _invoiceCrudService.Get(id);
                 var invoiceDetail = _invoiceDetailCrudService.GetAll(p => p.InvoiceId == id);
+                var user = _userManager.FindByIdAsync(invoice.CreatedBy).Result;
                 var result = new
                 {
                     invoice,
-                    invoiceDetail
+                    invoiceDetail,
+                    user.UserName
                 };
                 return Json(result);
             }

@@ -230,6 +230,11 @@ function call() {
 
 const Edit = (data) => {
 
+    ClearInvoiceForm();
+    $('#invoiceForm').validate().destroy();
+    invoiceFormValidation();
+    $('#invoiceForm').validate().resetForm();
+
     console.log(data);
     $('#createInvoice').modal('toggle');
     $("#id").val(data.id);
@@ -304,6 +309,9 @@ const invoiceFormValidation = () => {
             },
             clientName: {
                 required: true
+            },
+            discount: {
+                min: 0
             }
         }
     });
@@ -362,7 +370,7 @@ function calcTotal() {
     });
 
     netAmount = amount - discount;
-    if ($('#discount').val() > amount) {
+    if ($('#discount').val() > amount || $('#discount').val() < 0) {
         $('#discount').addClass('is-invalid');
     }
     else {
@@ -459,7 +467,7 @@ $(document).ready(function () {
         $('.currency').html($('#currency').val());
     });
 
-    $('#discount').on('keyup', () => { calcTotal(); });
+    $('#discount').on('change', () => { calcTotal(); });
 
     //getCurrentNepaliYear();
 
@@ -489,6 +497,7 @@ $(document).ready(function () {
 
     $('#btnSave').off('click').on('click', function () {
         if ($('#invoiceForm').valid()) {
+            console.log($('#invoiceForm').valid());
             Save();
         }
     });

@@ -1,12 +1,12 @@
-﻿using System;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using PeaceInternational.Core.Entity;
 using PeaceInternational.Core.IRepository;
 using PeaceInternational.Web.Models;
+using System;
+using System.Threading.Tasks;
 
 namespace PeaceInternational.Web.Controllers
 {
@@ -46,9 +46,9 @@ namespace PeaceInternational.Web.Controllers
             {
                 if (id == null)
                 {
-                    var result =  await _sectorCrudService.GetAll().AsNoTracking()
+                    var result = await _sectorCrudService.GetAll().AsNoTracking()
                         .Include(h => h.SectorTransport)
-                        .ToListAsync();                   
+                        .ToListAsync();
 
                     return Json(result);
                 }
@@ -80,22 +80,22 @@ namespace PeaceInternational.Web.Controllers
                     notification = await EditSector(sectorDTO, user);
                 }
                 else
-                {   
+                {
 
                     int sectorId = await _sectorCrudService.InsertAsync(new Sector
                     {
                         Name = sectorDTO.Sector.Name,
-                        Code = sectorDTO.Sector.Code,                     
+                        Code = sectorDTO.Sector.Code,
                         CreatedBy = user.Id
                     });
 
-                    foreach(var sectorTransport in sectorDTO.SectorTransport)
+                    foreach (var sectorTransport in sectorDTO.SectorTransport)
                     {
                         await _sectorTransportCrudService.InsertAsync(new SectorTransport
                         {
                             SectorId = sectorId,
                             TransportId = sectorTransport.TransportId,
-                            Cost = sectorTransport.Cost,                          
+                            Cost = sectorTransport.Cost,
                             CreatedBy = user.Id
                         });
                     }
@@ -142,7 +142,7 @@ namespace PeaceInternational.Web.Controllers
                 var record = await _sectorCrudService.GetAsync(sectorDTO.Sector.Id);
 
                 record.Name = sectorDTO.Sector.Name;
-                record.Code = sectorDTO.Sector.Code;           
+                record.Code = sectorDTO.Sector.Code;
                 record.ModifiedBy = user.Id;
                 record.ModifiedDate = DateTime.Now;
 
@@ -150,7 +150,7 @@ namespace PeaceInternational.Web.Controllers
                 {
                     var recordST = await _sectorTransportCrudService.GetAsync(p => p.SectorId == sectorDTO.Sector.Id && p.TransportId == sectorTransport.TransportId);
 
-                    recordST.Cost = sectorTransport.Cost;                  
+                    recordST.Cost = sectorTransport.Cost;
                     recordST.ModifiedBy = user.Id;
                     record.ModifiedDate = DateTime.Now;
 

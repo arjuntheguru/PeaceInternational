@@ -16,7 +16,7 @@ namespace PeaceInternational.Infrastructure.Repository
 
         public IQueryable<T> FromSql<T>(string sql, params object[] parameters) where T : class
         {
-            return _context.Query<T>().FromSql(sql, parameters);
+            return _context.Set<T>().FromSqlRaw(sql, parameters);
         }
     }
 }

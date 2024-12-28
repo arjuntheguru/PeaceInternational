@@ -15,7 +15,7 @@ namespace PeaceInternational.Infrastructure.EntityConfiguration
             builder.HasKey(p => p.Id);
 
             builder.Property(p => p.Id)
-                .UseSqlServerIdentityColumn();
+                .UseIdentityColumn();
 
             builder.Property(p => p.CreatedBy)
                 .HasMaxLength(256)

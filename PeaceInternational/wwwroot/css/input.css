@@ -66,24 +66,22 @@ body {
   @apply antialiased;
 }
 
-/* Custom date input styling */
-input[type="date"] {
-  @apply input input-bordered;
-  color-scheme: light;
-  position: relative;
+/* Custom date input styling - modern calendar icon */
+input[type="date"]::-webkit-calendar-picker-indicator {
+  cursor: pointer;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%23334155' viewBox='0 0 24 24'%3E%3Cpath d='M19 3h-1V1h-2v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11zM7 10h5v5H7z'/%3E%3C/svg%3E");
+  width: 1.25rem;
+  height: 1.25rem;
+  opacity: 0.7;
+  filter: none;
 }
 
-input[type="date"]::-webkit-calendar-picker-indicator {
-  @apply cursor-pointer opacity-70 hover:opacity-100;
-  filter: invert(0.5);
+input[type="date"]::-webkit-calendar-picker-indicator:hover {
+  opacity: 1;
 }
 
 [data-theme="dark"] input[type="date"]::-webkit-calendar-picker-indicator {
-  filter: invert(0.8);
-}
-
-input[type="date"]:focus {
-  @apply outline-none ring-2 ring-primary ring-offset-2;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%23e5e7eb' viewBox='0 0 24 24'%3E%3Cpath d='M19 3h-1V1h-2v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11zM7 10h5v5H7z'/%3E%3C/svg%3E");
 }
 
 /* Custom scrollbar */

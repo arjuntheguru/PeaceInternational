@@ -1,259 +1,346 @@
-﻿
 @{
     ViewData["Title"] = "Invoice";
 }
-<style>
 
-    span {
-        font-weight: bold;
-    }
-
-    .topRightInfo {
-        padding-left: 6rem;       
-    }
-
-    .topRightInfo h6 {
-        margin-bottom: 1px;
-        font-size:19px;
-    }
-    body h6 {
-        font-size:24px;
-    }
-
-    #page {
-        border-collapse: collapse;
-        border: 2px solid;
-        position: relative;
-        font-family: Arial, Helvetica, sans-serif;
-    }
-
-        /* And this to your table's `td` elements. */
-        #page td {
-            padding-top: 1px;
-            margin: 0;
-            font-size: 22px;
-            border-right: 2px solid;
-        }
-
-        #page th {
-            border-right: 2px solid;
-            border-bottom: 2px solid;
-        }
-
-        #page tfoot {
-            border-top: 2px solid;
-        }
-</style>
-
-<div class="row">
-    <div class="col-md-10">
-        <h1 class="display-4">Invoice</h1>
+<div class="animate-fade-in">
+    <!-- Header -->
+    <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6">
+        <div>
+            <h1 class="text-4xl font-bold text-base-content">Invoice Management</h1>
+            <p class="text-base-content/70 mt-2">Manage tour invoices and billing</p>
+        </div>
+        <label for="invoice-drawer" class="btn btn-primary gap-2 drawer-button">
+            <i class="fas fa-plus"></i>
+            Add Invoice
+        </label>
     </div>
-    <div class="col-md-2">
-        <input type="button" class="btn btn-info mt-4 w-100" data-toggle="modal" data-target="#createInvoice" id="addInvoiceBtn" value="Add Invoice" />
+
+    <!-- Multi-field Search -->
+    <div class="card bg-base-200 shadow-lg mb-6">
+        <div class="card-body">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div class="form-control">
+                    <input type="text" id="searchField" placeholder="Invoice No..." class="input input-bordered" />
+                </div>
+                <div class="form-control">
+                    <input type="text" id="searchFieldFileCode" placeholder="File Code No..." class="input input-bordered" />
+                </div>
+                <div class="form-control">
+                    <input type="text" id="searchFieldClient" placeholder="Client Name..." class="input input-bordered" />
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Invoice Table -->
+    <div class="card bg-base-100 shadow-lg">
+        <div class="card-body p-0">
+            <div class="overflow-x-auto">
+                <table class="table table-zebra w-full" id="invoiceTable">
+                    <thead class="bg-primary text-primary-content">
+                        <tr>
+                            <th class="normal-case text-base">Invoice No.</th>
+                            <th class="normal-case text-base">File Code</th>
+                            <th class="normal-case text-base">Client Name</th>
+                            <th class="normal-case text-base">Currency</th>
+                            <th class="normal-case text-base">Net Amount</th>
+                            <th class="normal-case text-base text-center">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tableBody">
+                        <tr>
+                            <td colspan="6" class="text-center py-12">
+                                <div class="loading loading-spinner loading-lg text-primary"></div>
+                                <p class="mt-4">Loading invoices...</p>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </div>
 </div>
-<hr />
-<div class="row">
-    <div class="col-md-3">
-        <input type="text" class="form-control" id="searchField" placeholder="Invoice No" />
-    </div>
-    <div class="col-md-3">
-        <input type="text" class="form-control" id="searchFieldFileCode" placeholder="File Code No." />
-    </div>
-    <div class="col-md-6">
-        <input type="text" class="form-control" id="searchFieldClient" placeholder="Client name" />
-    </div>
 
-</div>
-<div style="height: 100%; box-sizing: border-box; padding-top:20px;">
-    <div id="invoiceGrid" style="width:100%; height:450px" class="ag-theme-balham"></div>
-</div>
+<!-- Drawer for Add/Edit Invoice -->
+<div class="drawer drawer-end z-50">
+    <input id="invoice-drawer" type="checkbox" class="drawer-toggle" />
+    <div class="drawer-side">
+        <label for="invoice-drawer" class="drawer-overlay"></label>
+        <div class="bg-base-100 w-full md:w-[900px] min-h-full shadow-2xl">
+            <div class="sticky top-0 bg-primary text-primary-content p-6 z-10">
+                <div class="flex justify-between items-center">
+                    <h2 class="text-2xl font-bold" id="invoiceTitle">Add Invoice</h2>
+                    <label for="invoice-drawer" class="btn btn-ghost btn-circle btn-sm">
+                        <i class="fas fa-times text-xl"></i>
+                    </label>
+                </div>
+            </div>
 
-@*Create Invoice Modal*@
-<div class="modal fade" id="createInvoice" tabindex="-1" role="dialog" aria-labelledby="invoiceTitle" aria-hidden="true">
-    <div class="modal-dialog modal-lg" role="document" style="max-width:80%;border:double;" !important;>
-        <form id="invoiceForm">
-            <div class="modal-content" style="background: linear-gradient(225deg, rgba(255,255,255,1) 0%, rgba(232,227,227,1) 100%);">
-                <div class="modal-header bg-info">
-                    <h5 class="modal-title text-light">Add Invoice</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span class="text-light" aria-hidden="true">&times;</span>
+            <form id="invoiceForm" class="p-6">
+                <input type="hidden" id="id" />
+
+                <div class="space-y-4">
+                    <!-- Basic Info -->
+                    <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                        <div class="form-control">
+                            <label class="label">
+                                <span class="label-text font-semibold">Date <span class="text-error">*</span></span>
+                            </label>
+                            <input type="text" class="input input-bordered bg-base-200" id="date" disabled />
+                        </div>
+
+                        <div class="form-control md:col-span-2">
+                            <label class="label">
+                                <span class="label-text font-semibold">Dr. <span class="text-error">*</span></span>
+                            </label>
+                            <input type="text" class="input input-bordered" name="dr" id="dr" placeholder="Recipient" />
+                            <label class="label">
+                                <span class="label-text-alt text-error" id="dr-error"></span>
+                            </label>
+                        </div>
+
+                        <div class="form-control">
+                            <label class="label">
+                                <span class="label-text font-semibold">Currency <span class="text-error">*</span></span>
+                            </label>
+                            <input type="text" class="input input-bordered" name="currency" id="currency"
+                                   placeholder="USD" oninput="this.value = this.value.toUpperCase()" maxlength="3" />
+                            <label class="label">
+                                <span class="label-text-alt text-error" id="currency-error"></span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div class="form-control">
+                            <label class="label">
+                                <span class="label-text font-semibold">Reference No.</span>
+                            </label>
+                            <input type="text" class="input input-bordered" name="referenceNo" id="referenceNo" />
+                        </div>
+
+                        <div class="form-control">
+                            <label class="label">
+                                <span class="label-text font-semibold">File Code No.</span>
+                            </label>
+                            <input type="text" class="input input-bordered" name="fileCodeNo" id="fileCodeNo" />
+                        </div>
+
+                        <div class="form-control">
+                            <label class="label cursor-pointer justify-start gap-3">
+                                <input type="checkbox" name="isTicket" id="isTicket" class="checkbox checkbox-primary" />
+                                <span class="label-text font-semibold">Is Ticket?</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Client Details -->
+                    <div class="divider">Client Information</div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div class="form-control">
+                            <label class="label">
+                                <span class="label-text font-semibold">Address</span>
+                            </label>
+                            <input type="text" class="input input-bordered" name="address" id="address" />
+                        </div>
+
+                        <div class="form-control">
+                            <label class="label">
+                                <span class="label-text font-semibold">Client Name <span class="text-error">*</span></span>
+                            </label>
+                            <input type="text" class="input input-bordered" name="clientName" id="clientName" />
+                            <label class="label">
+                                <span class="label-text-alt text-error" id="clientName-error"></span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div class="form-control">
+                            <label class="label">
+                                <span class="label-text font-semibold">PAX</span>
+                            </label>
+                            <input type="number" class="input input-bordered" name="pax" id="pax" />
+                        </div>
+
+                        <div class="form-control">
+                            <label class="label">
+                                <span class="label-text font-semibold">Guide</span>
+                            </label>
+                            <input type="text" class="input input-bordered" name="guide" id="guide" />
+                        </div>
+
+                        <div class="form-control">
+                            <label class="label">
+                                <span class="label-text font-semibold">Vehicle</span>
+                            </label>
+                            <input type="text" class="input input-bordered" name="vehicle" id="vehicle" />
+                        </div>
+                    </div>
+
+                    <!-- Particulars Section -->
+                    <div class="divider">Invoice Items</div>
+
+                    <div class="card bg-accent/10 border border-accent/20">
+                        <div class="card-body">
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                <div class="form-control md:col-span-2">
+                                    <label class="label">
+                                        <span class="label-text font-semibold">Particulars</span>
+                                    </label>
+                                    <input type="text" class="input input-bordered" id="particulars" placeholder="Description" />
+                                </div>
+
+                                <div class="form-control">
+                                    <label class="label">
+                                        <span class="label-text font-semibold">Amount</span>
+                                    </label>
+                                    <div class="join w-full">
+                                        <input type="number" class="input input-bordered join-item flex-1" id="particularAmount"
+                                               placeholder="0.00" step="0.01" />
+                                        <button type="button" class="btn btn-success join-item" id="addProduct">
+                                            <i class="fas fa-plus"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Items List -->
+                    <div class="card bg-base-200">
+                        <div class="card-body p-0">
+                            <div class="overflow-x-auto max-h-64">
+                                <table class="table table-sm" id="itemsTable">
+                                    <thead class="sticky top-0 bg-base-300">
+                                        <tr>
+                                            <th>Particulars</th>
+                                            <th class="text-right">Amount</th>
+                                            <th class="w-16">Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="itemsTableBody">
+                                        <tr>
+                                            <td colspan="3" class="text-center py-4 text-base-content/50">
+                                                No items added yet
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Totals -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div class="flex items-center gap-2">
+                            <div class="avatar placeholder">
+                                <div class="bg-primary text-primary-content rounded-lg w-24 h-24">
+                                    <img src="~/img/logo.png" alt="Logo" class="w-20" />
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="space-y-3">
+                            <div class="form-control">
+                                <label class="label">
+                                    <span class="label-text font-semibold">Total Due</span>
+                                </label>
+                                <input type="text" class="input input-bordered bg-base-200 font-bold" id="totalDue" disabled />
+                            </div>
+
+                            <div class="form-control">
+                                <label class="label">
+                                    <span class="label-text font-semibold">Discount</span>
+                                </label>
+                                <input type="number" class="input input-bordered" name="discount" id="discount"
+                                       placeholder="0.00" step="0.01" />
+                            </div>
+
+                            <div class="form-control">
+                                <label class="label">
+                                    <span class="label-text font-semibold">Net Amount</span>
+                                </label>
+                                <input type="text" class="input input-bordered bg-primary text-primary-content font-bold text-lg"
+                                       id="netAmount" disabled />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Actions -->
+                <div class="flex gap-3 mt-8 sticky bottom-0 bg-base-100 pt-4 border-t border-base-300">
+                    <button type="submit" class="btn btn-primary flex-1" id="btnSave">
+                        <i class="fas fa-save mr-2"></i>
+                        Save Invoice
                     </button>
+                    <label for="invoice-drawer" class="btn btn-ghost flex-1">
+                        <i class="fas fa-times mr-2"></i>
+                        Cancel
+                    </label>
                 </div>
-                <div class="modal-body">
-                    <input type="hidden" id="id" />
-                    <div class="form-row">
-                        <div class="col-md-2">
-                            <label for="date"> Date <span class="text-danger">*</span></label>
-                            <output type="text" class="form-control" name="date" id="date" />
-                        </div>
-                        <div class="col-md-4">
-                            <label for="dr"> Dr. <span class="text-danger">*</span></label>
-                            <input type="text" class="form-control" name="dr" id="dr" />
-                        </div>
-                        <div class="col-md-2">
-                            <label for="refrenceNo"> Reference No. </label>
-                            <input type="text" class="form-control" name="referenceNo" id="referenceNo" />
-                        </div>
-                        <div class="col-md-1">
-                            <label for="currency"> Currency <span class="text-danger">*</span></label>
-                            <input type="text" class="form-control" name="currency" id="currency" oninput="this.value = this.value.toUpperCase()" />
-                        </div>
-                        <div class="col-md-1">
-                            <label for="isTicket"> Ticket <span class="text-danger">*</span></label>
-                            <input type="checkbox" class="form-control" name="isTicket" id="isTicket" />
-                        </div>
-                        <div class="col-md-2" id="fileCodeNoDiv">
-                            <label for="fileCodeNo"> File Code No. </label>
-                            <input type="text" class="form-control" name="fileCodeNo" id="fileCodeNo" />
-                        </div>
-                    </div>
-                    <br />
-                    <div class="form-row">
-                        <div class="col-md-4">
-                            <label for="agentName"> Address </label>
-                            <input type="text" class="form-control" name="address" id="address" />
-                        </div>
-                        <div class="col-md-3">
-                            <label for="clientName"> Client Name <span class="text-danger">*</span></label>
-                            <input type="text" class="form-control" name="clientName" id="clientName" />
-                        </div>
-                        <div class="col-md-1">
-                            <label for="pax"> PAX </label>
-                            <input type="text" class="form-control" name="pax" id="pax" />
-                        </div>
-                        <div class="col-md-2">
-                            <label for="guide"> Guide </label>
-                            <input type="text" class="form-control" name="guide" id="guide" />
-                        </div>
-                        <div class="col-md-2">
-                            <label for="vehicle"> Vehicle </label>
-                            <input type="text" class="form-control" name="vehicle" id="vehicle" />
-                        </div>
-                    </div>
-                    <hr />
-                    <div class="form-row">
-                        <div class="form-row col-md-9" style="background: linear-gradient(225deg, rgba(255,255,255,1) 0%, rgba(194,247,215,1) 100%);border:groove">
-                            <div class="col-md-8 form-group">
-                                <label for="particulars"> Particulars <span class="text-danger">*</span></label>
-                                <input type="text" class="form-control" name="particulars" id="particulars" />
-                            </div>
-                            <div class="col-md-2 form-group">
-                                <label for="amount"> Amount <span class="text-danger">*</span></label>
-                                <input type="number" class="form-control" name="particularAmount" id="particularAmount" onkeydown="return event.keyCode !== 69"/>
-                            </div>
-                            <div class="col-md-2 form-group">
-                                <label for="addProduct">Add Particular</label>
-                                <button type="button" class="btn btn-outline-success" id="addProduct">Add Particular</button>
-                            </div>
-                            <hr />
-                        </div>
-                        <div class="col-md-3 col d-flex align-items-center justify-content-center" style="background-color:cornflowerblue" ;>
-                            <img src="~/img/logo.png" />
-                        </div>
-                    </div>
+            </form>
+        </div>
+    </div>
+</div>
 
-                    <div class="form-row">
-                        <div class="col-md-9">
-                            <div style="height: 100%; box-sizing: border-box; padding-top:10px;">
-                                <div id="itemListGrid" style="width:100%; height:300px" class="ag-theme-balham"></div>
-                            </div>
-                        </div>
-                        <div class="col-md- m-4">
-                            <div class="form-group">
-                                <label for="amount">Total Due <span class="text-danger">*</span></label>
-                                <div class="input-group">
-                                    @*<div class="input-group-prepend">
-                                            <span class="input-group-text currency"></span>
-                                        </div>*@
-                                    <output type="number" class="form-control" name="totalDue" id="totalDue" />
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="discount">Discount</label>
-                                <input type="number" class="form-control" name="discount" id="discount" onkeydown="return event.keyCode !== 69" />
-                            </div>
-                            <div class="form-group">
-                                <label for="netAmount">Net Amount<span class="text-danger">*</span></label>
-                                <div class="input-group">
-                                    @*<div class="input-group-prepend">
-                                            <span class="input-group-text currency"></span>
-                                        </div>*@
-                                    <output type="number" class="form-control" name="netAmount" id="netAmount" />
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="submit" class="btn btn-primary" id="btnSave">Save</button>
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                </div>
-
-            </div>
+<!-- View/Print Invoice Modal -->
+<dialog id="viewInvoice" class="modal">
+    <div class="modal-box max-w-6xl">
+        <form method="dialog">
+            <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
         </form>
-    </div>
-</div>
+        <h3 class="font-bold text-lg mb-4">Invoice</h3>
 
-@*Create Invoice Detail Modal*@
-<div class="modal fade" id="invoiceDetailModal" tabindex="-1" role="dialog" aria-hidden="true">
-    <div class="modal-dialog modal-lg" role="document">
-        <div class="modal-content" style="background: linear-gradient(225deg, rgba(255,255,255,1) 0%, rgba(232,227,227,1) 100%);">
-            <div class="modal-header bg-info">
-                <h5 class="modal-title text-light">Invoice Details</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span class="text-light" aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <div style="height: 100%; box-sizing: border-box; padding-top:20px;">
-                    <div id="invoiceDetailsGrid" style="width: 100%; height:450px" class="ag-theme-balham"></div>
-                </div>
-            </div>
+        <div id="invoiceBody" class="overflow-auto max-h-[70vh] bg-white p-4">
+            <div id="receiptTemplate"></div>
+        </div>
+
+        <div class="modal-action">
+            <button type="button" class="btn btn-error" id="printInvoice">
+                <i class="fas fa-print mr-2"></i>
+                Print
+            </button>
+            <form method="dialog">
+                <button class="btn">Close</button>
+            </form>
         </div>
     </div>
-</div>
+</dialog>
 
-@*View Invoice Modal*@
-<div class="modal fade" id="viewInvoice" tabindex="-1" role="dialog" aria-labelledby="invoiceTitle" aria-hidden="true">
-    <div class="modal-dialog modal-lg" role="document" style="max-width:80%;border:double;" !important;>
-        <div class="modal-content">
-            <div class="modal-header bg-info position-sticky">
-                <h5 class="modal-title text-light">Invoice</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span class="text-light" aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body" id="invoiceBody">
-                <div class="row">
-                    <div class="col-md-8">
-                        <img src="~/img/logo2.jpg" style="max-width:100%; max-height:80%" />
-                    </div>
-                    <div class="col-md-4 topRightInfo">
-                        <h6>GPO Box: 9484</h6>
-                        <h6>Lazimpat - 2, Kathmandu, Nepal</h6>
-                        <h6>Tel: (977) 01 4444843/44/45</h6>
-                        <h6>Email: peaceintl.mail@gmail.com</h6>
-                        <h6>&emsp;&emsp;&emsp;mail@peace-intl.com.np </h6>
-                        <h6>Web: peace-intl.com </h6>
-                        <h6>PAN: 302243385 </h6>
-                    </div>
-                </div>
-                <div id="receiptTemplate">
-                </div>               
-            </div>
-            <button type="button" class="btn btn-danger" id="printInvoice">Print</button>
-        </div>
-    </div>
-</div>
+<!-- Toast Container -->
+<div class="toast toast-top toast-center z-[100]" id="toastContainer"></div>
 
-
-@section Scripts{
-
+@section Scripts {
     <partial name="_ValidationScriptsPartial" />
     <script src="~/js/invoice.js"></script>
     <script id="entry-template" type="text/x-handlebars-template">
+        <style>
+            #page { border-collapse: collapse; border: 2px solid; font-family: Arial, Helvetica, sans-serif; }
+            #page td { padding-top: 1px; margin: 0; font-size: 22px; border-right: 2px solid; }
+            #page th { border-right: 2px solid; border-bottom: 2px solid; }
+            #page tfoot { border-top: 2px solid; }
+            .topRightInfo { padding-left: 6rem; }
+            .topRightInfo h6 { margin-bottom: 1px; font-size:19px; }
+            body h6 { font-size:24px; }
+            span { font-weight: bold; }
+        </style>
+
+        <div class="row">
+            <div class="col-md-8">
+                <img src="~/img/logo2.jpg" style="max-width:100%; max-height:80%" />
+            </div>
+            <div class="col-md-4 topRightInfo">
+                <h6>GPO Box: 9484</h6>
+                <h6>Lazimpat - 2, Kathmandu, Nepal</h6>
+                <h6>Tel: (977) 01 4444843/44/45</h6>
+                <h6>Email: peaceintl.mail@@gmail.com</h6>
+                <h6>&emsp;&emsp;&emsp;mail@@peace-intl.com.np </h6>
+                <h6>Web: peace-intl.com </h6>
+                <h6>PAN: 302243385 </h6>
+            </div>
+        </div>
 
         <div class="row">
             <div class="col-md-8">
@@ -261,7 +348,6 @@
                 <h6>&emsp;&emsp;&emsp;<span>{{invoice.address}}</span></h6>
                 <h6>Ref No:&emsp;{{invoice.referenceNo}}</h6>
                 <h6>Name:&emsp;<span>{{invoice.clientName}} X {{invoice.pax}} PAX</span></h6>
-                @*<h6><span>PAX:</span>&emsp;{{invoice.pax}}</h6>*@
             </div>
             <div class="col-md-4" style="padding-left:6rem;">
                 <h6>Date:&emsp;<span>{{chain "splitDate" "customDate" invoice.createdDate}}</span></h6>
@@ -284,12 +370,9 @@
                 <tbody>
                     {{#each invoiceDetail}}
                     <tr>
-
                         <td height="40" align="center">{{inc @@index}}</td>
                         <td height="40">{{this.particulars}}</td>
-                        <td height="40" class="text-right pr-5">
-                            {{distanceFixed this.amount}}
-                        </td>
+                        <td height="40" class="text-right pr-5">{{distanceFixed this.amount}}</td>
                     </tr>
                     {{/each}}
                     {{#for invoiceDetail.length 18 1}}
@@ -318,22 +401,19 @@
                     </tr>
                 </tfoot>
             </table>
-            <br />
         </div>
         <div class="row">
             <div class="col-md-3">
                 <h6>E. & O. E.</h6>
                 <h6>ENCLOSURES: </h6>
                 <h6>Prepared By: </h6>
-                <h6>Checked By:</h6>                
+                <h6>Checked By:</h6>
             </div>
             <div class="col-md-9">
                 <h6 class="font-weight-bold float-right">For : Peace International Tours & Travel (P) Ltd</h6>
-                <br />
-                <br />
+                <br /><br />
                 <h6 class="float-right mr-5">{{userName}}</h6>
-                <br />
-                <br />
+                <br /><br />
                 <h6 class="border-top border-dark float-right">Authorized Signature: </h6>
             </div>
         </div>
@@ -347,7 +427,3 @@
         </div>
     </script>
 }
-
-
-
-

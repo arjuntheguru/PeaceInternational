@@ -66,6 +66,26 @@ body {
   @apply antialiased;
 }
 
+/* Custom date input styling */
+input[type="date"] {
+  @apply input input-bordered;
+  color-scheme: light;
+  position: relative;
+}
+
+input[type="date"]::-webkit-calendar-picker-indicator {
+  @apply cursor-pointer opacity-70 hover:opacity-100;
+  filter: invert(0.5);
+}
+
+[data-theme="dark"] input[type="date"]::-webkit-calendar-picker-indicator {
+  filter: invert(0.8);
+}
+
+input[type="date"]:focus {
+  @apply outline-none ring-2 ring-primary ring-offset-2;
+}
+
 /* Custom scrollbar */
 ::-webkit-scrollbar {
   width: 8px;

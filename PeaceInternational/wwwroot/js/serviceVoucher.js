@@ -313,10 +313,13 @@ $(document).ready(function () {
     document.getElementById('date').value = new Date().toISOString().slice(0, 10);
 
     // Add voucher button click
-    document.querySelector('.drawer-button').addEventListener('click', function() {
-        document.getElementById('serviceVoucherTitle').textContent = 'Add Service Voucher';
-        clearForm();
-    });
+    const drawerButton = document.querySelector('label[for="voucher-drawer"]');
+    if (drawerButton) {
+        drawerButton.addEventListener('click', function() {
+            document.getElementById('serviceVoucherTitle').textContent = 'Add Service Voucher';
+            clearForm();
+        });
+    }
 
     // Form submit
     document.getElementById('serviceVoucherForm').addEventListener('submit', function(e) {

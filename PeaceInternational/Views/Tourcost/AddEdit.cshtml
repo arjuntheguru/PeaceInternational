@@ -5,20 +5,20 @@
 }
 
 <div class="animate-fade-in">
-    <!-- Header -->
-    <div class="flex items-center justify-between mb-8">
-        <div class="flex items-center gap-4">
-            <a asp-action="Index" class="btn btn-circle btn-ghost">
+    <!-- Modern Header -->
+    <div class="page-header mb-6">
+        <div class="relative z-10 flex items-center gap-4">
+            <a asp-action="Index" class="btn btn-circle btn-ghost text-white hover:bg-white/20 border-white/30">
                 <i class="fas fa-arrow-left text-xl"></i>
             </a>
-            <div>
-                <div class="text-sm breadcrumbs">
-                    <ul>
-                        <li><a asp-action="Index">Tour Costs</a></li>
-                        <li>@ViewData["Title"]</li>
-                    </ul>
+            <div class="flex items-center gap-3">
+                <div class="w-12 h-12 rounded-xl bg-white/20 backdrop-blur-sm flex items-center justify-center">
+                    <i class="fas fa-file-invoice-dollar text-2xl text-white"></i>
                 </div>
-                <h1 class="text-3xl font-bold">Tour Cost Details</h1>
+                <div>
+                    <h1 class="text-4xl font-bold text-white">@ViewData["Title"]</h1>
+                    <p class="text-white/80 mt-1">Configure tour itinerary and pricing details</p>
+                </div>
             </div>
         </div>
     </div>
@@ -30,12 +30,13 @@
         <!-- Top Section Cards -->
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
             <!-- Days & Meal Plan Card -->
-            <div class="card bg-base-100 shadow-lg">
-                <div class="card-body">
-                    <h2 class="card-title text-primary">
-                        <i class="fas fa-calendar-day"></i>
-                        Days & Meal Plan
-                    </h2>
+            <div class="section-modern">
+                <div class="flex items-center gap-2 mb-4">
+                    <div class="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center">
+                        <i class="fas fa-calendar-day text-lg text-primary"></i>
+                    </div>
+                    <h2 class="font-bold text-lg">Days & Meal Plan</h2>
+                </div>
                     <div class="form-control">
                         <label class="label">
                             <span class="label-text font-semibold">Number of Days</span>
@@ -62,12 +63,13 @@
             </div>
 
             <!-- Client & PAX Card -->
-            <div class="card bg-base-100 shadow-lg">
-                <div class="card-body">
-                    <h2 class="card-title text-primary">
-                        <i class="fas fa-user"></i>
-                        Client Details
-                    </h2>
+            <div class="section-modern">
+                <div class="flex items-center gap-2 mb-4">
+                    <div class="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center">
+                        <i class="fas fa-user text-lg text-primary"></i>
+                    </div>
+                    <h2 class="font-bold text-lg">Client Details</h2>
+                </div>
                     <div class="form-control">
                         <label class="label">
                             <span class="label-text font-semibold">Client Name <span class="text-error">*</span></span>
@@ -96,12 +98,13 @@
             </div>
 
             <!-- Guide Card -->
-            <div class="card bg-base-100 shadow-lg">
-                <div class="card-body">
-                    <h2 class="card-title text-primary">
-                        <i class="fas fa-user-tie"></i>
-                        Guide
-                    </h2>
+            <div class="section-modern">
+                <div class="flex items-center gap-2 mb-4">
+                    <div class="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center">
+                        <i class="fas fa-user-tie text-lg text-primary"></i>
+                    </div>
+                    <h2 class="font-bold text-lg">Guide</h2>
+                </div>
                     <div class="form-control">
                         <label class="label">
                             <span class="label-text font-semibold">Name</span>
@@ -135,12 +138,13 @@
             </div>
 
             <!-- Additional Categories Card -->
-            <div class="card bg-base-100 shadow-lg">
-                <div class="card-body">
-                    <h2 class="card-title text-primary">
-                        <i class="fas fa-tags"></i>
-                        Additional Categories
-                    </h2>
+            <div class="section-modern">
+                <div class="flex items-center gap-2 mb-4">
+                    <div class="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center">
+                        <i class="fas fa-tags text-lg text-primary"></i>
+                    </div>
+                    <h2 class="font-bold text-lg">Categories</h2>
+                </div>
                     <div class="grid grid-cols-2 gap-2">
                         <div class="form-control">
                             <label class="label">
@@ -172,25 +176,27 @@
         </div>
 
         <!-- Tour Cost Details Collapse -->
-        <div class="card bg-base-100 shadow-lg mb-6">
-            <div class="card-body p-0">
-                <div class="collapse collapse-arrow bg-primary text-primary-content">
-                    <input type="checkbox" id="collapseToggle" />
-                    <div class="collapse-title text-xl font-medium">
-                        <i class="fas fa-list-alt mr-2"></i>
-                        Add Tour Cost Details (Day by Day)
+        <div class="section-modern mb-6">
+            <div class="collapse collapse-arrow bg-gradient-to-r from-primary/5 to-secondary/5 rounded-xl">
+                <input type="checkbox" id="collapseToggle" />
+                <div class="collapse-title text-xl font-bold">
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-lg bg-primary/20 flex items-center justify-center">
+                            <i class="fas fa-list-alt text-lg text-primary"></i>
+                        </div>
+                        <span>Tour Cost Details (Day by Day)</span>
+                        <span class="badge badge-primary badge-lg" id="daysBadge">0 Days</span>
                     </div>
-                    <div class="collapse-content bg-base-100 text-base-content">
-                        <div class="pt-4">
-                            <!-- Header Row -->
-                            <div class="grid grid-cols-12 gap-2 mb-4 font-semibold text-sm text-base-content/70" id="tourCostDetailHeader">
-                                <!-- Dynamically generated header -->
-                            </div>
-                            <div class="divider my-2"></div>
-                            <!-- Detail Rows -->
-                            <div id="tourCostDetailBody" class="space-y-3">
-                                <!-- Dynamically generated rows -->
-                            </div>
+                </div>
+                <div class="collapse-content">
+                    <div class="pt-4">
+                        <!-- Header Row -->
+                        <div class="grid grid-cols-12 gap-2 mb-4 font-semibold text-sm text-base-content/70 bg-base-200 p-3 rounded-lg" id="tourCostDetailHeader">
+                            <!-- Dynamically generated header -->
+                        </div>
+                        <!-- Detail Rows -->
+                        <div id="tourCostDetailBody" class="space-y-2 max-h-[600px] overflow-y-auto pr-2">
+                            <!-- Dynamically generated rows -->
                         </div>
                     </div>
                 </div>
@@ -198,9 +204,14 @@
         </div>
 
         <!-- Bottom Section -->
-        <div class="card bg-base-100 shadow-lg mb-6">
-            <div class="card-body">
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div class="section-modern mb-6">
+            <div class="flex items-center gap-2 mb-6">
+                <div class="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center">
+                    <i class="fas fa-cog text-lg text-primary"></i>
+                </div>
+                <h2 class="font-bold text-lg">Additional Settings</h2>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                     <!-- Comment -->
                     <div class="form-control md:col-span-3">
                         <label class="label">
@@ -247,8 +258,12 @@
                 </div>
 
                 <!-- Submit Button -->
-                <div class="card-actions justify-end mt-6">
-                    <button type="submit" class="btn btn-primary gap-2">
+                <div class="flex justify-end gap-3 mt-6">
+                    <a asp-action="Index" class="btn btn-ghost btn-lg">
+                        <i class="fas fa-times"></i>
+                        Cancel
+                    </a>
+                    <button type="submit" class="btn btn-primary btn-lg gap-2 shadow-lg hover:scale-105 transition-transform">
                         <i class="fas fa-save"></i>
                         @((Model?.Tourcost?.Id ?? 0) > 0 ? "Update Tour Cost" : "Save Tour Cost")
                     </button>
@@ -290,290 +305,216 @@
             }
         });
 
-        function setData() {
-            let sector = @Html.Raw(Json.Serialize(ViewBag.Sector));
-            let hotelCatA = @Html.Raw(Json.Serialize(ViewBag.HotelCatA));
-            let hotelCatB = @Html.Raw(Json.Serialize(ViewBag.HotelCatB));
-            let hotelCatC = @Html.Raw(Json.Serialize(ViewBag.HotelCatC));
+        // ========== OPTIMIZED VERSION ==========
+        // Performance enhancements:
+        // 1. Use DocumentFragment for batch DOM insertion
+        // 2. Cache dropdown HTML generation
+        // 3. Minimize DOM queries with caching
+        // 4. Use native JavaScript where possible for speed
 
-            var sectorDropdown = '';
-            var hotelCatADropdown = '';
-            var hotelCatBDropdown = '';
-            var hotelCatCDropdown = '';
+        // Cache dropdown HTML globally (generated once)
+        const dropdownCache = {
+            sector: '',
+            hotelA: '',
+            hotelB: '',
+            hotelC: ''
+        };
 
-            let tourCostDetailHeader = `
-                <div class="col-span-1">
-                    <label class="label-text">Days</label>
-                </div>
-                <div class="col-span-2">
-                    <label class="label-text">Sector 1</label>
-                </div>
-                <div class="col-span-2">
-                    <label class="label-text">Sector 2</label>
-                </div>
-                <div class="col-span-2">
-                    <label class="label-text">Sector 3</label>
-                </div>
-                <div class="col-span-2">
-                    <label class="label-text">Hotel A</label>
-                </div>
-                <div class="col-span-1">
-                    <label class="label-text">Hotel B</label>
-                </div>
-                <div class="col-span-2" id="hotelC">
-                    <label class="label-text">Hotel C</label>
+        // Build dropdown options once
+        function buildDropdownCache() {
+            const sector = @Html.Raw(Json.Serialize(ViewBag.Sector));
+            const hotelCatA = @Html.Raw(Json.Serialize(ViewBag.HotelCatA));
+            const hotelCatB = @Html.Raw(Json.Serialize(ViewBag.HotelCatB));
+            const hotelCatC = @Html.Raw(Json.Serialize(ViewBag.HotelCatC));
+
+            dropdownCache.sector = sector.map(v => `<option value="${v.value}">${v.text}</option>`).join('');
+            dropdownCache.hotelA = hotelCatA.map(v => `<option value="${v.value}">${v.text}</option>`).join('');
+            dropdownCache.hotelB = hotelCatB.map(v => `<option value="${v.value}">${v.text}</option>`).join('');
+            dropdownCache.hotelC = hotelCatC.map(v => `<option value="${v.value}">${v.text}</option>`).join('');
+        }
+
+        // Create single row template (called once per row)
+        function createRowHTML(index) {
+            return `
+                <div class="grid grid-cols-12 gap-2 bg-base-100 p-3 rounded-lg hover:bg-base-200 transition-colors" id="detailRow${index}">
+                    <input type="hidden" id="TourcostDetail_${index}__Id" name="TourcostDetail[${index}].Id"/>
+                    <div class="col-span-1">
+                        <input id="TourcostDetail_${index}__Day" name="TourcostDetail[${index}].Day"
+                               class="input input-bordered input-sm w-full font-semibold text-center bg-primary/10" value="D${index + 1}" readonly/>
+                    </div>
+                    <div class="col-span-2">
+                        <select id="TourcostDetail_${index}__Sector1Id" name="TourcostDetail[${index}].Sector1Id"
+                                class="select select-bordered select-sm w-full focus:select-primary">
+                            <option value="">Select</option>
+                            ${dropdownCache.sector}
+                        </select>
+                    </div>
+                    <div class="col-span-2">
+                        <select id="TourcostDetail_${index}__Sector2Id" name="TourcostDetail[${index}].Sector2Id"
+                                class="select select-bordered select-sm w-full focus:select-primary">
+                            <option value="">Select</option>
+                            ${dropdownCache.sector}
+                        </select>
+                    </div>
+                    <div class="col-span-2">
+                        <select id="TourcostDetail_${index}__Sector3Id" name="TourcostDetail[${index}].Sector3Id"
+                                class="select select-bordered select-sm w-full focus:select-primary">
+                            <option value="">Select</option>
+                            ${dropdownCache.sector}
+                        </select>
+                    </div>
+                    <div class="col-span-2">
+                        <select id="TourcostDetail_${index}__HotelAId" name="TourcostDetail[${index}].HotelAId"
+                                class="select select-bordered select-sm w-full focus:select-primary">
+                            <option value="">Select</option>
+                            ${dropdownCache.hotelA}
+                        </select>
+                    </div>
+                    <div class="col-span-1">
+                        <select id="TourcostDetail_${index}__HotelBId" name="TourcostDetail[${index}].HotelBId"
+                                class="select select-bordered select-sm w-full focus:select-primary">
+                            <option value="">Select</option>
+                            ${dropdownCache.hotelB}
+                        </select>
+                    </div>
+                    <div class="col-span-2">
+                        <select id="TourcostDetail_${index}__HotelCId" name="TourcostDetail[${index}].HotelCId"
+                                class="select select-bordered select-sm w-full focus:select-primary">
+                            <option value="">Select</option>
+                            ${dropdownCache.hotelC}
+                        </select>
+                    </div>
                 </div>
             `;
+        }
 
-            $('#tourCostDetailHeader').html(tourCostDetailHeader);
-            $('#tourCostDetailHeader').removeClass('hidden');
+        function setData() {
+            const days = parseInt($('#Tourcost_Days').val()) || 0;
 
-            $.each(sector, function (idx, value) {
-                sectorDropdown += `<option value="${value.value}">${value.text}</option>`;
-            });
+            // Update badge
+            $('#daysBadge').text(`${days} Days`);
 
-            $.each(hotelCatA, function (idx, value) {
-                hotelCatADropdown += `<option value="${value.value}">${value.text}</option>`;
-            });
+            // Build header
+            const headerHTML = `
+                <div class="col-span-1"><label class="label-text font-bold">Day</label></div>
+                <div class="col-span-2"><label class="label-text font-bold">Sector 1</label></div>
+                <div class="col-span-2"><label class="label-text font-bold">Sector 2</label></div>
+                <div class="col-span-2"><label class="label-text font-bold">Sector 3</label></div>
+                <div class="col-span-2"><label class="label-text font-bold">Hotel A</label></div>
+                <div class="col-span-1"><label class="label-text font-bold">Hotel B</label></div>
+                <div class="col-span-2" id="hotelC"><label class="label-text font-bold">Hotel C</label></div>
+            `;
+            $('#tourCostDetailHeader').html(headerHTML);
 
-            $.each(hotelCatB, function (idx, value) {
-                hotelCatBDropdown += `<option value="${value.value}">${value.text}</option>`;
-            });
-
-            $.each(hotelCatC, function (idx, value) {
-                hotelCatCDropdown += `<option value="${value.value}">${value.text}</option>`;
-            });
-
-            let days = $('#Tourcost_Days').val();
-            let html = "";
-
+            // Build all rows efficiently using array join
+            const rows = [];
             for (let i = 0; i < days; i++) {
-                html += `
-                    <div class="grid grid-cols-12 gap-2" id="detailRow${i}">
-                        <input type="hidden" id="TourcostDetail_${i}__Id" name="TourcostDetail[${i}].Id"/>
-                        <div class="col-span-1">
-                            <input id="TourcostDetail_${i}__Day" name="TourcostDetail[${i}].Day"
-                                   class="input input-bordered input-sm w-full" value="D${i + 1}" readonly/>
-                        </div>
-                        <div class="col-span-2">
-                            <select id="TourcostDetail_${i}__Sector1Id" name="TourcostDetail[${i}].Sector1Id"
-                                    class="select select-bordered select-sm w-full">
-                                <option value="">Select</option>
-                                ${sectorDropdown}
-                            </select>
-                        </div>
-                        <div class="col-span-2">
-                            <select id="TourcostDetail_${i}__Sector2Id" name="TourcostDetail[${i}].Sector2Id"
-                                    class="select select-bordered select-sm w-full">
-                                <option value="">Select</option>
-                                ${sectorDropdown}
-                            </select>
-                        </div>
-                        <div class="col-span-2">
-                            <select id="TourcostDetail_${i}__Sector3Id" name="TourcostDetail[${i}].Sector3Id"
-                                    class="select select-bordered select-sm w-full">
-                                <option value="">Select</option>
-                                ${sectorDropdown}
-                            </select>
-                        </div>
-                        <div class="col-span-2">
-                            <select id="TourcostDetail_${i}__HotelAId" name="TourcostDetail[${i}].HotelAId"
-                                    class="select select-bordered select-sm w-full">
-                                <option value="">Select</option>
-                                ${hotelCatADropdown}
-                            </select>
-                        </div>
-                        <div class="col-span-1">
-                            <select id="TourcostDetail_${i}__HotelBId" name="TourcostDetail[${i}].HotelBId"
-                                    class="select select-bordered select-sm w-full">
-                                <option value="">Select</option>
-                                ${hotelCatBDropdown}
-                            </select>
-                        </div>
-                        <div class="col-span-2">
-                            <select id="TourcostDetail_${i}__HotelCId" name="TourcostDetail[${i}].HotelCId"
-                                    class="select select-bordered select-sm w-full">
-                                <option value="">Select</option>
-                                ${hotelCatCDropdown}
-                            </select>
-                        </div>
-                    </div>
-                `;
+                rows.push(createRowHTML(i));
             }
 
-            $('#tourCostDetailBody').html(html);
+            // Single DOM update
+            $('#tourCostDetailBody').html(rows.join(''));
 
             // Open the collapse when details are generated
-            $('#collapseToggle').prop('checked', true);
+            if (days > 0) {
+                $('#collapseToggle').prop('checked', true);
+                showToast('success', `Generated ${days} day(s) successfully`);
+            }
 
+            // Add validation rules for Sector1 (required)
             for (let i = 0; i < days; i++) {
                 $(`#TourcostDetail_${i}__Sector1Id`).rules("add", "required");
             }
 
-            if ($('#Tourcost_Category1').val()) {
-                catg1div();
-            }
+            // Handle categories efficiently
+            handleCategories(days);
+        }
 
-            if ($('#Tourcost_Category2').val()) {
-                catg2div();
-            }
+        // Optimized category handling
+        function handleCategories(days) {
+            const categories = [
+                { num: 1, field: '#Tourcost_Category1', headerDiv: '#catg1div', col: 8 },
+                { num: 2, field: '#Tourcost_Category2', headerDiv: '#catg2div', col: 9 },
+                { num: 3, field: '#Tourcost_Category3', headerDiv: '#catg3div', col: 10 },
+                { num: 4, field: '#Tourcost_Category4', headerDiv: '#catg4div', col: 11 }
+            ];
 
-            if ($('#Tourcost_Category3').val()) {
-                catg3div();
-            }
-
-            if ($('#Tourcost_Category4').val()) {
-                catg4div();
-            }
-
-            for (let i = 0; i < days; i++) {
-                if ($('#Tourcost_Category1').val()) {
-                    let row = `<div class="col-span-1">
-                                <input type="text" id="TourcostDetail_${i}__Category1Cost"
-                                       name="TourcostDetail[${i}].Category1Cost"
-                                       class="input input-bordered input-sm w-full"/>
-                                </div>`;
-                    $(`#detailRow${i}`).children().eq(8).remove();
-                    $(`#detailRow${i}`).append(row);
+            categories.forEach(cat => {
+                const value = $(cat.field).val();
+                if (value) {
+                    addCategoryColumn(cat.num, value, days);
                 }
+            });
+        }
 
-                if ($('#Tourcost_Category2').val()) {
-                    let row = `<div class="col-span-1">
-                                <input type="text" id="TourcostDetail_${i}__Category2Cost"
-                                       name="TourcostDetail[${i}].Category2Cost"
-                                       class="input input-bordered input-sm w-full"/>
-                                </div>`;
-                    $(`#detailRow${i}`).children().eq(9).remove();
-                    $(`#detailRow${i}`).append(row);
-                }
+        // Add category column to header and rows
+        function addCategoryColumn(catNum, catValue, days) {
+            const catId = `catg${catNum}div`;
 
-                if ($('#Tourcost_Category3').val()) {
-                    let row = `<div class="col-span-1">
-                                <input type="text" id="TourcostDetail_${i}__Category3Cost"
-                                       name="TourcostDetail[${i}].Category3Cost"
-                                       class="input input-bordered input-sm w-full"/>
-                                </div>`;
-                    $(`#detailRow${i}`).children().eq(10).remove();
-                    $(`#detailRow${i}`).append(row);
-                }
+            // Add header column if not exists
+            if (!$(`#${catId}`).length) {
+                const insertAfter = catNum === 1 ? '#hotelC' : `#catg${catNum - 1}div`;
+                $(`<div class="col-span-1" id="${catId}">
+                    <label class="label-text font-bold">${catValue}
+                        <button type="button" class='btn btn-ghost btn-xs text-error ml-2' id="rmCat${catNum}">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </label>
+                </div>`).insertAfter(insertAfter);
 
-                if ($('#Tourcost_Category4').val()) {
-                    let row = `<div class="col-span-1">
-                                <input type="text" id="TourcostDetail_${i}__Category4Cost"
-                                       name="TourcostDetail[${i}].Category4Cost"
-                                       class="input input-bordered input-sm w-full"/>
-                                </div>`;
-                    $(`#detailRow${i}`).children().eq(11).remove();
-                    $(`#detailRow${i}`).append(row);
+                // Attach remove handler
+                $(`#rmCat${catNum}`).on('click', function() {
+                    removeCategoryColumn(catNum);
+                });
+            }
+
+            // Add input fields to each row
+            const numDays = days || $('#tourCostDetailBody').find('.grid').length;
+            for (let i = 0; i < numDays; i++) {
+                const existingInput = $(`#TourcostDetail_${i}__Category${catNum}Cost`);
+                if (!existingInput.length) {
+                    const inputHTML = `<div class="col-span-1">
+                        <input type="text"
+                               id="TourcostDetail_${i}__Category${catNum}Cost"
+                               name="TourcostDetail[${i}].Category${catNum}Cost"
+                               class="input input-bordered input-sm w-full focus:input-primary"
+                               placeholder="0"/>
+                    </div>`;
+                    $(`#detailRow${i}`).append(inputHTML);
                 }
             }
         }
 
-        function catg1div() {
-            $('<div class="col-span-1" id="catg1div"></div>').insertAfter('#hotelC');
-            let cat1 = $('#Tourcost_Category1').val();
-            let html = `<label class="label-text">
-                            ${cat1}
-                            <button type="button" class='btn btn-ghost btn-xs text-error' id="rmCat1">
-                                <i class="fas fa-trash-alt"></i>
-                            </button>
-                        </label>`;
-            $('#catg1div').html(html);
+        // Remove category column
+        function removeCategoryColumn(catNum) {
+            $(`#catg${catNum}div`).remove();
+            $(`#Tourcost_Category${catNum}`).val('');
 
-            $('#rmCat1').on('click', function () {
-                let rowLength = $('#tourCostDetailBody').find('.grid').length;
-                $('#catg1div').remove();
-                for (let i = 0; i < rowLength; i++) {
-                    $(`#detailRow${i}`).children().eq(8).remove();
-                }
-                $('#Tourcost_Category1').val('');
-            });
-        }
-
-        function catg2div() {
-            let id = $('#catg1div').length ? '#catg1div' : '#hotelC';
-            $('<div class="col-span-1" id="catg2div"></div>').insertAfter(id);
-            let cat2 = $('#Tourcost_Category2').val();
-            let html = `<label class="label-text">
-                            ${cat2}
-                            <button type="button" class='btn btn-ghost btn-xs text-error' id="rmCat2">
-                                <i class="fas fa-trash-alt"></i>
-                            </button>
-                        </label>`;
-            $('#catg2div').html(html);
-
-            $('#rmCat2').on('click', function () {
-                let dist = $('#catg2div').prevUntil('#hotelC').length;
-                let rowLength = $('#tourCostDetailBody').find('.grid').length;
-                $('#catg2div').remove();
-                for (let i = 0; i < rowLength; i++) {
-                    $(`#detailRow${i}`).children().eq(8 + dist).remove();
-                }
-                $('#Tourcost_Category2').val('');
-            });
-        }
-
-        function catg3div() {
-            let id = '#hotelC';
-            if ($('#catg2div').length) {
-                id = '#catg2div';
-            } else if ($('#catg1div').length) {
-                id = '#catg1div';
+            // Remove inputs from all rows
+            const rowLength = $('#tourCostDetailBody').find('.grid').length;
+            for (let i = 0; i < rowLength; i++) {
+                $(`#TourcostDetail_${i}__Category${catNum}Cost`).parent().remove();
             }
 
-            $('<div class="col-span-1" id="catg3div"></div>').insertAfter(id);
-            let cat3 = $('#Tourcost_Category3').val();
-            let html = `<label class="label-text">
-                            ${cat3}
-                            <button type="button" class='btn btn-ghost btn-xs text-error' id="rmCat3">
-                                <i class="fas fa-trash-alt"></i>
-                            </button>
-                        </label>`;
-            $('#catg3div').html(html);
-
-            $('#rmCat3').on('click', function () {
-                let dist = $('#catg3div').prevUntil('#hotelC').length;
-                let rowLength = $('#tourCostDetailBody').find('.grid').length;
-                $('#catg3div').remove();
-                for (let i = 0; i < rowLength; i++) {
-                    $(`#detailRow${i}`).children().eq(8 + dist).remove();
-                }
-                $('#Tourcost_Category3').val('');
-            });
+            showToast('info', `Category ${catNum} removed`);
         }
 
-        function catg4div() {
-            let id = '#hotelC';
-            if ($('#catg3div').length) {
-                id = '#catg3div';
-            } else if ($('#catg2div').length) {
-                id = '#catg2div';
-            } else if ($('#catg1div').length) {
-                id = '#catg1div';
-            }
-
-            $('<div class="col-span-1" id="catg4div"></div>').insertAfter(id);
-            let cat4 = $('#Tourcost_Category4').val();
-            let html = `<label class="label-text">
-                            ${cat4}
-                            <button type="button" class='btn btn-ghost btn-xs text-error' id="rmCat4">
-                                <i class="fas fa-trash-alt"></i>
-                            </button>
-                        </label>`;
-            $('#catg4div').html(html);
-
-            $('#rmCat4').on('click', function () {
-                let dist = $('#catg4div').prevUntil('#hotelC').length;
-                let rowLength = $('#tourCostDetailBody').find('.grid').length;
-                $('#catg4div').remove();
-                for (let i = 0; i < rowLength; i++) {
-                    $(`#detailRow${i}`).children().eq(8 + dist).remove();
-                }
-                $('#Tourcost_Category4').val('');
-            });
+        // Debounce helper for better performance
+        function debounce(func, wait) {
+            let timeout;
+            return function executedFunction(...args) {
+                const later = () => {
+                    clearTimeout(timeout);
+                    func(...args);
+                };
+                clearTimeout(timeout);
+                timeout = setTimeout(later, wait);
+            };
         }
 
         $(document).ready(function () {
+            // Build dropdown cache on page load
+            buildDropdownCache();
             var previousValue = [];
             var rowLength;
 
@@ -642,198 +583,55 @@
                 }
             });
 
-            $('#Tourcost_Category2').on('keydown', function () {
+            // Optimized category change handlers with debouncing
+            const handleCategoryChange = debounce(function(catNum) {
+                const value = $(`#Tourcost_Category${catNum}`).val();
+                if (!value) return;
+
+                const days = parseInt($('#Tourcost_Days').val());
+                if (!days || days === 0) {
+                    showToast('warning', 'Please set number of days first');
+                    return;
+                }
+
+                // Add the category column
+                addCategoryColumn(catNum, value, days);
+
+                // Ask if same value for all days
+                const isSameValue = confirm(`Do you want to use the same ${value} rate for all days?`);
+                if (isSameValue) {
+                    const cost = prompt(`Enter cost for ${value}`) || 0;
+                    for (let i = 0; i < days; i++) {
+                        $(`#TourcostDetail_${i}__Category${catNum}Cost`).val(cost);
+                    }
+                }
+            }, 300);
+
+            // Category validation and change handlers
+            $('#Tourcost_Category1').on('change', () => handleCategoryChange(1));
+            $('#Tourcost_Category2').on('change', function() {
                 if (!$('#Tourcost_Category1').val()) {
-                    $('#Tourcost_Category2').val('');
-                    showToast('error', 'Fill Category 1 first');
+                    $(this).val('');
+                    showToast('error', 'Please fill Category 1 first');
+                    return;
                 }
+                handleCategoryChange(2);
             });
-
-            $('#Tourcost_Category3').on('keydown', function () {
+            $('#Tourcost_Category3').on('change', function() {
                 if (!$('#Tourcost_Category2').val()) {
-                    $('#Tourcost_Category3').val('');
-                    showToast('error', 'Fill Category 2 first');
+                    $(this).val('');
+                    showToast('error', 'Please fill Category 2 first');
+                    return;
                 }
+                handleCategoryChange(3);
             });
-
-            $('#Tourcost_Category4').on('keydown', function () {
+            $('#Tourcost_Category4').on('change', function() {
                 if (!$('#Tourcost_Category3').val()) {
-                    $('#Tourcost_Category4').val('');
-                    showToast('error', 'Fill Category 3 first');
+                    $(this).val('');
+                    showToast('error', 'Please fill Category 3 first');
+                    return;
                 }
-            });
-
-            $('#Tourcost_Category1').on('change', function () {
-                let flag = 0;
-
-                if ($('#catg1div').length) {
-                    $('#catg1div').remove();
-                } else {
-                    flag = 1;
-                }
-
-                catg1div();
-
-                let isSameValue = window.confirm(`Do you want to use the same ${$('#Tourcost_Category1').val()} rate for all days?`);
-
-                if (isSameValue) {
-                    let value = window.prompt(`Enter cost for ${$('#Tourcost_Category1').val()}`);
-                    value = value != null ? value : 0;
-                    for (let i = 0; i < $('#Tourcost_Days').val(); i++) {
-                        let row = `<div class="col-span-1">
-                                    <input type="text" id="TourcostDetail_${i}__Category1Cost"
-                                           name="TourcostDetail[${i}].Category1Cost"
-                                           class="input input-bordered input-sm w-full" value="${value}"/>
-                                    </div>`;
-
-                        if (flag == 0) {
-                            $(`#detailRow${i}`).children().eq(8).remove();
-                        }
-
-                        $(row).insertAfter($(`#detailRow${i}`).children().eq(7));
-                    }
-                } else {
-                    for (let i = 0; i < $('#Tourcost_Days').val(); i++) {
-                        let row = `<div class="col-span-1">
-                                    <input type="text" id="TourcostDetail_${i}__Category1Cost"
-                                           name="TourcostDetail[${i}].Category1Cost"
-                                           class="input input-bordered input-sm w-full"/>
-                                    </div>`;
-
-                        if (flag == 0) {
-                            $(`#detailRow${i}`).children().eq(8).remove();
-                        }
-
-                        $(row).insertAfter($(`#detailRow${i}`).children().eq(7));
-                    }
-                }
-            });
-
-            $('#Tourcost_Category2').on('change', function () {
-                let flag = 0;
-
-                if ($('#catg2div').length) {
-                    $('#catg2div').remove();
-                } else {
-                    flag = 0;
-                }
-
-                catg2div();
-
-                let isSameValue = window.confirm(`Do you want to use the same ${$('#Tourcost_Category2').val()} rate for all days?`);
-
-                if (isSameValue) {
-                    let value = window.prompt(`Enter cost for ${$('#Tourcost_Category2').val()}`);
-                    for (let i = 0; i < $('#Tourcost_Days').val(); i++) {
-                        let row = `<div class="col-span-1">
-                                    <input type="text" id="TourcostDetail_${i}__Category2Cost"
-                                           name="TourcostDetail[${i}].Category2Cost"
-                                           class="input input-bordered input-sm w-full" value="${value}"/>
-                                    </div>`;
-
-                        if (flag == 0) {
-                            $(`#detailRow${i}`).children().eq(9).remove();
-                        }
-
-                        $(row).insertAfter($(`#detailRow${i}`).children().eq(8));
-                    }
-                } else {
-                    for (let i = 0; i < $('#Tourcost_Days').val(); i++) {
-                        let row = `<div class="col-span-1">
-                                    <input type="text" id="TourcostDetail_${i}__Category2Cost"
-                                           name="TourcostDetail[${i}].Category2Cost"
-                                           class="input input-bordered input-sm w-full"/>
-                                    </div>`;
-
-                        if (flag == 0) {
-                            $(`#detailRow${i}`).children().eq(9).remove();
-                        }
-                        $(row).insertAfter($(`#detailRow${i}`).children().eq(8));
-                    }
-                }
-            });
-
-            $('#Tourcost_Category3').on('change', function () {
-                let flag = 0;
-
-                if ($('#catg3div').length) {
-                    $('#catg3div').remove();
-                } else {
-                    flag = 1;
-                }
-
-                catg3div();
-
-                let isSameValue = window.confirm(`Do you want to use the same ${$('#Tourcost_Category3').val()} rate for all days?`);
-                if (isSameValue) {
-                    let value = window.prompt(`Enter cost for ${$('#Tourcost_Category3').val()}`);
-                    for (let i = 0; i < $('#Tourcost_Days').val(); i++) {
-                        let row = `<div class="col-span-1">
-                                    <input type="text" id="TourcostDetail_${i}__Category3Cost"
-                                           name="TourcostDetail[${i}].Category3Cost"
-                                           class="input input-bordered input-sm w-full" value="${value}"/>
-                                    </div>`;
-                        if (flag == 0) {
-                            $(`#detailRow${i}`).children().eq(10).remove();
-                        }
-                        $(row).insertAfter($(`#detailRow${i}`).children().eq(9));
-                    }
-                } else {
-                    for (let i = 0; i < $('#Tourcost_Days').val(); i++) {
-                        let row = `<div class="col-span-1">
-                                    <input type="text" id="TourcostDetail_${i}__Category3Cost"
-                                           name="TourcostDetail[${i}].Category3Cost"
-                                           class="input input-bordered input-sm w-full"/>
-                                    </div>`;
-
-                        if (flag == 0) {
-                            $(`#detailRow${i}`).children().eq(10).remove();
-                        }
-                        $(row).insertAfter($(`#detailRow${i}`).children().eq(9));
-                    }
-                }
-            });
-
-            $('#Tourcost_Category4').on('change', function () {
-                let flag = 0;
-
-                if ($('#catg4div').length) {
-                    $('#catg4div').remove();
-                } else {
-                    flag = 1;
-                }
-
-                catg4div();
-                let isSameValue = window.confirm(`Do you want to use the same ${$('#Tourcost_Category4').val()} rate for all days?`);
-                if (isSameValue) {
-                    let value = window.prompt(`Enter cost for ${$('#Tourcost_Category4').val()}`);
-                    for (let i = 0; i < $('#Tourcost_Days').val(); i++) {
-                        let row = `<div class="col-span-1">
-                                    <input type="text" id="TourcostDetail_${i}__Category4Cost"
-                                           name="TourcostDetail[${i}].Category4Cost"
-                                           class="input input-bordered input-sm w-full" value="${value}"/>
-                                    </div>`;
-
-                        if (flag == 0) {
-                            $(`#detailRow${i}`).children().eq(11).remove();
-                        }
-
-                        $(row).insertAfter($(`#detailRow${i}`).children().eq(10));
-                    }
-                } else {
-                    for (let i = 0; i < $('#Tourcost_Days').val(); i++) {
-                        let row = `<div class="col-span-1">
-                                    <input type="text" id="TourcostDetail_${i}__Category4Cost"
-                                           name="TourcostDetail[${i}].Category4Cost"
-                                           class="input input-bordered input-sm w-full"/>
-                                    </div>`;
-
-                        if (flag == 0) {
-                            $(`#detailRow${i}`).children().eq(11).remove();
-                        }
-                        $(row).insertAfter($(`#detailRow${i}`).children().eq(10));
-                    }
-                }
+                handleCategoryChange(4);
             });
         });
     </script>

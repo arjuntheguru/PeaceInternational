@@ -3,20 +3,20 @@
 }
 
 <div class="animate-fade-in">
-    <!-- Header with cleaner Daisy UI styling -->
-    <div class="flex items-center justify-between mb-8">
-        <div class="flex items-center gap-4">
-            <a asp-action="Index" class="btn btn-circle btn-ghost">
+    <!-- Modern Page Header -->
+    <div class="page-header mb-6">
+        <div class="relative z-10 flex items-center gap-4">
+            <a asp-action="Index" class="btn btn-circle btn-ghost text-white hover:bg-white/20 border-white/30">
                 <i class="fas fa-arrow-left text-xl"></i>
             </a>
-            <div>
-                <div class="text-sm breadcrumbs">
-                    <ul>
-                        <li><a asp-action="Index">Invoices</a></li>
-                        <li><span id="pageTitle">New Invoice</span></li>
-                    </ul>
+            <div class="flex items-center gap-3">
+                <div class="w-12 h-12 rounded-xl bg-white/20 backdrop-blur-sm flex items-center justify-center">
+                    <i class="fas fa-file-invoice text-2xl text-white"></i>
                 </div>
-                <h1 class="text-3xl font-bold">Invoice Details</h1>
+                <div>
+                    <h1 class="text-4xl font-bold text-white"><span id="pageTitle">New Invoice</span></h1>
+                    <p class="text-white/80 mt-1">Create and manage invoices for tours</p>
+                </div>
             </div>
         </div>
     </div>
@@ -25,12 +25,13 @@
         <input type="hidden" id="id" />
 
         <!-- Basic Information Card -->
-        <div class="card bg-base-100 shadow-lg mb-6">
-            <div class="card-body">
-                <h2 class="card-title text-lg mb-4">
-                    <i class="fas fa-info-circle text-primary"></i>
-                    Basic Information
-                </h2>
+        <div class="section-modern mb-6">
+            <div class="flex items-center gap-2 mb-6">
+                <div class="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center">
+                    <i class="fas fa-info-circle text-lg text-primary"></i>
+                </div>
+                <h2 class="font-bold text-lg">Basic Information</h2>
+            </div>
 
                 <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
                     <div class="form-control">

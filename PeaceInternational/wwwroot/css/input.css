@@ -9,9 +9,28 @@
     @apply transition-all duration-300 hover:shadow-xl hover:-translate-y-1;
   }
 
-  /* Gradient backgrounds for hero sections */
-  .gradient-bg {
-    @apply bg-gradient-to-br from-primary to-secondary;
+  /* Gradient backgrounds */
+  .gradient-primary {
+    @apply bg-gradient-to-r from-primary via-primary to-secondary;
+  }
+
+  .gradient-accent {
+    @apply bg-gradient-to-r from-accent to-primary;
+  }
+
+  .gradient-soft {
+    @apply bg-gradient-to-br from-base-100 via-base-200 to-base-100;
+  }
+
+  /* Modern page header */
+  .page-header {
+    @apply relative overflow-hidden rounded-2xl bg-gradient-to-r from-primary to-secondary p-8 shadow-lg mb-8;
+  }
+
+  .page-header::before {
+    content: '';
+    @apply absolute inset-0 opacity-10;
+    background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.4'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
   }
 
   /* Tour card styling */
@@ -27,6 +46,16 @@
   /* Loading spinner */
   .spinner {
     @apply loading loading-spinner loading-lg text-primary;
+  }
+
+  /* Glass effect */
+  .glass-effect {
+    @apply backdrop-blur-md bg-white/80 dark:bg-slate-900/80 border border-white/20;
+  }
+
+  /* Smooth section */
+  .section-modern {
+    @apply py-8 px-6 rounded-xl bg-base-100 shadow-sm border border-base-300 hover:shadow-md transition-shadow duration-300;
   }
 }
 

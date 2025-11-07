@@ -43,6 +43,12 @@ namespace PeaceInternational.Web.Controllers
             return View();
         }
 
+        // GET: AddEdit
+        public IActionResult AddEdit(int? id)
+        {
+            return View();
+        }
+
         //GET Invoice
         [HttpGet]
         public async Task<IActionResult> GetInvoice(int? id)

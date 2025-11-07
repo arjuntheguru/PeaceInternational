@@ -267,11 +267,6 @@
     </div>
 </dialog>
 
-<!-- Handlebars template for receipt -->
-<script id="entry-template" type="text/x-handlebars-template">
-    @Html.Raw(System.IO.File.ReadAllText(System.IO.Path.Combine(Directory.GetCurrentDirectory(), "Views", "Invoice", "_InvoiceTemplate.html")))
-</script>
-
 @section Scripts {
     <script src="~/lib/handlebars/handlebars.min.js"></script>
     <script src="~/lib/html2canvas/html2canvas.min.js"></script>
@@ -290,5 +285,116 @@
                 $('#pageTitle').text('New Invoice');
             }
         });
+    </script>
+    <script id="entry-template" type="text/x-handlebars-template">
+        <style>
+            #page { border-collapse: collapse; border: 2px solid; font-family: Arial, Helvetica, sans-serif; }
+            #page td { padding-top: 1px; margin: 0; font-size: 22px; border-right: 2px solid; }
+            #page th { border-right: 2px solid; border-bottom: 2px solid; }
+            #page tfoot { border-top: 2px solid; }
+            .topRightInfo { padding-left: 6rem; }
+            .topRightInfo h6 { margin-bottom: 1px; font-size:19px; }
+            body h6 { font-size:24px; }
+            span { font-weight: bold; }
+        </style>
+
+        <div class="row">
+            <div class="col-md-8">
+                <img src="~/img/logo2.jpg" style="max-width:100%; max-height:80%" />
+            </div>
+            <div class="col-md-4 topRightInfo">
+                <h6>GPO Box: 9484</h6>
+                <h6>Lazimpat - 2, Kathmandu, Nepal</h6>
+                <h6>Tel: (977) 01 4444843/44/45</h6>
+                <h6>Email: peaceintl.mail@@gmail.com</h6>
+                <h6>&emsp;&emsp;&emsp;mail@@peace-intl.com.np </h6>
+                <h6>Web: peace-intl.com </h6>
+                <h6>PAN: 302243385 </h6>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-8">
+                <h6>Dr:&emsp;<span>{{invoice.dr}}</span></h6>
+                <h6>&emsp;&emsp;&emsp;<span>{{invoice.address}}</span></h6>
+                <h6>Ref No:&emsp;{{invoice.referenceNo}}</h6>
+                <h6>Name:&emsp;<span>{{invoice.clientName}} X {{invoice.pax}} PAX</span></h6>
+            </div>
+            <div class="col-md-4" style="padding-left:6rem;">
+                <h6>Date:&emsp;<span>{{chain "splitDate" "customDate" invoice.createdDate}}</span></h6>
+                <h6>Invoice no:&emsp;{{invoice.invoiceNo}}</h6>
+                <h6>File Code No:&emsp;{{invoice.fileCodeNo}}</h6>
+                <h6>Currency:&emsp;<span>{{invoice.currency}}</span></h6>
+            </div>
+        </div>
+        <br />
+        <h6 class="text-center font-weight-bold">Your Account has been debited as per particulars given below:</h6>
+        <div class="row flex-nowrap">
+            <table class="table table-borderless ml-2 mr-2" id="page">
+                <thead class="text-center thead-light">
+                    <tr>
+                        <th width="5%">SN.</th>
+                        <th width="70%">PARTICULARS</th>
+                        <th width="20%">AMOUNT</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {{#each invoiceDetail}}
+                    <tr>
+                        <td height="40" align="center">{{inc @@index}}</td>
+                        <td height="40">{{this.particulars}}</td>
+                        <td height="40" class="text-right pr-5">{{distanceFixed this.amount}}</td>
+                    </tr>
+                    {{/each}}
+                    {{#for invoiceDetail.length 18 1}}
+                    <tr>
+                        <td height="40"></td>
+                        <td height="40"></td>
+                        <td height="40"></td>
+                    </tr>
+                    {{/for}}
+                </tbody>
+                <tfoot>
+                    <tr style="border-bottom:2px solid;">
+                        <td colspan="2" align="right" class="font-weight-bold">Total Due:</td>
+                        <td align="right" class="pr-5">{{distanceFixed invoice.totalDue}}</td>
+                    </tr>
+                    <tr style="border-bottom:2px solid;">
+                        <td colspan="2" align="right" class="font-weight-bold">Discount:</td>
+                        <td align="right" class="pr-5">{{distanceFixed invoice.discount}}</td>
+                    </tr>
+                    <tr style="border-bottom:2px solid;">
+                        <td colspan="2" align="right" class="font-weight-bold">Net Amount:</td>
+                        <td align="right" class="pr-5">{{distanceFixed invoice.netAmount}} </td>
+                    </tr>
+                    <tr>
+                        <td colspan="3"><span>In Words:</span> {{inWords invoice.netAmount}}</td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+        <div class="row">
+            <div class="col-md-3">
+                <h6>E. & O. E.</h6>
+                <h6>ENCLOSURES: </h6>
+                <h6>Prepared By: </h6>
+                <h6>Checked By:</h6>
+            </div>
+            <div class="col-md-9">
+                <h6 class="font-weight-bold float-right">For : Peace International Tours & Travel (P) Ltd</h6>
+                <br /><br />
+                <h6 class="float-right mr-5">{{userName}}</h6>
+                <br /><br />
+                <h6 class="border-top border-dark float-right">Authorized Signature: </h6>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12 text-center">
+                <br />
+                <h6>
+                    IMPORTANT : 1. If the Payment is to be made through Bank, transfer kindly made it directly either at our <br>A/C No. 01 04 21 7500056 at Nabil Bank, Kantipath, Kathmandu under advise to us.
+                </h6>
+            </div>
+        </div>
     </script>
 }

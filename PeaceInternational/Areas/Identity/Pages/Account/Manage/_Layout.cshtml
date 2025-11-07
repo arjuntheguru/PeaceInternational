@@ -1,17 +1,25 @@
-﻿@{
+@{
     Layout = "/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Manage your account</h1>
+<div class="container mx-auto max-w-7xl">
+    <div class="mb-8">
+        <h1 class="text-4xl font-bold text-base-content mb-2">Account Management</h1>
+        <p class="text-base-content/70">Manage your account settings and preferences</p>
+    </div>
 
-<div>
-    <h4>Change your account settings</h4>
-    <hr />
-    <div class="row">
-        <div class="col-md-3">
-            <partial name="_ManageNav" />
+    <div class="grid grid-cols-1 lg:grid-cols-4 gap-6">
+        <!-- Sidebar Navigation -->
+        <div class="lg:col-span-1">
+            <div class="card bg-base-200 shadow-lg sticky top-24">
+                <div class="card-body p-4">
+                    <partial name="_ManageNav" />
+                </div>
+            </div>
         </div>
-        <div class="col-md-9">
+
+        <!-- Main Content -->
+        <div class="lg:col-span-3">
             @RenderBody()
         </div>
     </div>

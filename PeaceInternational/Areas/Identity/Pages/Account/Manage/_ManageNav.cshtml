@@ -1,14 +1,45 @@
-﻿@inject SignInManager<IdentityUser> SignInManager
+@inject SignInManager<IdentityUser> SignInManager
 @{
     var hasExternalLogins = (await SignInManager.GetExternalAuthenticationSchemesAsync()).Any();
 }
-<ul class="nav nav-pills flex-column">
-    <li class="nav-item"><a class="nav-link @ManageNavPages.IndexNavClass(ViewContext)" id="profile" asp-page="./Index">Profile</a></li>
-    <li class="nav-item"><a class="nav-link @ManageNavPages.ChangePasswordNavClass(ViewContext)" id="change-password" asp-page="./ChangePassword">Password</a></li>
+
+<ul class="menu menu-compact w-full">
+    <li>
+        <a asp-page="./Index"
+           class="@(ManageNavPages.IndexNavClass(ViewContext) == "active" ? "active" : "") gap-2">
+            <i class="fas fa-user"></i>
+            Profile
+        </a>
+    </li>
+    <li>
+        <a asp-page="./ChangePassword"
+           class="@(ManageNavPages.ChangePasswordNavClass(ViewContext) == "active" ? "active" : "") gap-2">
+            <i class="fas fa-key"></i>
+            Password
+        </a>
+    </li>
     @*@if (hasExternalLogins)
     {
-        <li id="external-logins" class="nav-item"><a id="external-login" class="nav-link @ManageNavPages.ExternalLoginsNavClass(ViewContext)" asp-page="./ExternalLogins">External logins</a></li>
+        <li>
+            <a asp-page="./ExternalLogins"
+               class="@(ManageNavPages.ExternalLoginsNavClass(ViewContext) == "active" ? "active" : "") gap-2">
+                <i class="fas fa-sign-in-alt"></i>
+                External Logins
+            </a>
+        </li>
     }
-    <li class="nav-item"><a class="nav-link @ManageNavPages.TwoFactorAuthenticationNavClass(ViewContext)" id="two-factor" asp-page="./TwoFactorAuthentication">Two-factor authentication</a></li>
-    <li class="nav-item"><a class="nav-link @ManageNavPages.PersonalDataNavClass(ViewContext)" id="personal-data" asp-page="./PersonalData">Personal data</a></li>*@
+    <li>
+        <a asp-page="./TwoFactorAuthentication"
+           class="@(ManageNavPages.TwoFactorAuthenticationNavClass(ViewContext) == "active" ? "active" : "") gap-2">
+            <i class="fas fa-shield-alt"></i>
+            Two-Factor Auth
+        </a>
+    </li>
+    <li>
+        <a asp-page="./PersonalData"
+           class="@(ManageNavPages.PersonalDataNavClass(ViewContext) == "active" ? "active" : "") gap-2">
+            <i class="fas fa-database"></i>
+            Personal Data
+        </a>
+    </li>*@
 </ul>

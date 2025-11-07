@@ -81,5 +81,5 @@ body {
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  @apply bg-primary-dark;
+  @apply bg-secondary;
 }

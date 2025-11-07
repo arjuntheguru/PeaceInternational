@@ -2,142 +2,104 @@
     ViewData["Title"] = "Home";
 }
 
-<!-- Hero Section -->
-<div class="hero min-h-[500px] bg-gradient-to-br from-primary to-secondary rounded-3xl shadow-2xl mb-12 animate-fade-in">
-    <div class="hero-overlay bg-opacity-30 rounded-3xl"></div>
-    <div class="hero-content text-center text-neutral-content">
-        <div class="max-w-2xl">
-            <h1 class="mb-5 text-6xl font-bold drop-shadow-lg">Welcome to Peace International</h1>
-            <p class="mb-5 text-xl">
+<!-- Clean Hero Section -->
+<div class="hero min-h-[60vh] bg-base-100">
+    <div class="hero-content text-center">
+        <div class="max-w-3xl">
+            <h1 class="text-5xl md:text-6xl font-bold text-base-content mb-6">
+                Peace International Tours
+            </h1>
+            <p class="text-xl text-base-content/70 mb-8 leading-relaxed">
                 Your trusted partner in creating unforgettable travel experiences.
-                Explore the world with confidence and peace of mind.
             </p>
             <div class="flex gap-4 justify-center flex-wrap">
-                <a asp-controller="TourCost" asp-action="Index" class="btn btn-lg btn-primary">
-                    <i class="fas fa-plane mr-2"></i>
+                <a asp-controller="TourCost" asp-action="Index" class="btn btn-primary btn-lg gap-2">
+                    <i class="fas fa-plane"></i>
                     View Tours
                 </a>
-                <a asp-controller="Customer" asp-action="Index" class="btn btn-lg btn-outline btn-primary-content">
-                    <i class="fas fa-users mr-2"></i>
-                    Our Customers
+                <a asp-controller="Customer" asp-action="Index" class="btn btn-outline btn-lg gap-2">
+                    <i class="fas fa-users"></i>
+                    Customers
                 </a>
             </div>
         </div>
+    </div>
+</div>
+
+<!-- Divider -->
+<div class="divider my-12"></div>
+
+<!-- Quick Access Section -->
+<div class="max-w-6xl mx-auto px-4 mb-20">
+    <h2 class="text-3xl font-bold text-center mb-12 text-base-content">Quick Access</h2>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <!-- Invoice -->
+        <a asp-controller="Invoice" asp-action="Index"
+           class="card bg-base-100 border border-base-300 hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
+            <div class="card-body items-center text-center">
+                <div class="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center mb-4">
+                    <i class="fas fa-file-invoice-dollar text-3xl text-primary"></i>
+                </div>
+                <h3 class="card-title text-lg">Invoices</h3>
+                <p class="text-sm text-base-content/60">Manage invoices</p>
+            </div>
+        </a>
+
+        <!-- Service Voucher -->
+        <a asp-controller="ServiceVoucher" asp-action="Index"
+           class="card bg-base-100 border border-base-300 hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
+            <div class="card-body items-center text-center">
+                <div class="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center mb-4">
+                    <i class="fas fa-receipt text-3xl text-primary"></i>
+                </div>
+                <h3 class="card-title text-lg">Service Vouchers</h3>
+                <p class="text-sm text-base-content/60">Track vouchers</p>
+            </div>
+        </a>
+
+        <!-- Tour Cost -->
+        <a asp-controller="TourCost" asp-action="Index"
+           class="card bg-base-100 border border-base-300 hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
+            <div class="card-body items-center text-center">
+                <div class="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center mb-4">
+                    <i class="fas fa-dollar-sign text-3xl text-primary"></i>
+                </div>
+                <h3 class="card-title text-lg">Tour Costs</h3>
+                <p class="text-sm text-base-content/60">Manage pricing</p>
+            </div>
+        </a>
+
+        <!-- Customers -->
+        <a asp-controller="Customer" asp-action="Index"
+           class="card bg-base-100 border border-base-300 hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
+            <div class="card-body items-center text-center">
+                <div class="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center mb-4">
+                    <i class="fas fa-users text-3xl text-primary"></i>
+                </div>
+                <h3 class="card-title text-lg">Customers</h3>
+                <p class="text-sm text-base-content/60">Customer data</p>
+            </div>
+        </a>
     </div>
 </div>
 
 <!-- Stats Section -->
-<div class="stats stats-vertical lg:stats-horizontal shadow-xl w-full mb-12">
-    <div class="stat">
-        <div class="stat-figure text-primary">
-            <i class="fas fa-globe fa-3x"></i>
-        </div>
-        <div class="stat-title">Countries Covered</div>
-        <div class="stat-value text-primary">50+</div>
-        <div class="stat-desc">Across all continents</div>
-    </div>
-
-    <div class="stat">
-        <div class="stat-figure text-secondary">
-            <i class="fas fa-users fa-3x"></i>
-        </div>
-        <div class="stat-title">Happy Travelers</div>
-        <div class="stat-value text-secondary">10,000+</div>
-        <div class="stat-desc">5-star reviews</div>
-    </div>
-
-    <div class="stat">
-        <div class="stat-figure text-accent">
-            <i class="fas fa-calendar-check fa-3x"></i>
-        </div>
-        <div class="stat-title">Years Experience</div>
-        <div class="stat-value text-accent">15+</div>
-        <div class="stat-desc">Since 2010</div>
-    </div>
-</div>
-
-<!-- Quick Access Cards -->
-<div class="mb-12">
-    <h2 class="text-3xl font-bold mb-6 text-center">Quick Access</h2>
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        <!-- Invoice Card -->
-        <a asp-controller="Invoice" asp-action="Index" class="card bg-gradient-to-br from-blue-500 to-blue-700 text-white shadow-xl hover:shadow-2xl transition-all duration-300 hover:-translate-y-2">
-            <div class="card-body items-center text-center">
-                <i class="fas fa-file-invoice-dollar fa-4x mb-4 opacity-80"></i>
-                <h3 class="card-title text-2xl">Invoices</h3>
-                <p>Manage tour invoices and payments</p>
+<div class="bg-base-200 py-16">
+    <div class="max-w-6xl mx-auto px-4">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
+            <div>
+                <div class="text-4xl font-bold text-primary mb-2">50+</div>
+                <div class="text-base-content/70">Countries Covered</div>
             </div>
-        </a>
-
-        <!-- Service Voucher Card -->
-        <a asp-controller="ServiceVoucher" asp-action="Index" class="card bg-gradient-to-br from-green-500 to-green-700 text-white shadow-xl hover:shadow-2xl transition-all duration-300 hover:-translate-y-2">
-            <div class="card-body items-center text-center">
-                <i class="fas fa-receipt fa-4x mb-4 opacity-80"></i>
-                <h3 class="card-title text-2xl">Service Vouchers</h3>
-                <p>Create and track service vouchers</p>
+            <div>
+                <div class="text-4xl font-bold text-primary mb-2">10,000+</div>
+                <div class="text-base-content/70">Happy Travelers</div>
             </div>
-        </a>
-
-        <!-- Tour Cost Card -->
-        <a asp-controller="TourCost" asp-action="Index" class="card bg-gradient-to-br from-purple-500 to-purple-700 text-white shadow-xl hover:shadow-2xl transition-all duration-300 hover:-translate-y-2">
-            <div class="card-body items-center text-center">
-                <i class="fas fa-dollar-sign fa-4x mb-4 opacity-80"></i>
-                <h3 class="card-title text-2xl">Tour Costs</h3>
-                <p>Calculate and manage tour pricing</p>
-            </div>
-        </a>
-
-        <!-- Customers Card -->
-        <a asp-controller="Customer" asp-action="Index" class="card bg-gradient-to-br from-orange-500 to-orange-700 text-white shadow-xl hover:shadow-2xl transition-all duration-300 hover:-translate-y-2">
-            <div class="card-body items-center text-center">
-                <i class="fas fa-user-astronaut fa-4x mb-4 opacity-80"></i>
-                <h3 class="card-title text-2xl">Customers</h3>
-                <p>View and manage customer data</p>
-            </div>
-        </a>
-    </div>
-</div>
-
-<!-- Features Section -->
-<div class="mb-12">
-    <h2 class="text-3xl font-bold mb-6 text-center">Why Choose Us?</h2>
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <div class="card bg-base-200">
-            <div class="card-body items-center text-center">
-                <i class="fas fa-shield-alt text-primary fa-3x mb-4"></i>
-                <h3 class="card-title">Secure & Reliable</h3>
-                <p>Your data and bookings are protected with enterprise-level security</p>
+            <div>
+                <div class="text-4xl font-bold text-primary mb-2">15+</div>
+                <div class="text-base-content/70">Years Experience</div>
             </div>
         </div>
-
-        <div class="card bg-base-200">
-            <div class="card-body items-center text-center">
-                <i class="fas fa-headset text-secondary fa-3x mb-4"></i>
-                <h3 class="card-title">24/7 Support</h3>
-                <p>Our dedicated team is always here to help you</p>
-            </div>
-        </div>
-
-        <div class="card bg-base-200">
-            <div class="card-body items-center text-center">
-                <i class="fas fa-chart-line text-accent fa-3x mb-4"></i>
-                <h3 class="card-title">Best Value</h3>
-                <p>Competitive pricing with no hidden fees</p>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- CTA Section -->
-<div class="alert shadow-lg bg-gradient-to-r from-primary to-secondary text-white mb-12">
-    <div>
-        <i class="fas fa-info-circle text-3xl"></i>
-        <div>
-            <h3 class="font-bold text-xl">Ready to start your journey?</h3>
-            <div class="text-sm">Contact us today to plan your perfect tour package.</div>
-        </div>
-    </div>
-    <div class="flex-none">
-        <button class="btn btn-sm btn-primary-content">Contact Us</button>
     </div>
 </div>

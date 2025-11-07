@@ -7,21 +7,7 @@ module.exports = {
     "./wwwroot/js/**/*.js"
   ],
   theme: {
-    extend: {
-      colors: {
-        // Custom brand colors for tour company
-        primary: {
-          DEFAULT: '#0891b2', // cyan-600 - represents travel/water
-          light: '#06b6d4',   // cyan-500
-          dark: '#0e7490',    // cyan-700
-        },
-        secondary: {
-          DEFAULT: '#f59e0b', // amber-500 - represents sun/warmth
-          light: '#fbbf24',   // amber-400
-          dark: '#d97706',    // amber-600
-        }
-      }
-    },
+    extend: {},
   },
   plugins: [
     require('daisyui'),
@@ -33,37 +19,29 @@ module.exports = {
       {
         light: {
           ...require("daisyui/src/theming/themes")["light"],
-          primary: "#0891b2",
-          secondary: "#f59e0b",
-          accent: "#8b5cf6",
-          neutral: "#1f2937",
+          primary: "#334155",        // Slate 700 - Professional and modern
+          secondary: "#64748b",      // Slate 500 - Subtle secondary
+          accent: "#0ea5e9",         // Sky 500 - Clean accent
+          neutral: "#1e293b",        // Slate 800
           "base-100": "#ffffff",
-          info: "#3abff8",
-          success: "#36d399",
-          warning: "#fbbd23",
-          error: "#f87272",
+          "base-200": "#f8fafc",     // Slate 50
+          "base-300": "#e2e8f0",     // Slate 200
+          info: "#0ea5e9",
+          success: "#10b981",
+          warning: "#f59e0b",
+          error: "#ef4444",
         },
+        dark: {
+          ...require("daisyui/src/theming/themes")["dark"],
+          primary: "#64748b",        // Lighter slate for dark mode
+          secondary: "#94a3b8",
+          accent: "#38bdf8",
+          neutral: "#1e293b",
+          "base-100": "#0f172a",     // Slate 900
+          "base-200": "#1e293b",     // Slate 800
+          "base-300": "#334155",     // Slate 700
+        }
       },
-      "dark",
-      "cupcake",
-      "bumblebee",
-      "emerald",
-      "corporate",
-      "synthwave",
-      "retro",
-      "cyberpunk",
-      "valentine",
-      "halloween",
-      "garden",
-      "forest",
-      "aqua",
-      "lofi",
-      "pastel",
-      "fantasy",
-      "wireframe",
-      "black",
-      "luxury",
-      "dracula",
     ],
   },
 }

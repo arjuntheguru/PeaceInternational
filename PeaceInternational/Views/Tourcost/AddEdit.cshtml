@@ -1,222 +1,251 @@
-﻿@model PeaceInternational.Web.Models.TourcostDTO
+@model PeaceInternational.Web.Models.TourcostDTO
 
 @{
-    ViewData["Title"] = "Tourcost";
+    ViewData["Title"] = Model.Tourcost.Id > 0 ? "Edit Tour Cost" : "Add Tour Cost";
 }
-<style>
-    .accordion div.card:only-child {
-        border-bottom: 1px solid rgba(0, 0, 0, 0.125);
-        border-radius: calc(0.25rem - 1px);
-    }
 
-    /* Chrome, Safari, Edge, Opera */
-    input::-webkit-outer-spin-button,
-    input::-webkit-inner-spin-button {
-        -webkit-appearance: none;
-        margin: 0;
-    }
+<div class="animate-fade-in">
+    <!-- Header -->
+    <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6">
+        <div>
+            <h1 class="text-4xl font-bold text-base-content">@ViewData["Title"]</h1>
+            <p class="text-base-content/70 mt-2">Configure tour cost details and pricing</p>
+        </div>
+        <a asp-action="Index" class="btn btn-ghost gap-2">
+            <i class="fas fa-arrow-left"></i>
+            Back to List
+        </a>
+    </div>
 
-    /* Firefox */
-    input[type=number] {
-        -moz-appearance: textfield;
-    }
-</style>
-<div class="row">
-    <div class="col-md-10">
-        <h1 class="display-4">Tourcost</h1>
-    </div>
-    <div class="col-md-2">
-        <a class="btn btn-info mt-4 w-100" asp-action="Index">Back</a>
-    </div>
-</div>
-<hr />
-<div>
+    <!-- Main Form -->
     <form asp-action="AddEdit" id="tourcostForm">
-        <div class="form-row">
-            <div class="col-md-2">
-                <div class="card">
-                    <div class="card-body">
-                        <input type="hidden" asp-for="Tourcost.Id" />
-                        <h5 class="card-title">Days</h5>
-                        <div class="form-group">
-                            <input asp-for="Tourcost.Days" class="form-control" />
-                        </div>
-                        <br />
-                        <h5 class="card-title">Meal Plan</h5>
-                        <div class="form-group">
-                            <div class="custom-control custom-radio">
-                                <input type="radio" id="mealRadioInline2" asp-for="Tourcost.MealType" class="custom-control-input" value="AP">
-                                <label class="custom-control-label" for="mealRadioInline2">AP</label>
-                            </div>
-                            <div class="custom-control custom-radio">
-                                <input type="radio" id="mealRadioInline3" asp-for="Tourcost.MealType" class="custom-control-input" value="MAP">
-                                <label class="custom-control-label" for="mealRadioInline3">MAP</label>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div class="card">
-                    <div class="card-body">
-                        <h5 class="card-title">Client Name</h5>
-                        <div class="form-group">
-                            <input asp-for="Tourcost.ClientName" class="form-control" required />
-                        </div>
-                        <h5 class="card-title">PAX Range</h5>
-                        <div class="form-row">
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label asp-for="Tourcost.MinPAX"> Min PAX. <span class="text-danger">*</span></label>
-                                    <input asp-for="Tourcost.MinPAX" class="form-control" min="1" onkeydown="return event.keyCode !== 69"/>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label asp-for="Tourcost.MaxPAX"> Max PAX. <span class="text-danger">*</span></label>
-                                    <input asp-for="Tourcost.MaxPAX" class="form-control" max="100" onkeydown="return event.keyCode !== 69" />
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div class="card">
-                    <div class="card-body">
-                        <h5 class="card-title">Guide</h5>
-                        <div class="form-row">
-                            <div class="form-group w-100">
-                                <label asp-for="Tourcost.GuideId"> Name </label>
-                                <select asp-for="Tourcost.GuideId" class="form-control w-100" asp-items="ViewBag.Guide">
-                                    <option selected value="">Select</option>
-                                </select>
-                            </div>
-                            <div class="form-row">
-                                <div class="col-md-4">
-                                    <div class="form-group">
-                                        <label asp-for="Tourcost.GuideDaysHalfDay"> Half </label>
-                                        <input asp-for="Tourcost.GuideDaysHalfDay" class="form-control" placeholder="Days" onkeydown="return event.keyCode !== 69"/>
-                                    </div>
-                                </div>
-                                <div class="col-md-4">
-                                    <div class="form-group">
-                                        <label asp-for="Tourcost.GuideDaysFullDay"> Full </label>
-                                        <input asp-for="Tourcost.GuideDaysFullDay" class="form-control" placeholder="Days"/>
-                                    </div>
-                                </div>
-                                <div class="col-md-4">
-                                    <div class="form-group">
-                                        <label asp-for="Tourcost.GuideDaysEscort"> Escort </label>
-                                        <input asp-for="Tourcost.GuideDaysEscort" class="form-control" placeholder="Days" />
-                                    </div>
-                                </div>
-                            </div>
+        <input type="hidden" asp-for="Tourcost.Id" />
 
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="card">
-                    <div class="card-body">
-                        <h5 class="card-title">Addt'l Categories</h5>
-                        <div class="form-row">
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label asp-for="Tourcost.Category1"> Category 1 </label>
-                                    <input asp-for="Tourcost.Category1" class="form-control" />
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label asp-for="Tourcost.Category2"> Category 2 </label>
-                                    <input asp-for="Tourcost.Category2" class="form-control" />
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-row">
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label asp-for="Tourcost.Category3"> Category 3 </label>
-                                    <input asp-for="Tourcost.Category3" class="form-control" />
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label asp-for="Tourcost.Category4"> Category 4 </label>
-                                    <input asp-for="Tourcost.Category4" class="form-control" />
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <hr />
-        <div class="accordion" id="accordionExample">
-            <div class="card">
-                <div class="card-header" id="headingOne">
-                    <h2 class="mb-0">
-                        <button class="btn btn-info w-100" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
-                            Add Tourcost Details
-                        </button>
+        <!-- Top Section Cards -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+            <!-- Days & Meal Plan Card -->
+            <div class="card bg-base-100 shadow-lg">
+                <div class="card-body">
+                    <h2 class="card-title text-primary">
+                        <i class="fas fa-calendar-day"></i>
+                        Days & Meal Plan
                     </h2>
-                </div>
-
-                <div id="collapseOne" class="collapse collapsed" aria-labelledby="headingOne" data-parent="#accordionExample">
-                    <div class="card-body">
-                        <div class="form-row" id="tourCostDetailHeader">
+                    <div class="form-control">
+                        <label class="label">
+                            <span class="label-text font-semibold">Number of Days</span>
+                        </label>
+                        <input asp-for="Tourcost.Days" class="input input-bordered" type="number" min="1" />
+                    </div>
+                    <div class="divider my-2"></div>
+                    <div class="form-control">
+                        <label class="label">
+                            <span class="label-text font-semibold">Meal Type</span>
+                        </label>
+                        <div class="flex flex-col gap-2">
+                            <label class="label cursor-pointer justify-start gap-3">
+                                <input type="radio" asp-for="Tourcost.MealType" class="radio radio-primary" value="AP" />
+                                <span class="label-text">AP (American Plan)</span>
+                            </label>
+                            <label class="label cursor-pointer justify-start gap-3">
+                                <input type="radio" asp-for="Tourcost.MealType" class="radio radio-primary" value="MAP" />
+                                <span class="label-text">MAP (Modified American Plan)</span>
+                            </label>
                         </div>
-                        <hr />
-                        <div id="tourCostDetailBody"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Client & PAX Card -->
+            <div class="card bg-base-100 shadow-lg">
+                <div class="card-body">
+                    <h2 class="card-title text-primary">
+                        <i class="fas fa-user"></i>
+                        Client Details
+                    </h2>
+                    <div class="form-control">
+                        <label class="label">
+                            <span class="label-text font-semibold">Client Name <span class="text-error">*</span></span>
+                        </label>
+                        <input asp-for="Tourcost.ClientName" class="input input-bordered" required />
+                    </div>
+                    <div class="divider my-2"></div>
+                    <label class="label">
+                        <span class="label-text font-semibold">PAX Range</span>
+                    </label>
+                    <div class="grid grid-cols-2 gap-2">
+                        <div class="form-control">
+                            <label class="label">
+                                <span class="label-text text-xs">Min PAX <span class="text-error">*</span></span>
+                            </label>
+                            <input asp-for="Tourcost.MinPAX" class="input input-bordered input-sm" type="number" min="1" />
+                        </div>
+                        <div class="form-control">
+                            <label class="label">
+                                <span class="label-text text-xs">Max PAX <span class="text-error">*</span></span>
+                            </label>
+                            <input asp-for="Tourcost.MaxPAX" class="input input-bordered input-sm" type="number" max="100" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Guide Card -->
+            <div class="card bg-base-100 shadow-lg">
+                <div class="card-body">
+                    <h2 class="card-title text-primary">
+                        <i class="fas fa-user-tie"></i>
+                        Guide
+                    </h2>
+                    <div class="form-control">
+                        <label class="label">
+                            <span class="label-text font-semibold">Name</span>
+                        </label>
+                        <select asp-for="Tourcost.GuideId" class="select select-bordered" asp-items="ViewBag.Guide">
+                            <option value="">Select Guide</option>
+                        </select>
+                    </div>
+                    <div class="divider my-2"></div>
+                    <div class="grid grid-cols-3 gap-1">
+                        <div class="form-control">
+                            <label class="label">
+                                <span class="label-text text-xs">Half</span>
+                            </label>
+                            <input asp-for="Tourcost.GuideDaysHalfDay" class="input input-bordered input-sm" type="number" min="0" />
+                        </div>
+                        <div class="form-control">
+                            <label class="label">
+                                <span class="label-text text-xs">Full</span>
+                            </label>
+                            <input asp-for="Tourcost.GuideDaysFullDay" class="input input-bordered input-sm" type="number" min="0" />
+                        </div>
+                        <div class="form-control">
+                            <label class="label">
+                                <span class="label-text text-xs">Escort</span>
+                            </label>
+                            <input asp-for="Tourcost.GuideDaysEscort" class="input input-bordered input-sm" type="number" min="0" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Additional Categories Card -->
+            <div class="card bg-base-100 shadow-lg">
+                <div class="card-body">
+                    <h2 class="card-title text-primary">
+                        <i class="fas fa-tags"></i>
+                        Additional Categories
+                    </h2>
+                    <div class="grid grid-cols-2 gap-2">
+                        <div class="form-control">
+                            <label class="label">
+                                <span class="label-text text-xs">Category 1</span>
+                            </label>
+                            <input asp-for="Tourcost.Category1" class="input input-bordered input-sm" />
+                        </div>
+                        <div class="form-control">
+                            <label class="label">
+                                <span class="label-text text-xs">Category 2</span>
+                            </label>
+                            <input asp-for="Tourcost.Category2" class="input input-bordered input-sm" />
+                        </div>
+                        <div class="form-control">
+                            <label class="label">
+                                <span class="label-text text-xs">Category 3</span>
+                            </label>
+                            <input asp-for="Tourcost.Category3" class="input input-bordered input-sm" />
+                        </div>
+                        <div class="form-control">
+                            <label class="label">
+                                <span class="label-text text-xs">Category 4</span>
+                            </label>
+                            <input asp-for="Tourcost.Category4" class="input input-bordered input-sm" />
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-        <hr />
-        <div class="form-row">
-            <div class="col">
-                <div class="form-group">
-                    <label asp-for="Tourcost.Comment"> Comment </label>
-                    <input asp-for="Tourcost.Comment" class="form-control w-100" />
+
+        <!-- Tour Cost Details Collapse -->
+        <div class="card bg-base-100 shadow-lg mb-6">
+            <div class="card-body p-0">
+                <div class="collapse collapse-arrow bg-primary text-primary-content">
+                    <input type="checkbox" id="collapseToggle" />
+                    <div class="collapse-title text-xl font-medium">
+                        <i class="fas fa-list-alt mr-2"></i>
+                        Add Tour Cost Details (Day by Day)
+                    </div>
+                    <div class="collapse-content bg-base-100 text-base-content">
+                        <div class="pt-4">
+                            <!-- Header Row -->
+                            <div class="grid grid-cols-12 gap-2 mb-4 font-semibold text-sm text-base-content/70" id="tourCostDetailHeader">
+                                <!-- Dynamically generated header -->
+                            </div>
+                            <div class="divider my-2"></div>
+                            <!-- Detail Rows -->
+                            <div id="tourCostDetailBody" class="space-y-3">
+                                <!-- Dynamically generated rows -->
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
-        <div class="form-row">
-            <div class="col-md-2">
-                <div class="form-group">
-                    <label asp-for="Tourcost.DiscountAccomodation"> Discount (A) </label>
-                    <div class="input-group mb-3">
-                        <input asp-for="Tourcost.DiscountAccomodation" class="form-control" />
-                        <div class="input-group-append">
-                            <span class="input-group-text">%</span>
-                        </div>
+
+        <!-- Bottom Section -->
+        <div class="card bg-base-100 shadow-lg mb-6">
+            <div class="card-body">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <!-- Comment -->
+                    <div class="form-control md:col-span-3">
+                        <label class="label">
+                            <span class="label-text font-semibold">
+                                <i class="fas fa-comment mr-2"></i>
+                                Comment
+                            </span>
+                        </label>
+                        <input asp-for="Tourcost.Comment" class="input input-bordered" />
                     </div>
 
-                </div>
-            </div>
-            <div class="col-md-2">
-                <div class="form-group">
-                    <label asp-for="Tourcost.DiscountTransportation"> Discount (T) </label>
-                    <div class="input-group mb-3">
-                        <input asp-for="Tourcost.DiscountTransportation" class="form-control"/>
-                        <div class="input-group-append">
-                            <span class="input-group-text">%</span>
-                        </div>
+                    <!-- Discount Accommodation -->
+                    <div class="form-control">
+                        <label class="label">
+                            <span class="label-text font-semibold">Discount (Accommodation)</span>
+                        </label>
+                        <label class="input-group">
+                            <input asp-for="Tourcost.DiscountAccomodation" class="input input-bordered flex-1" type="number" step="0.01" />
+                            <span class="bg-base-300">%</span>
+                        </label>
+                    </div>
+
+                    <!-- Discount Transportation -->
+                    <div class="form-control">
+                        <label class="label">
+                            <span class="label-text font-semibold">Discount (Transportation)</span>
+                        </label>
+                        <label class="input-group">
+                            <input asp-for="Tourcost.DiscountTransportation" class="input input-bordered flex-1" type="number" step="0.01" />
+                            <span class="bg-base-300">%</span>
+                        </label>
+                    </div>
+
+                    <!-- Luxury Checkbox -->
+                    <div class="form-control">
+                        <label class="label">
+                            <span class="label-text font-semibold">Luxury Tour</span>
+                        </label>
+                        <label class="label cursor-pointer justify-start gap-3 border border-base-300 rounded-lg px-4 py-3">
+                            <input asp-for="Tourcost.IsLuxury" class="checkbox checkbox-primary" type="checkbox" />
+                            <span class="label-text">Mark as luxury tour</span>
+                        </label>
                     </div>
                 </div>
-            </div>
-            <div class="col-md-1">
-                <div class="form-group">
-                    <label asp-for="Tourcost.IsLuxury"> Luxury </label>
-                    <input asp-for="Tourcost.IsLuxury" class="form-control" />
-                </div>
-            </div>
-            <div class="col-md-7">
-                <div class="form-group float-right">
-                    <br />
-                    <button type="submit" class="btn btn-success">Submit</button>
+
+                <!-- Submit Button -->
+                <div class="card-actions justify-end mt-6">
+                    <button type="submit" class="btn btn-primary gap-2">
+                        <i class="fas fa-save"></i>
+                        @(Model.Tourcost.Id > 0 ? "Update Tour Cost" : "Save Tour Cost")
+                    </button>
                 </div>
             </div>
         </div>
@@ -226,19 +255,37 @@
 @section Scripts{
     <partial name="_ValidationScriptsPartial" />
     <script type="text/javascript">
+        // Remove number input spinners
+        const removeSpinners = () => {
+            const style = document.createElement('style');
+            style.textContent = `
+                input::-webkit-outer-spin-button,
+                input::-webkit-inner-spin-button {
+                    -webkit-appearance: none;
+                    margin: 0;
+                }
+                input[type=number] {
+                    -moz-appearance: textfield;
+                }
+            `;
+            document.head.appendChild(style);
+        };
+        removeSpinners();
 
+        // Toast notification function
+        const showToast = (type, message) => {
+            Toast.show(type, message, 3000);
+        };
 
+        // Allow unchecking radio buttons with Ctrl+Click
         $('input[name="Tourcost.MealType"]').click(function (e) {
-
             if (e.ctrlKey) {
-
                 $(this).prop('checked', false);
             }
         });
 
         function setData() {
-
-             let sector = @Html.Raw(Json.Serialize(ViewBag.Sector));
+            let sector = @Html.Raw(Json.Serialize(ViewBag.Sector));
             let hotelCatA = @Html.Raw(Json.Serialize(ViewBag.HotelCatA));
             let hotelCatB = @Html.Raw(Json.Serialize(ViewBag.HotelCatB));
             let hotelCatC = @Html.Raw(Json.Serialize(ViewBag.HotelCatC));
@@ -248,102 +295,110 @@
             var hotelCatBDropdown = '';
             var hotelCatCDropdown = '';
 
-            let tourCostDetailHeader = '   <div class="col-md-1">  ' +
-                '                                   <lable>Days</lable>  ' +
-                '                               </div>  ' +
-                '                               <div class="col">  ' +
-                '                                   <lable>Sector 1</lable>  ' +
-                '                               </div>  ' +
-                '                               <div class="col">  ' +
-                '                                   <lable>Sector 2</lable>  ' +
-                '                               </div>  ' +
-                '                               <div class="col">  ' +
-                '                                   <lable>Sector 3</lable>  ' +
-                '                               </div>  ' +
-                '                               <div class="col">  ' +
-                '                                   <lable>Hotel A</lable>  ' +
-                '                               </div>  ' +
-                '                               <div class="col">  ' +
-                '                                   <lable>Hotel B</lable>  ' +
-                '                               </div>  ' +
-                '                               <div class="col" id="hotelC">  ' +
-                '                                   <lable>Hotel C</lable>  ' +
-                '                              </div>  ';
+            let tourCostDetailHeader = `
+                <div class="col-span-1">
+                    <label class="label-text">Days</label>
+                </div>
+                <div class="col-span-2">
+                    <label class="label-text">Sector 1</label>
+                </div>
+                <div class="col-span-2">
+                    <label class="label-text">Sector 2</label>
+                </div>
+                <div class="col-span-2">
+                    <label class="label-text">Sector 3</label>
+                </div>
+                <div class="col-span-2">
+                    <label class="label-text">Hotel A</label>
+                </div>
+                <div class="col-span-1">
+                    <label class="label-text">Hotel B</label>
+                </div>
+                <div class="col-span-2" id="hotelC">
+                    <label class="label-text">Hotel C</label>
+                </div>
+            `;
 
             $('#tourCostDetailHeader').html(tourCostDetailHeader);
+            $('#tourCostDetailHeader').removeClass('hidden');
 
             $.each(sector, function (idx, value) {
-                sectorDropdown += `<option value="${value.value}">  ${value.text}</option>`
+                sectorDropdown += `<option value="${value.value}">${value.text}</option>`;
             });
 
             $.each(hotelCatA, function (idx, value) {
-                hotelCatADropdown += `<option value="${value.value}">  ${value.text}</option>`
+                hotelCatADropdown += `<option value="${value.value}">${value.text}</option>`;
             });
 
             $.each(hotelCatB, function (idx, value) {
-                hotelCatBDropdown += `<option value="${value.value}">  ${value.text}</option>`
+                hotelCatBDropdown += `<option value="${value.value}">${value.text}</option>`;
             });
 
             $.each(hotelCatC, function (idx, value) {
-                hotelCatCDropdown += `<option value="${value.value}">  ${value.text}</option>`
+                hotelCatCDropdown += `<option value="${value.value}">${value.text}</option>`;
             });
 
             let days = $('#Tourcost_Days').val();
             let html = "";
 
             for (let i = 0; i < days; i++) {
-                html += `<div class="form-row" id="detailRow${i}">
-                            <input type="hidden" id="TourcostDetail_${i}__Id" name="TourcostDetail[${i}].Id" class="form-control"/>
-                            <div class="col-md-1">
-                                <input id="TourcostDetail_${i}__Day" name="TourcostDetail[${i}].Day" class="form-control" value="D${i + 1}"/>
-                            </div>
-                            <div class="col">
-                                <select id="TourcostDetail_${i}__Sector1Id" name="TourcostDetail[${i}].Sector1Id" class="form-control w-100">
-                                    <option selected disabled>Select</option>
-                                    ${sectorDropdown}
-                                </select>
-                            </div>
-                            <div class="col">
-                                <select id="TourcostDetail_${i}__Sector2Id" name="TourcostDetail[${i}].Sector2Id" class="form-control w-100">
-                                    <option selected >Select</option>
-                                    ${sectorDropdown}
-                                </select>
-                            </div>
-                            <div class="col">
-                                <select id="TourcostDetail_${i}__Sector3Id" name="TourcostDetail[${i}].Sector3Id" class="form-control w-100">
-                                    <option selected >Select</option>
-                                    ${sectorDropdown}
-                                </select>
-                            </div>
-                            <div class="col">
-                                <select id="TourcostDetail_${i}__HotelAId" name="TourcostDetail[${i}].HotelAId" class="form-control w-100">
-                                    <option selected >Select</option>
-                                        ${hotelCatADropdown}
-                                </select>
-                            </div>
-                            <div class="col">
-                                <select id="TourcostDetail_${i}__HotelBId" name="TourcostDetail[${i}].HotelBId" class="form-control w-100">
-                                    <option selected >Select</option>
-                                        ${hotelCatBDropdown}
-                                </select>
-                            </div>
-                            <div class="col">
-                                <select id="TourcostDetail_${i}__HotelCId" name="TourcostDetail[${i}].HotelCId" class="form-control w-100">
-                                    <option selected >Select</option>
-                                        ${hotelCatCDropdown}
-                                </select>
-                             </div>
+                html += `
+                    <div class="grid grid-cols-12 gap-2" id="detailRow${i}">
+                        <input type="hidden" id="TourcostDetail_${i}__Id" name="TourcostDetail[${i}].Id"/>
+                        <div class="col-span-1">
+                            <input id="TourcostDetail_${i}__Day" name="TourcostDetail[${i}].Day"
+                                   class="input input-bordered input-sm w-full" value="D${i + 1}" readonly/>
                         </div>
-                    </br>`;
+                        <div class="col-span-2">
+                            <select id="TourcostDetail_${i}__Sector1Id" name="TourcostDetail[${i}].Sector1Id"
+                                    class="select select-bordered select-sm w-full">
+                                <option value="">Select</option>
+                                ${sectorDropdown}
+                            </select>
+                        </div>
+                        <div class="col-span-2">
+                            <select id="TourcostDetail_${i}__Sector2Id" name="TourcostDetail[${i}].Sector2Id"
+                                    class="select select-bordered select-sm w-full">
+                                <option value="">Select</option>
+                                ${sectorDropdown}
+                            </select>
+                        </div>
+                        <div class="col-span-2">
+                            <select id="TourcostDetail_${i}__Sector3Id" name="TourcostDetail[${i}].Sector3Id"
+                                    class="select select-bordered select-sm w-full">
+                                <option value="">Select</option>
+                                ${sectorDropdown}
+                            </select>
+                        </div>
+                        <div class="col-span-2">
+                            <select id="TourcostDetail_${i}__HotelAId" name="TourcostDetail[${i}].HotelAId"
+                                    class="select select-bordered select-sm w-full">
+                                <option value="">Select</option>
+                                ${hotelCatADropdown}
+                            </select>
+                        </div>
+                        <div class="col-span-1">
+                            <select id="TourcostDetail_${i}__HotelBId" name="TourcostDetail[${i}].HotelBId"
+                                    class="select select-bordered select-sm w-full">
+                                <option value="">Select</option>
+                                ${hotelCatBDropdown}
+                            </select>
+                        </div>
+                        <div class="col-span-2">
+                            <select id="TourcostDetail_${i}__HotelCId" name="TourcostDetail[${i}].HotelCId"
+                                    class="select select-bordered select-sm w-full">
+                                <option value="">Select</option>
+                                ${hotelCatCDropdown}
+                            </select>
+                        </div>
+                    </div>
+                `;
             }
 
             $('#tourCostDetailBody').html(html);
 
             for (let i = 0; i < days; i++) {
                 $(`#TourcostDetail_${i}__Sector1Id`).rules("add", "required");
-                //$(`#TourcostDetail_${i}__HotelAId`).rules("add", "required");
-                //$(`#TourcostDetail_${i}__HotelBId`).rules("add", "required");
-                //$(`#TourcostDetail_${i}__HotelCId`).rules("add", "required");
             }
 
             if ($('#Tourcost_Category1').val()) {
@@ -363,197 +418,157 @@
             }
 
             for (let i = 0; i < days; i++) {
-
                 if ($('#Tourcost_Category1').val()) {
-                    let row = `<div class="col">
-                                <input type="text" id="TourcostDetail_${i}__Category1Cost" name="TourcostDetail[${i}].Category1Cost" class="form-control"/>
-                                </div>`
-
+                    let row = `<div class="col-span-1">
+                                <input type="text" id="TourcostDetail_${i}__Category1Cost"
+                                       name="TourcostDetail[${i}].Category1Cost"
+                                       class="input input-bordered input-sm w-full"/>
+                                </div>`;
                     $(`#detailRow${i}`).children().eq(8).remove();
                     $(`#detailRow${i}`).append(row);
-
-
                 }
 
                 if ($('#Tourcost_Category2').val()) {
-
-                    let row = `<div class="col">
-                                <input type="text" id="TourcostDetail_${i}__Category2Cost" name="TourcostDetail[${i}].Category2Cost" class="form-control"/>
-                                </div>`
-
+                    let row = `<div class="col-span-1">
+                                <input type="text" id="TourcostDetail_${i}__Category2Cost"
+                                       name="TourcostDetail[${i}].Category2Cost"
+                                       class="input input-bordered input-sm w-full"/>
+                                </div>`;
                     $(`#detailRow${i}`).children().eq(9).remove();
                     $(`#detailRow${i}`).append(row);
                 }
 
                 if ($('#Tourcost_Category3').val()) {
-
-                    let row = `<div class="col">
-                                <input type="text" id="TourcostDetail_${i}__Category3Cost" name="TourcostDetail[${i}].Category3Cost" class="form-control"/>
-                                </div>`
-
+                    let row = `<div class="col-span-1">
+                                <input type="text" id="TourcostDetail_${i}__Category3Cost"
+                                       name="TourcostDetail[${i}].Category3Cost"
+                                       class="input input-bordered input-sm w-full"/>
+                                </div>`;
                     $(`#detailRow${i}`).children().eq(10).remove();
                     $(`#detailRow${i}`).append(row);
                 }
 
                 if ($('#Tourcost_Category4').val()) {
-
-                    let row = `<div class="col">
-                                <input type="text" id="TourcostDetail_${i}__Category4Cost" name="TourcostDetail[${i}].Category4Cost" class="form-control"/>
-                                </div>`
-
+                    let row = `<div class="col-span-1">
+                                <input type="text" id="TourcostDetail_${i}__Category4Cost"
+                                       name="TourcostDetail[${i}].Category4Cost"
+                                       class="input input-bordered input-sm w-full"/>
+                                </div>`;
                     $(`#detailRow${i}`).children().eq(11).remove();
                     $(`#detailRow${i}`).append(row);
                 }
             }
         }
 
-
         function catg1div() {
-
-            $('<div class="col" id="catg1div"></div>').insertAfter('#hotelC');
-
-            //$('#tourCostDetailHeader').append('<div class="col" id="catg1div"></div>');
-            let cat1 = $('#Tourcost_Category1').val()
-            let html = `    <div class="col">
-                                                       <lable> ${cat1} <button type="button" class='btn' id="rmCat1"><i class="fas fa-trash-alt text-danger"></i></button> </lable>
-                                                </div>  `;
+            $('<div class="col-span-1" id="catg1div"></div>').insertAfter('#hotelC');
+            let cat1 = $('#Tourcost_Category1').val();
+            let html = `<label class="label-text">
+                            ${cat1}
+                            <button type="button" class='btn btn-ghost btn-xs text-error' id="rmCat1">
+                                <i class="fas fa-trash-alt"></i>
+                            </button>
+                        </label>`;
             $('#catg1div').html(html);
 
             $('#rmCat1').on('click', function () {
-
-                let rowLength = $('#tourCostDetailBody').find('div.form-row').length;
+                let rowLength = $('#tourCostDetailBody').find('.grid').length;
                 $('#catg1div').remove();
                 for (let i = 0; i < rowLength; i++) {
                     $(`#detailRow${i}`).children().eq(8).remove();
                 }
                 $('#Tourcost_Category1').val('');
-
             });
-
         }
 
         function catg2div() {
-
-            let id;
-
-            if ($('#catg1div').length) {
-                id = '#catg1div';
-            }
-            else {
-
-                id = '#hotelC';
-            }
-
-            $('   <div class="col" id="catg2div"></div>  ').insertAfter(id);
-            let cat2 = $('#Tourcost_Category2').val()
-            let html = `    <div class="col">
-                                                       <lable> ${cat2} <button type="button" class='btn' id="rmCat2"><i class="fas fa-trash-alt text-danger"></i></button> </lable>
-                                                </div>  `;
+            let id = $('#catg1div').length ? '#catg1div' : '#hotelC';
+            $('<div class="col-span-1" id="catg2div"></div>').insertAfter(id);
+            let cat2 = $('#Tourcost_Category2').val();
+            let html = `<label class="label-text">
+                            ${cat2}
+                            <button type="button" class='btn btn-ghost btn-xs text-error' id="rmCat2">
+                                <i class="fas fa-trash-alt"></i>
+                            </button>
+                        </label>`;
             $('#catg2div').html(html);
 
             $('#rmCat2').on('click', function () {
-
-                let dist = $('#catg2div').prevUntil('#hotelC').length
-                console.log(dist);
-
-                let rowLength = $('#tourCostDetailBody').find('div.form-row').length;
+                let dist = $('#catg2div').prevUntil('#hotelC').length;
+                let rowLength = $('#tourCostDetailBody').find('.grid').length;
                 $('#catg2div').remove();
                 for (let i = 0; i < rowLength; i++) {
                     $(`#detailRow${i}`).children().eq(8 + dist).remove();
                 }
                 $('#Tourcost_Category2').val('');
-
             });
         }
 
         function catg3div() {
-
-            let id;
-
+            let id = '#hotelC';
             if ($('#catg2div').length) {
                 id = '#catg2div';
-            }
-            else {
-
-                if ($('#catg1div').length) {
-                    id = '#catg1div';
-                }
-                else {
-                    id = '#hotelC';
-                }
+            } else if ($('#catg1div').length) {
+                id = '#catg1div';
             }
 
-            $('   <div class="col" id="catg3div"></div>  ').insertAfter(id);
-            let cat3 = $('#Tourcost_Category3').val()
-            let html = `    <div class="col">
-                                                       <lable> ${cat3} <button type="button" class='btn' id="rmCat3"><i class="fas fa-trash-alt text-danger"></i></button> </lable>
-                                                </div>  `;
+            $('<div class="col-span-1" id="catg3div"></div>').insertAfter(id);
+            let cat3 = $('#Tourcost_Category3').val();
+            let html = `<label class="label-text">
+                            ${cat3}
+                            <button type="button" class='btn btn-ghost btn-xs text-error' id="rmCat3">
+                                <i class="fas fa-trash-alt"></i>
+                            </button>
+                        </label>`;
             $('#catg3div').html(html);
 
             $('#rmCat3').on('click', function () {
-                let dist = $('#catg3div').prevUntil('#hotelC').length
-                console.log(dist);
-                let rowLength = $('#tourCostDetailBody').find('div.form-row').length;
+                let dist = $('#catg3div').prevUntil('#hotelC').length;
+                let rowLength = $('#tourCostDetailBody').find('.grid').length;
                 $('#catg3div').remove();
                 for (let i = 0; i < rowLength; i++) {
                     $(`#detailRow${i}`).children().eq(8 + dist).remove();
                 }
                 $('#Tourcost_Category3').val('');
-
             });
         }
 
         function catg4div() {
-
-            let id;
-
+            let id = '#hotelC';
             if ($('#catg3div').length) {
                 id = '#catg3div';
-            }
-            else {
-
-                if ($('#catg2div').length) {
-                    id = '#catg2div';
-                }
-                else {
-                    if ($('#catg1div').length) {
-                        id = '#catg1div';
-                    }
-                    else {
-                        id = '#hotelC';
-                    }
-                }
+            } else if ($('#catg2div').length) {
+                id = '#catg2div';
+            } else if ($('#catg1div').length) {
+                id = '#catg1div';
             }
 
-            //$('#tourCostDetailHeader').append('   <div class="col" id="catg4div"></div>  ');
-            $('   <div class="col" id="catg4div"></div>  ').insertAfter(id);
-            let cat4 = $('#Tourcost_Category4').val()
-            let html = `    <div class="col">
-                                                       <lable> ${cat4} <button type="button" class='btn' id="rmCat4"><i class="fas fa-trash-alt text-danger"></i></button> </lable>
-                                                </div>  `;
+            $('<div class="col-span-1" id="catg4div"></div>').insertAfter(id);
+            let cat4 = $('#Tourcost_Category4').val();
+            let html = `<label class="label-text">
+                            ${cat4}
+                            <button type="button" class='btn btn-ghost btn-xs text-error' id="rmCat4">
+                                <i class="fas fa-trash-alt"></i>
+                            </button>
+                        </label>`;
             $('#catg4div').html(html);
 
             $('#rmCat4').on('click', function () {
-                let dist = $('#catg4div').prevUntil('#hotelC').length
-                console.log(dist);
-                let rowLength = $('#tourCostDetailBody').find('div.form-row').length;
+                let dist = $('#catg4div').prevUntil('#hotelC').length;
+                let rowLength = $('#tourCostDetailBody').find('.grid').length;
                 $('#catg4div').remove();
                 for (let i = 0; i < rowLength; i++) {
                     $(`#detailRow${i}`).children().eq(8 + dist).remove();
                 }
                 $('#Tourcost_Category4').val('');
-
             });
         }
 
         $(document).ready(function () {
-
-
-            var previousValue = []
+            var previousValue = [];
             var rowLength;
 
             var data = @Html.Raw(Json.Serialize(Model));
-            console.log(data);
 
             if (!$('#Tourcost_DiscountAccomodation').val()) {
                 $('#Tourcost_DiscountAccomodation').val(0);
@@ -582,11 +597,9 @@
                 }
             }
 
-
             $("#Tourcost_Days").on('focus', function () {
-                // Store the current value on focus and on change
-                previousValue = []
-                rowLength = /*$('#tourCostDetailBody').find('div.form-row').length;*/ $('#Tourcost_Days').val();
+                previousValue = [];
+                rowLength = $('#Tourcost_Days').val();
                 for (let i = 0; i < rowLength; i++) {
                     previousValue.push({
                         Id: $(`#TourcostDetail_${i}__Id`).val(),
@@ -602,11 +615,7 @@
                         Category4: $(`#TourcostDetail_${i}__Category4Cost`).val()
                     });
                 }
-
-                console.log(previousValue);
-
             }).change(function () {
-
                 setData();
 
                 for (let i = 0; i < rowLength; i++) {
@@ -622,253 +631,201 @@
                     previousValue[i].Category3 ? $(`#TourcostDetail_${i}__Category3Cost`).val(previousValue[i].Category3) : previousValue[i].Category3;
                     previousValue[i].Category4 ? $(`#TourcostDetail_${i}__Category4Cost`).val(previousValue[i].Category4) : previousValue[i].Category4;
                 }
-
             });
 
             $('#Tourcost_Category2').on('keydown', function () {
                 if (!$('#Tourcost_Category1').val()) {
-
                     $('#Tourcost_Category2').val('');
-
-                    noty({
-                        type: 'error',
-                        text: 'Fill Category 1 first',
-                        layout: 'center',
-                        timeout: 500,
-                        killer: true
-                    });
+                    showToast('error', 'Fill Category 1 first');
                 }
             });
 
-
             $('#Tourcost_Category3').on('keydown', function () {
                 if (!$('#Tourcost_Category2').val()) {
-
                     $('#Tourcost_Category3').val('');
-
-                    noty({
-                        type: 'error',
-                        text: 'Fill Category 2 first',
-                        layout: 'center',
-                        timeout: 500,
-                        killer: true
-                    });
+                    showToast('error', 'Fill Category 2 first');
                 }
             });
 
             $('#Tourcost_Category4').on('keydown', function () {
                 if (!$('#Tourcost_Category3').val()) {
-
                     $('#Tourcost_Category4').val('');
-
-                    noty({
-                        type: 'error',
-                        text: 'Fill Category 3 first',
-                        layout: 'center',
-                        timeout: 500,
-                        killer: true
-                    });
+                    showToast('error', 'Fill Category 3 first');
                 }
             });
 
             $('#Tourcost_Category1').on('change', function () {
-
                 let flag = 0;
 
                 if ($('#catg1div').length) {
                     $('#catg1div').remove();
-                }
-                else {
-
+                } else {
                     flag = 1;
-                };
+                }
 
                 catg1div();
 
-                let isSameValue = window.confirm(`Do you want to use the same ${$('#Tourcost_Category1').val()} rate for all day ?`);
+                let isSameValue = window.confirm(`Do you want to use the same ${$('#Tourcost_Category1').val()} rate for all days?`);
 
                 if (isSameValue) {
-
                     let value = window.prompt(`Enter cost for ${$('#Tourcost_Category1').val()}`);
                     value = value != null ? value : 0;
                     for (let i = 0; i < $('#Tourcost_Days').val(); i++) {
-
-                        let row = `<div class="col">
-                                <input type="text" id="TourcostDetail_${i}__Category1Cost" name="TourcostDetail[${i}].Category1Cost" class="form-control" value="${value}"/>
-                                </div>`
+                        let row = `<div class="col-span-1">
+                                    <input type="text" id="TourcostDetail_${i}__Category1Cost"
+                                           name="TourcostDetail[${i}].Category1Cost"
+                                           class="input input-bordered input-sm w-full" value="${value}"/>
+                                    </div>`;
 
                         if (flag == 0) {
-
                             $(`#detailRow${i}`).children().eq(8).remove();
-
                         }
 
                         $(row).insertAfter($(`#detailRow${i}`).children().eq(7));
                     }
-                }
-                else {
+                } else {
                     for (let i = 0; i < $('#Tourcost_Days').val(); i++) {
-
-                        let row = `<div class="col">
-                                <input type="text" id="TourcostDetail_${i}__Category1Cost" name="TourcostDetail[${i}].Category1Cost" class="form-control"/>
-                                </div>`
+                        let row = `<div class="col-span-1">
+                                    <input type="text" id="TourcostDetail_${i}__Category1Cost"
+                                           name="TourcostDetail[${i}].Category1Cost"
+                                           class="input input-bordered input-sm w-full"/>
+                                    </div>`;
 
                         if (flag == 0) {
-
                             $(`#detailRow${i}`).children().eq(8).remove();
-
                         }
 
                         $(row).insertAfter($(`#detailRow${i}`).children().eq(7));
                     }
                 }
-
             });
 
-
             $('#Tourcost_Category2').on('change', function () {
-
                 let flag = 0;
 
                 if ($('#catg2div').length) {
                     $('#catg2div').remove();
-                }
-                else {
+                } else {
                     flag = 0;
-                };
+                }
 
                 catg2div();
 
-                let isSameValue = window.confirm(`Do you want to use the same ${$('#Tourcost_Category2').val()} rate for all day ?`);
+                let isSameValue = window.confirm(`Do you want to use the same ${$('#Tourcost_Category2').val()} rate for all days?`);
 
                 if (isSameValue) {
                     let value = window.prompt(`Enter cost for ${$('#Tourcost_Category2').val()}`);
                     for (let i = 0; i < $('#Tourcost_Days').val(); i++) {
-
-                        let row = `<div class="col">
-                                <input type="text" id="TourcostDetail_${i}__Category2Cost" name="TourcostDetail[${i}].Category2Cost" class="form-control" value="${value}"/>
-                                </div>`
+                        let row = `<div class="col-span-1">
+                                    <input type="text" id="TourcostDetail_${i}__Category2Cost"
+                                           name="TourcostDetail[${i}].Category2Cost"
+                                           class="input input-bordered input-sm w-full" value="${value}"/>
+                                    </div>`;
 
                         if (flag == 0) {
-
                             $(`#detailRow${i}`).children().eq(9).remove();
                         }
 
                         $(row).insertAfter($(`#detailRow${i}`).children().eq(8));
                     }
-                }
-                else {
+                } else {
                     for (let i = 0; i < $('#Tourcost_Days').val(); i++) {
-
-                        let row = `<div class="col">
-                                <input type="text" id="TourcostDetail_${i}__Category2Cost" name="TourcostDetail[${i}].Category2Cost" class="form-control"/>
-                                </div>`
+                        let row = `<div class="col-span-1">
+                                    <input type="text" id="TourcostDetail_${i}__Category2Cost"
+                                           name="TourcostDetail[${i}].Category2Cost"
+                                           class="input input-bordered input-sm w-full"/>
+                                    </div>`;
 
                         if (flag == 0) {
-
                             $(`#detailRow${i}`).children().eq(9).remove();
                         }
                         $(row).insertAfter($(`#detailRow${i}`).children().eq(8));
                     }
                 }
-
-
             });
 
             $('#Tourcost_Category3').on('change', function () {
-
                 let flag = 0;
 
                 if ($('#catg3div').length) {
                     $('#catg3div').remove();
-                }
-                else {
+                } else {
                     flag = 1;
-                };
+                }
 
                 catg3div();
 
-                let isSameValue = window.confirm(`Do you want to use the same ${$('#Tourcost_Category3').val()} rate for all day ?`);
+                let isSameValue = window.confirm(`Do you want to use the same ${$('#Tourcost_Category3').val()} rate for all days?`);
                 if (isSameValue) {
-
                     let value = window.prompt(`Enter cost for ${$('#Tourcost_Category3').val()}`);
                     for (let i = 0; i < $('#Tourcost_Days').val(); i++) {
-
-                        let row = `<div class="col">
-                                <input type="text" id="TourcostDetail_${i}__Category3Cost" name="TourcostDetail[${i}].Category3Cost" class="form-control" value="${value}"/>
-                                </div>`
+                        let row = `<div class="col-span-1">
+                                    <input type="text" id="TourcostDetail_${i}__Category3Cost"
+                                           name="TourcostDetail[${i}].Category3Cost"
+                                           class="input input-bordered input-sm w-full" value="${value}"/>
+                                    </div>`;
                         if (flag == 0) {
-
                             $(`#detailRow${i}`).children().eq(10).remove();
                         }
                         $(row).insertAfter($(`#detailRow${i}`).children().eq(9));
                     }
-                }
-                else {
-
+                } else {
                     for (let i = 0; i < $('#Tourcost_Days').val(); i++) {
-
-                        let row = `<div class="col">
-                                <input type="text" id="TourcostDetail_${i}__Category3Cost" name="TourcostDetail[${i}].Category3Cost" class="form-control"/>
-                                </div>`
+                        let row = `<div class="col-span-1">
+                                    <input type="text" id="TourcostDetail_${i}__Category3Cost"
+                                           name="TourcostDetail[${i}].Category3Cost"
+                                           class="input input-bordered input-sm w-full"/>
+                                    </div>`;
 
                         if (flag == 0) {
-
                             $(`#detailRow${i}`).children().eq(10).remove();
                         }
                         $(row).insertAfter($(`#detailRow${i}`).children().eq(9));
                     }
                 }
-
             });
 
             $('#Tourcost_Category4').on('change', function () {
-
                 let flag = 0;
 
                 if ($('#catg4div').length) {
                     $('#catg4div').remove();
-                }
-                else {
+                } else {
                     flag = 1;
-                };
+                }
 
                 catg4div();
-                let isSameValue = window.confirm(`Do you want to use the same ${$('#Tourcost_Category4').val()} rate for all day ?`);
+                let isSameValue = window.confirm(`Do you want to use the same ${$('#Tourcost_Category4').val()} rate for all days?`);
                 if (isSameValue) {
-
                     let value = window.prompt(`Enter cost for ${$('#Tourcost_Category4').val()}`);
                     for (let i = 0; i < $('#Tourcost_Days').val(); i++) {
-
-                        let row = `<div class="col">
-                                <input type="text" id="TourcostDetail_${i}__Category4Cost" name="TourcostDetail[${i}].Category4Cost" class="form-control" value="${value}"/>
-                                </div>`
+                        let row = `<div class="col-span-1">
+                                    <input type="text" id="TourcostDetail_${i}__Category4Cost"
+                                           name="TourcostDetail[${i}].Category4Cost"
+                                           class="input input-bordered input-sm w-full" value="${value}"/>
+                                    </div>`;
 
                         if (flag == 0) {
-
                             $(`#detailRow${i}`).children().eq(11).remove();
                         }
 
                         $(row).insertAfter($(`#detailRow${i}`).children().eq(10));
                     }
-                }
-                else {
+                } else {
                     for (let i = 0; i < $('#Tourcost_Days').val(); i++) {
-
-                        let row = `<div class="col">
-                                <input type="text" id="TourcostDetail_${i}__Category4Cost" name="TourcostDetail[${i}].Category4Cost" class="form-control"/>
-                                </div>`
+                        let row = `<div class="col-span-1">
+                                    <input type="text" id="TourcostDetail_${i}__Category4Cost"
+                                           name="TourcostDetail[${i}].Category4Cost"
+                                           class="input input-bordered input-sm w-full"/>
+                                    </div>`;
 
                         if (flag == 0) {
-
                             $(`#detailRow${i}`).children().eq(11).remove();
                         }
                         $(row).insertAfter($(`#detailRow${i}`).children().eq(10));
                     }
                 }
-
             });
-
         });
     </script>
 }

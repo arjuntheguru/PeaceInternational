@@ -40,7 +40,7 @@
             </div>
 
             <!-- Logo Only -->
-            <a asp-area="" asp-controller="Home" asp-action="Index" class="btn btn-ghost normal-case">
+            <a asp-area="" asp-controller="Home" asp-action="Index" class="flex items-center px-2">
                 <img src="~/img/logo.png" alt="Peace International" class="h-10" />
             </a>
         </div>
@@ -89,27 +89,16 @@
     </main>
 
     <!-- Footer -->
-    <footer class="footer footer-center p-10 bg-base-200 text-base-content mt-20">
-        <div class="grid grid-flow-col gap-4">
-            <a asp-area="" asp-controller="Home" asp-action="Index" class="link link-hover">Home</a>
-            <a asp-area="" asp-controller="Home" asp-action="Privacy" class="link link-hover">Privacy</a>
-        </div>
-        <div>
-            <div class="grid grid-flow-col gap-4">
-                <a href="#" class="btn btn-ghost btn-circle">
-                    <i class="fab fa-facebook-f text-xl"></i>
-                </a>
-                <a href="#" class="btn btn-ghost btn-circle">
-                    <i class="fab fa-instagram text-xl"></i>
-                </a>
-                <a href="#" class="btn btn-ghost btn-circle">
-                    <i class="fab fa-twitter text-xl"></i>
-                </a>
+    <footer class="bg-base-200 border-t border-base-300 py-8 mt-20">
+        <div class="max-w-6xl mx-auto px-4">
+            <div class="flex flex-col items-center gap-4 text-center">
+                <div class="text-sm text-base-content/70">
+                    &copy; 2025 Peace International Tours. All rights reserved.
+                </div>
+                <div class="text-xs text-base-content/50">
+                    Powered by Voberry Technologies
+                </div>
             </div>
-        </div>
-        <div>
-            <p>&copy; 2025 Peace International Tours. All rights reserved.</p>
-            <p class="text-sm opacity-70">Powered by Voberry Technologies</p>
         </div>
     </footer>
 

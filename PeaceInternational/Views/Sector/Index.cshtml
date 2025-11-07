@@ -1,104 +1,234 @@
-﻿
 @{
     ViewData["Title"] = "Sector";
 }
 
-<div class="row">
-    <div class="col-md-10">
-        <h1 class="display-4">Sector</h1>
+<div class="animate-fade-in">
+    <!-- Header -->
+    <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6">
+        <div>
+            <h1 class="text-4xl font-bold text-base-content">Sector Management</h1>
+            <p class="text-base-content/70 mt-2">Manage sectors and transportation rates by PAX</p>
+        </div>
+        <label for="sector-drawer" class="btn btn-primary gap-2 drawer-button">
+            <i class="fas fa-plus"></i>
+            Add Sector
+        </label>
     </div>
-    <div class="col-md-2">
-        <input type="button" class="btn btn-info mt-4 w-100" data-toggle="modal" data-target="#createSector" id="addSectorBtn" value="Add Sector" />
-    </div>
-</div>
-<hr />
-<div class="row">
-    <div class="col-md-6">
-        <input type="text" class="form-control" id="searchField" placeholder="Name" />
-    </div>
-</div>
-<div style="height: 100%; box-sizing: border-box; padding-top:20px;">
-    <div id="sectorGrid" style="width:100%; height:450px" class="ag-theme-balham"></div>
-</div>
-<div class="modal fade" id="createSector" tabindex="-1" role="dialog" aria-labelledby="sectorTitle" aria-hidden="true">
-    <div class="modal-dialog modal-lg" role="document">
-        <form id="sectorForm">
-            <div class="modal-content" style="background: linear-gradient(225deg, rgba(255,255,255,1) 0%, rgba(232,227,227,1) 100%);">
-                <div class="modal-header bg-info">
-                    <h5 class="modal-title text-light" id="sectorTitle"></h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span class="text-light" aria-hidden="true">&times;</span>
+
+    <!-- Search -->
+    <div class="card bg-base-200 shadow-lg mb-6">
+        <div class="card-body">
+            <div class="form-control">
+                <div class="input-group">
+                    <input type="text" id="searchField" placeholder="Search by sector name..." class="input input-bordered flex-1" />
+                    <button class="btn btn-square btn-primary">
+                        <i class="fas fa-search"></i>
                     </button>
                 </div>
-                <div class="modal-body">
-                    <input type="hidden" id="id" />
-                    <div class="form-group">
-                        <label for="name"> Name <span class="text-danger">*</span></label>
-                        <input type="text" class="form-control" name="name" id="name" oninput="this.value = this.value.toUpperCase()" />
-                    </div>
-                    <div class="form-group">
-                        <label for="code"> Code <span class="text-danger">*</span></label>
-                        <input type="text" class="form-control" name="code" id="code" oninput="this.value = this.value.toUpperCase()" />
-                    </div>
-                    <div class="form-row">
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="code"> T1 (01-02) PAX <span class="text-danger">*</span></label>
-                                <input type="number" class="form-control" name="t1cost" id="t1cost" placeholder="Cost" onkeydown="return event.keyCode !== 69" />
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="code"> T2 (03-05) PAX <span class="text-danger">*</span></label>
-                                <input type="number" class="form-control" name="t2cost" id="t2cost" placeholder="Cost" onkeydown="return event.keyCode !== 69" />
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-row">
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="code"> T3 (06-09) PAX <span class="text-danger">*</span></label>
-                                <input type="number" class="form-control" name="t3cost" id="t3cost" placeholder="Cost" onkeydown="return event.keyCode !== 69" />
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="code"> T4 (10-18) PAX <span class="text-danger">*</span></label>
-                                <input type="number" class="form-control" name="t4cost" id="t4cost" placeholder="Cost" onkeydown="return event.keyCode !== 69" />
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-row">
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="code"> T5 (19-24) PAX <span class="text-danger">*</span></label>
-                                <input type="number" class="form-control" name="t5cost" id="t5cost" placeholder="Cost" onkeydown="return event.keyCode !== 69" />
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="code"> T6 (25+) PAX <span class="text-danger">*</span></label>
-                                <input type="number" class="form-control" name="t6cost" id="t6cost" placeholder="Cost" onkeydown="return event.keyCode !== 69" />
-                            </div>
-                        </div>
-                    </div>
-                   
-                    <div class="modal-footer">
-                        <button type="submit" class="btn btn-primary" id="btnSave">Save</button>
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    </div>
+            </div>
+        </div>
+    </div>
 
-                </div>
-        </form>
+    <!-- Sector Table -->
+    <div class="card bg-base-100 shadow-lg">
+        <div class="card-body p-0">
+            <div class="overflow-x-auto">
+                <table class="table table-zebra w-full" id="sectorTable">
+                    <thead class="bg-primary text-primary-content">
+                        <tr>
+                            <th class="normal-case text-base">Sector Name</th>
+                            <th class="normal-case text-base">Code</th>
+                            <th class="normal-case text-base">T1 (1-2)</th>
+                            <th class="normal-case text-base">T2 (3-5)</th>
+                            <th class="normal-case text-base">T3 (6-9)</th>
+                            <th class="normal-case text-base">T4 (10-18)</th>
+                            <th class="normal-case text-base">T5 (19-24)</th>
+                            <th class="normal-case text-base">T6 (25+)</th>
+                            <th class="normal-case text-base text-center">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tableBody">
+                        <tr>
+                            <td colspan="9" class="text-center py-12">
+                                <div class="loading loading-spinner loading-lg text-primary"></div>
+                                <p class="mt-4">Loading sectors...</p>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </div>
 </div>
 
-@section Scripts{
+<!-- Drawer for Add/Edit Sector -->
+<div class="drawer drawer-end z-50">
+    <input id="sector-drawer" type="checkbox" class="drawer-toggle" />
+    <div class="drawer-side">
+        <label for="sector-drawer" class="drawer-overlay"></label>
+        <div class="bg-base-100 w-full md:w-[700px] min-h-full shadow-2xl">
+            <div class="sticky top-0 bg-primary text-primary-content p-6 z-10">
+                <div class="flex justify-between items-center">
+                    <h2 class="text-2xl font-bold" id="sectorTitle">Add Sector</h2>
+                    <label for="sector-drawer" class="btn btn-ghost btn-circle btn-sm">
+                        <i class="fas fa-times text-xl"></i>
+                    </label>
+                </div>
+            </div>
 
+            <form id="sectorForm" class="p-6">
+                <input type="hidden" id="id" />
+
+                <div class="space-y-4">
+                    <!-- Sector Info -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div class="form-control">
+                            <label class="label">
+                                <span class="label-text font-semibold">Sector Name <span class="text-error">*</span></span>
+                            </label>
+                            <input type="text"
+                                   class="input input-bordered"
+                                   name="name"
+                                   id="name"
+                                   placeholder="Enter sector name"
+                                   oninput="this.value = this.value.toUpperCase()" />
+                            <label class="label">
+                                <span class="label-text-alt text-error" id="name-error"></span>
+                            </label>
+                        </div>
+
+                        <div class="form-control">
+                            <label class="label">
+                                <span class="label-text font-semibold">Code <span class="text-error">*</span></span>
+                            </label>
+                            <input type="text"
+                                   class="input input-bordered"
+                                   name="code"
+                                   id="code"
+                                   placeholder="Sector code"
+                                   oninput="this.value = this.value.toUpperCase()" />
+                            <label class="label">
+                                <span class="label-text-alt text-error" id="code-error"></span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Rates by PAX Tiers -->
+                    <div class="divider">Rates by PAX Tiers</div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div class="form-control">
+                            <label class="label">
+                                <span class="label-text font-semibold">T1 (01-02 PAX) <span class="text-error">*</span></span>
+                            </label>
+                            <input type="number"
+                                   class="input input-bordered"
+                                   name="t1cost"
+                                   id="t1cost"
+                                   placeholder="0.00"
+                                   step="0.01" />
+                            <label class="label">
+                                <span class="label-text-alt text-error" id="t1cost-error"></span>
+                            </label>
+                        </div>
+
+                        <div class="form-control">
+                            <label class="label">
+                                <span class="label-text font-semibold">T2 (03-05 PAX) <span class="text-error">*</span></span>
+                            </label>
+                            <input type="number"
+                                   class="input input-bordered"
+                                   name="t2cost"
+                                   id="t2cost"
+                                   placeholder="0.00"
+                                   step="0.01" />
+                            <label class="label">
+                                <span class="label-text-alt text-error" id="t2cost-error"></span>
+                            </label>
+                        </div>
+
+                        <div class="form-control">
+                            <label class="label">
+                                <span class="label-text font-semibold">T3 (06-09 PAX) <span class="text-error">*</span></span>
+                            </label>
+                            <input type="number"
+                                   class="input input-bordered"
+                                   name="t3cost"
+                                   id="t3cost"
+                                   placeholder="0.00"
+                                   step="0.01" />
+                            <label class="label">
+                                <span class="label-text-alt text-error" id="t3cost-error"></span>
+                            </label>
+                        </div>
+
+                        <div class="form-control">
+                            <label class="label">
+                                <span class="label-text font-semibold">T4 (10-18 PAX) <span class="text-error">*</span></span>
+                            </label>
+                            <input type="number"
+                                   class="input input-bordered"
+                                   name="t4cost"
+                                   id="t4cost"
+                                   placeholder="0.00"
+                                   step="0.01" />
+                            <label class="label">
+                                <span class="label-text-alt text-error" id="t4cost-error"></span>
+                            </label>
+                        </div>
+
+                        <div class="form-control">
+                            <label class="label">
+                                <span class="label-text font-semibold">T5 (19-24 PAX) <span class="text-error">*</span></span>
+                            </label>
+                            <input type="number"
+                                   class="input input-bordered"
+                                   name="t5cost"
+                                   id="t5cost"
+                                   placeholder="0.00"
+                                   step="0.01" />
+                            <label class="label">
+                                <span class="label-text-alt text-error" id="t5cost-error"></span>
+                            </label>
+                        </div>
+
+                        <div class="form-control">
+                            <label class="label">
+                                <span class="label-text font-semibold">T6 (25+ PAX) <span class="text-error">*</span></span>
+                            </label>
+                            <input type="number"
+                                   class="input input-bordered"
+                                   name="t6cost"
+                                   id="t6cost"
+                                   placeholder="0.00"
+                                   step="0.01" />
+                            <label class="label">
+                                <span class="label-text-alt text-error" id="t6cost-error"></span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Actions -->
+                <div class="flex gap-3 mt-8 sticky bottom-0 bg-base-100 pt-4 border-t border-base-300">
+                    <button type="submit" class="btn btn-primary flex-1" id="btnSave">
+                        <i class="fas fa-save mr-2"></i>
+                        Save Sector
+                    </button>
+                    <label for="sector-drawer" class="btn btn-ghost flex-1">
+                        <i class="fas fa-times mr-2"></i>
+                        Cancel
+                    </label>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Toast Container -->
+<div class="toast toast-top toast-center z-[100]" id="toastContainer"></div>
+
+@section Scripts {
     <partial name="_ValidationScriptsPartial" />
     <script src="~/js/sector.js"></script>
 }
-
-
-
-

@@ -3,30 +3,50 @@
 }
 
 <div class="animate-fade-in">
-    <!-- Header -->
-    <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6">
+    <!-- Header with cleaner Daisy UI styling -->
+    <div class="flex items-center justify-between mb-8">
         <div>
-            <h1 class="text-4xl font-bold text-base-content">Invoice Management</h1>
-            <p class="text-base-content/70 mt-2">Manage tour invoices and billing</p>
+            <div class="text-sm breadcrumbs">
+                <ul>
+                    <li>Management</li>
+                    <li class="font-semibold">Invoices</li>
+                </ul>
+            </div>
+            <h1 class="text-3xl font-bold">Invoice Management</h1>
         </div>
-        <label for="invoice-drawer" class="btn btn-primary gap-2 drawer-button">
+        <a asp-action="AddEdit" class="btn btn-primary gap-2">
             <i class="fas fa-plus"></i>
-            Add Invoice
-        </label>
+            New Invoice
+        </a>
     </div>
 
-    <!-- Multi-field Search -->
-    <div class="card bg-base-200 shadow-lg mb-6">
+    <!-- Search Filters -->
+    <div class="card bg-base-100 shadow-lg mb-6">
         <div class="card-body">
             <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <div class="form-control">
-                    <input type="text" id="searchField" placeholder="Invoice No..." class="input input-bordered" />
+                    <div class="input-group">
+                        <span class="bg-base-200 px-4 flex items-center">
+                            <i class="fas fa-hashtag"></i>
+                        </span>
+                        <input type="text" id="searchField" placeholder="Invoice No..." class="input input-bordered flex-1" />
+                    </div>
                 </div>
                 <div class="form-control">
-                    <input type="text" id="searchFieldFileCode" placeholder="File Code No..." class="input input-bordered" />
+                    <div class="input-group">
+                        <span class="bg-base-200 px-4 flex items-center">
+                            <i class="fas fa-file-code"></i>
+                        </span>
+                        <input type="text" id="searchFieldFileCode" placeholder="File Code..." class="input input-bordered flex-1" />
+                    </div>
                 </div>
                 <div class="form-control">
-                    <input type="text" id="searchFieldClient" placeholder="Client Name..." class="input input-bordered" />
+                    <div class="input-group">
+                        <span class="bg-base-200 px-4 flex items-center">
+                            <i class="fas fa-user"></i>
+                        </span>
+                        <input type="text" id="searchFieldClient" placeholder="Client Name..." class="input input-bordered flex-1" />
+                    </div>
                 </div>
             </div>
         </div>
@@ -43,7 +63,7 @@
                             <th class="normal-case text-base">File Code</th>
                             <th class="normal-case text-base">Client Name</th>
                             <th class="normal-case text-base">Currency</th>
-                            <th class="normal-case text-base">Net Amount</th>
+                            <th class="normal-case text-base text-right">Net Amount</th>
                             <th class="normal-case text-base text-center">Actions</th>
                         </tr>
                     </thead>
@@ -57,230 +77,6 @@
                     </tbody>
                 </table>
             </div>
-        </div>
-    </div>
-</div>
-
-<!-- Drawer for Add/Edit Invoice -->
-<div class="drawer drawer-end z-50">
-    <input id="invoice-drawer" type="checkbox" class="drawer-toggle" />
-    <div class="drawer-side">
-        <label for="invoice-drawer" class="drawer-overlay"></label>
-        <div class="bg-base-100 w-full md:w-[900px] min-h-full shadow-2xl">
-            <div class="sticky top-0 bg-primary text-primary-content p-6 z-10">
-                <div class="flex justify-between items-center">
-                    <h2 class="text-2xl font-bold" id="invoiceTitle">Add Invoice</h2>
-                    <label for="invoice-drawer" class="btn btn-ghost btn-circle btn-sm">
-                        <i class="fas fa-times text-xl"></i>
-                    </label>
-                </div>
-            </div>
-
-            <form id="invoiceForm" class="p-6">
-                <input type="hidden" id="id" />
-
-                <div class="space-y-4">
-                    <!-- Basic Info -->
-                    <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
-                        <div class="form-control">
-                            <label class="label">
-                                <span class="label-text font-semibold">Date <span class="text-error">*</span></span>
-                            </label>
-                            <input type="text" class="input input-bordered bg-base-200" id="date" disabled />
-                        </div>
-
-                        <div class="form-control md:col-span-2">
-                            <label class="label">
-                                <span class="label-text font-semibold">Dr. <span class="text-error">*</span></span>
-                            </label>
-                            <input type="text" class="input input-bordered" name="dr" id="dr" placeholder="Recipient" />
-                            <label class="label">
-                                <span class="label-text-alt text-error" id="dr-error"></span>
-                            </label>
-                        </div>
-
-                        <div class="form-control">
-                            <label class="label">
-                                <span class="label-text font-semibold">Currency <span class="text-error">*</span></span>
-                            </label>
-                            <input type="text" class="input input-bordered" name="currency" id="currency"
-                                   placeholder="USD" oninput="this.value = this.value.toUpperCase()" maxlength="3" />
-                            <label class="label">
-                                <span class="label-text-alt text-error" id="currency-error"></span>
-                            </label>
-                        </div>
-                    </div>
-
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                        <div class="form-control">
-                            <label class="label">
-                                <span class="label-text font-semibold">Reference No.</span>
-                            </label>
-                            <input type="text" class="input input-bordered" name="referenceNo" id="referenceNo" />
-                        </div>
-
-                        <div class="form-control">
-                            <label class="label">
-                                <span class="label-text font-semibold">File Code No.</span>
-                            </label>
-                            <input type="text" class="input input-bordered" name="fileCodeNo" id="fileCodeNo" />
-                        </div>
-
-                        <div class="form-control">
-                            <label class="label cursor-pointer justify-start gap-3">
-                                <input type="checkbox" name="isTicket" id="isTicket" class="checkbox checkbox-primary" />
-                                <span class="label-text font-semibold">Is Ticket?</span>
-                            </label>
-                        </div>
-                    </div>
-
-                    <!-- Client Details -->
-                    <div class="divider">Client Information</div>
-
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div class="form-control">
-                            <label class="label">
-                                <span class="label-text font-semibold">Address</span>
-                            </label>
-                            <input type="text" class="input input-bordered" name="address" id="address" />
-                        </div>
-
-                        <div class="form-control">
-                            <label class="label">
-                                <span class="label-text font-semibold">Client Name <span class="text-error">*</span></span>
-                            </label>
-                            <input type="text" class="input input-bordered" name="clientName" id="clientName" />
-                            <label class="label">
-                                <span class="label-text-alt text-error" id="clientName-error"></span>
-                            </label>
-                        </div>
-                    </div>
-
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                        <div class="form-control">
-                            <label class="label">
-                                <span class="label-text font-semibold">PAX</span>
-                            </label>
-                            <input type="number" class="input input-bordered" name="pax" id="pax" />
-                        </div>
-
-                        <div class="form-control">
-                            <label class="label">
-                                <span class="label-text font-semibold">Guide</span>
-                            </label>
-                            <input type="text" class="input input-bordered" name="guide" id="guide" />
-                        </div>
-
-                        <div class="form-control">
-                            <label class="label">
-                                <span class="label-text font-semibold">Vehicle</span>
-                            </label>
-                            <input type="text" class="input input-bordered" name="vehicle" id="vehicle" />
-                        </div>
-                    </div>
-
-                    <!-- Particulars Section -->
-                    <div class="divider">Invoice Items</div>
-
-                    <div class="card bg-accent/10 border border-accent/20">
-                        <div class="card-body">
-                            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                                <div class="form-control md:col-span-2">
-                                    <label class="label">
-                                        <span class="label-text font-semibold">Particulars</span>
-                                    </label>
-                                    <input type="text" class="input input-bordered" id="particulars" placeholder="Description" />
-                                </div>
-
-                                <div class="form-control">
-                                    <label class="label">
-                                        <span class="label-text font-semibold">Amount</span>
-                                    </label>
-                                    <div class="join w-full">
-                                        <input type="number" class="input input-bordered join-item flex-1" id="particularAmount"
-                                               placeholder="0.00" step="0.01" />
-                                        <button type="button" class="btn btn-success join-item" id="addProduct">
-                                            <i class="fas fa-plus"></i>
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Items List -->
-                    <div class="card bg-base-200">
-                        <div class="card-body p-0">
-                            <div class="overflow-x-auto max-h-64">
-                                <table class="table table-sm" id="itemsTable">
-                                    <thead class="sticky top-0 bg-base-300">
-                                        <tr>
-                                            <th>Particulars</th>
-                                            <th class="text-right">Amount</th>
-                                            <th class="w-16">Action</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody id="itemsTableBody">
-                                        <tr>
-                                            <td colspan="3" class="text-center py-4 text-base-content/50">
-                                                No items added yet
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Totals -->
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div class="flex items-center gap-2">
-                            <div class="avatar placeholder">
-                                <div class="bg-primary text-primary-content rounded-lg w-24 h-24">
-                                    <img src="~/img/logo.png" alt="Logo" class="w-20" />
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="space-y-3">
-                            <div class="form-control">
-                                <label class="label">
-                                    <span class="label-text font-semibold">Total Due</span>
-                                </label>
-                                <input type="text" class="input input-bordered bg-base-200 font-bold" id="totalDue" disabled />
-                            </div>
-
-                            <div class="form-control">
-                                <label class="label">
-                                    <span class="label-text font-semibold">Discount</span>
-                                </label>
-                                <input type="number" class="input input-bordered" name="discount" id="discount"
-                                       placeholder="0.00" step="0.01" />
-                            </div>
-
-                            <div class="form-control">
-                                <label class="label">
-                                    <span class="label-text font-semibold">Net Amount</span>
-                                </label>
-                                <input type="text" class="input input-bordered bg-primary text-primary-content font-bold text-lg"
-                                       id="netAmount" disabled />
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Actions -->
-                <div class="flex gap-3 mt-8 sticky bottom-0 bg-base-100 pt-4 border-t border-base-300">
-                    <button type="submit" class="btn btn-primary flex-1" id="btnSave">
-                        <i class="fas fa-save mr-2"></i>
-                        Save Invoice
-                    </button>
-                    <label for="invoice-drawer" class="btn btn-ghost flex-1">
-                        <i class="fas fa-times mr-2"></i>
-                        Cancel
-                    </label>
-                </div>
-            </form>
         </div>
     </div>
 </div>
@@ -309,12 +105,153 @@
     </div>
 </dialog>
 
-<!-- Toast Container -->
-<div class="toast toast-top toast-center z-[100]" id="toastContainer"></div>
-
 @section Scripts {
-    <partial name="_ValidationScriptsPartial" />
-    <script src="~/js/invoice.js"></script>
+    <script src="~/lib/handlebars/handlebars.min.js"></script>
+    <script src="~/lib/html2canvas/html2canvas.min.js"></script>
+    <script>
+        "use strict";
+
+        let invoicesData = [];
+
+        // Function to show toast notification
+        const showToast = (type, message) => {
+            Toast.show(type, message, 3000);
+        };
+
+        // Function to load invoices
+        const loadInvoices = () => {
+            $.ajax({
+                url: 'Invoice/GetInvoice',
+                method: 'GET',
+                success: (data) => {
+                    invoicesData = data;
+                    renderTable(data);
+                },
+                error: () => {
+                    showToast('error', 'Failed to load invoices');
+                }
+            });
+        };
+
+        // Function to render table
+        const renderTable = (data) => {
+            const tableBody = document.getElementById('tableBody');
+
+            if (!data || data.length === 0) {
+                tableBody.innerHTML = `
+                    <tr>
+                        <td colspan="6" class="text-center py-12">
+                            <div class="flex flex-col items-center gap-4">
+                                <i class="fas fa-file-invoice fa-4x text-base-300"></i>
+                                <div>
+                                    <h3 class="font-bold text-lg">No invoices found</h3>
+                                    <p class="text-base-content/70">Start by adding your first invoice</p>
+                                </div>
+                                <a href="@Url.Action("AddEdit", "Invoice")" class="btn btn-primary gap-2">
+                                    <i class="fas fa-plus"></i>
+                                    Add Invoice
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+                return;
+            }
+
+            tableBody.innerHTML = data.map(invoice => `
+                <tr class="hover transition-colors duration-200"
+                    data-invoice="${invoice.invoiceNo || ''}"
+                    data-filecode="${(invoice.fileCodeNo || '').toLowerCase()}"
+                    data-client="${(invoice.clientName || '').toLowerCase()}">
+                    <td>
+                        <div class="badge badge-primary badge-lg font-mono">${invoice.invoiceNo || '-'}</div>
+                    </td>
+                    <td>
+                        <span class="font-mono text-sm">${invoice.fileCodeNo || '-'}</span>
+                    </td>
+                    <td class="font-semibold">${invoice.clientName || '-'}</td>
+                    <td>
+                        <div class="badge badge-outline">${invoice.currency || '-'}</div>
+                    </td>
+                    <td class="font-bold text-success text-right">${parseFloat(invoice.netAmount || 0).toFixed(2)}</td>
+                    <td>
+                        <div class="flex gap-2 justify-center">
+                            <a href="@Url.Action("AddEdit", "Invoice")?id=${invoice.id}" class="btn btn-sm btn-info gap-2" title="Edit">
+                                <i class="fas fa-edit"></i>
+                            </a>
+                            <button onclick="generateInvoice(${invoice.id})" class="btn btn-sm btn-success gap-2" title="View">
+                                <i class="fas fa-file-invoice"></i>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            `).join('');
+        };
+
+        // Function to filter table
+        const filterTable = () => {
+            const invoiceNo = document.getElementById('searchField').value.toLowerCase();
+            const fileCode = document.getElementById('searchFieldFileCode').value.toLowerCase();
+            const client = document.getElementById('searchFieldClient').value.toLowerCase();
+
+            const filtered = invoicesData.filter(invoice => {
+                const matchInvoice = !invoiceNo || (invoice.invoiceNo || '').toLowerCase().includes(invoiceNo);
+                const matchFileCode = !fileCode || (invoice.fileCodeNo || '').toLowerCase().includes(fileCode);
+                const matchClient = !client || (invoice.clientName || '').toLowerCase().includes(client);
+
+                return matchInvoice && matchFileCode && matchClient;
+            });
+
+            renderTable(filtered);
+        };
+
+        // Function to generate/view invoice
+        window.generateInvoice = (id) => {
+            $.ajax({
+                url: 'Invoice/GetInvoiceInfo',
+                method: 'GET',
+                data: { id: id },
+                success: (data) => {
+                    data.invoice.fileCodeNo = data.invoice.fileCodeNo ? data.invoice.fileCodeNo.split('/')[1] : data.invoice.fileCodeNo;
+
+                    var source = document.getElementById("entry-template").innerHTML;
+                    var template = Handlebars.compile(source);
+                    var result = template(data);
+
+                    document.getElementById('receiptTemplate').innerHTML = result;
+                    document.getElementById('viewInvoice').showModal();
+                },
+                error: () => {
+                    showToast('error', 'Failed to load invoice');
+                }
+            });
+        };
+
+        // Document ready
+        $(document).ready(function () {
+            // Load invoices on page load
+            loadInvoices();
+
+            // Search filters
+            document.getElementById('searchField').addEventListener('input', filterTable);
+            document.getElementById('searchFieldFileCode').addEventListener('input', filterTable);
+            document.getElementById('searchFieldClient').addEventListener('input', filterTable);
+
+            // Print invoice button
+            document.getElementById('printInvoice').addEventListener('click', function() {
+                html2canvas(document.getElementById("invoiceBody"), {
+                    scale: 3
+                }).then(function (canvas) {
+                    var myImage = canvas.toDataURL("image/png");
+                    var tWindow = window.open("");
+                    tWindow.document.body.innerHTML = "<img id='Image' src='" + myImage + "' style='width:100%;'></img>";
+                    tWindow.document.close();
+                    tWindow.focus();
+                    tWindow.print();
+                });
+            });
+        });
+    </script>
     <script id="entry-template" type="text/x-handlebars-template">
         <style>
             #page { border-collapse: collapse; border: 2px solid; font-family: Arial, Helvetica, sans-serif; }

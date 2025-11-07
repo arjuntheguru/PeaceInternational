@@ -1,0 +1,294 @@
+@{
+    ViewData["Title"] = "Invoice";
+}
+
+<div class="animate-fade-in">
+    <!-- Header with cleaner Daisy UI styling -->
+    <div class="flex items-center justify-between mb-8">
+        <div class="flex items-center gap-4">
+            <a asp-action="Index" class="btn btn-circle btn-ghost">
+                <i class="fas fa-arrow-left text-xl"></i>
+            </a>
+            <div>
+                <div class="text-sm breadcrumbs">
+                    <ul>
+                        <li><a asp-action="Index">Invoices</a></li>
+                        <li><span id="pageTitle">New Invoice</span></li>
+                    </ul>
+                </div>
+                <h1 class="text-3xl font-bold">Invoice Details</h1>
+            </div>
+        </div>
+    </div>
+
+    <form id="invoiceForm">
+        <input type="hidden" id="id" />
+
+        <!-- Basic Information Card -->
+        <div class="card bg-base-100 shadow-lg mb-6">
+            <div class="card-body">
+                <h2 class="card-title text-lg mb-4">
+                    <i class="fas fa-info-circle text-primary"></i>
+                    Basic Information
+                </h2>
+
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                    <div class="form-control">
+                        <label class="label">
+                            <span class="label-text font-semibold">Date</span>
+                        </label>
+                        <input type="text" class="input input-bordered bg-base-200" id="date" disabled />
+                    </div>
+
+                    <div class="form-control md:col-span-2">
+                        <label class="label">
+                            <span class="label-text font-semibold">Dr. <span class="text-error">*</span></span>
+                        </label>
+                        <input type="text" class="input input-bordered" name="dr" id="dr" placeholder="Recipient" />
+                        <label class="label">
+                            <span class="label-text-alt text-error" id="dr-error"></span>
+                        </label>
+                    </div>
+
+                    <div class="form-control">
+                        <label class="label">
+                            <span class="label-text font-semibold">Currency <span class="text-error">*</span></span>
+                        </label>
+                        <input type="text" class="input input-bordered" name="currency" id="currency"
+                               placeholder="USD" oninput="this.value = this.value.toUpperCase()" maxlength="3" />
+                        <label class="label">
+                            <span class="label-text-alt text-error" id="currency-error"></span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
+                    <div class="form-control">
+                        <label class="label">
+                            <span class="label-text font-semibold">Reference No.</span>
+                        </label>
+                        <input type="text" class="input input-bordered" name="referenceNo" id="referenceNo" />
+                    </div>
+
+                    <div class="form-control">
+                        <label class="label">
+                            <span class="label-text font-semibold">File Code No.</span>
+                        </label>
+                        <input type="text" class="input input-bordered" name="fileCodeNo" id="fileCodeNo" />
+                    </div>
+
+                    <div class="form-control">
+                        <label class="label cursor-pointer justify-start gap-3 border border-base-300 rounded-lg px-4 py-3">
+                            <input type="checkbox" name="isTicket" id="isTicket" class="checkbox checkbox-primary" />
+                            <span class="label-text font-semibold">Is Ticket?</span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Client Information Card -->
+        <div class="card bg-base-100 shadow-lg mb-6">
+            <div class="card-body">
+                <h2 class="card-title text-lg mb-4">
+                    <i class="fas fa-user text-primary"></i>
+                    Client Information
+                </h2>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="form-control">
+                        <label class="label">
+                            <span class="label-text font-semibold">Client Name <span class="text-error">*</span></span>
+                        </label>
+                        <input type="text" class="input input-bordered" name="clientName" id="clientName" />
+                        <label class="label">
+                            <span class="label-text-alt text-error" id="clientName-error"></span>
+                        </label>
+                    </div>
+
+                    <div class="form-control">
+                        <label class="label">
+                            <span class="label-text font-semibold">Address</span>
+                        </label>
+                        <input type="text" class="input input-bordered" name="address" id="address" />
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
+                    <div class="form-control">
+                        <label class="label">
+                            <span class="label-text font-semibold">PAX</span>
+                        </label>
+                        <input type="number" class="input input-bordered" name="pax" id="pax" min="0" />
+                    </div>
+
+                    <div class="form-control">
+                        <label class="label">
+                            <span class="label-text font-semibold">Guide</span>
+                        </label>
+                        <input type="text" class="input input-bordered" name="guide" id="guide" />
+                    </div>
+
+                    <div class="form-control">
+                        <label class="label">
+                            <span class="label-text font-semibold">Vehicle</span>
+                        </label>
+                        <input type="text" class="input input-bordered" name="vehicle" id="vehicle" />
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Invoice Items Card -->
+        <div class="card bg-base-100 shadow-lg mb-6">
+            <div class="card-body">
+                <h2 class="card-title text-lg mb-4">
+                    <i class="fas fa-list text-primary"></i>
+                    Invoice Items
+                </h2>
+
+                <!-- Add Item Section -->
+                <div class="alert alert-info mb-4">
+                    <i class="fas fa-plus-circle"></i>
+                    <div class="flex-1">
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                            <div class="form-control md:col-span-2">
+                                <input type="text" class="input input-bordered input-sm bg-base-100" id="particulars"
+                                       placeholder="Description of service or item" />
+                            </div>
+
+                            <div class="form-control">
+                                <div class="join w-full">
+                                    <input type="number" class="input input-bordered input-sm join-item flex-1 bg-base-100"
+                                           id="particularAmount" placeholder="0.00" step="0.01" min="0" />
+                                    <button type="button" class="btn btn-success btn-sm join-item" id="addProduct">
+                                        <i class="fas fa-plus"></i>
+                                        Add
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Items Table -->
+                <div class="overflow-x-auto">
+                    <table class="table table-zebra">
+                        <thead>
+                            <tr>
+                                <th>Particulars</th>
+                                <th class="text-right">Amount</th>
+                                <th class="text-center w-24">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="itemsTableBody">
+                            <tr>
+                                <td colspan="3" class="text-center py-8 text-base-content/50">
+                                    <i class="fas fa-inbox fa-2x mb-2"></i>
+                                    <p>No items added yet</p>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Totals Card -->
+        <div class="card bg-base-100 shadow-lg mb-6">
+            <div class="card-body">
+                <h2 class="card-title text-lg mb-4">
+                    <i class="fas fa-calculator text-primary"></i>
+                    Totals
+                </h2>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div class="form-control">
+                        <label class="label">
+                            <span class="label-text font-semibold">Total Due</span>
+                        </label>
+                        <input type="text" class="input input-bordered input-lg bg-base-200 font-bold text-xl" id="totalDue" disabled />
+                    </div>
+
+                    <div class="form-control">
+                        <label class="label">
+                            <span class="label-text font-semibold">Discount</span>
+                        </label>
+                        <input type="number" class="input input-bordered input-lg" name="discount" id="discount"
+                               placeholder="0.00" step="0.01" min="0" />
+                    </div>
+
+                    <div class="form-control">
+                        <label class="label">
+                            <span class="label-text font-semibold">Net Amount</span>
+                        </label>
+                        <input type="text" class="input input-bordered input-lg bg-success text-success-content font-bold text-xl"
+                               id="netAmount" disabled />
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="flex gap-4 justify-end">
+            <a asp-action="Index" class="btn btn-ghost btn-lg">
+                <i class="fas fa-times"></i>
+                Cancel
+            </a>
+            <button type="submit" class="btn btn-primary btn-lg" id="btnSave">
+                <i class="fas fa-save"></i>
+                Save Invoice
+            </button>
+        </div>
+    </form>
+</div>
+
+<!-- View/Print Invoice Modal -->
+<dialog id="viewInvoice" class="modal">
+    <div class="modal-box max-w-6xl">
+        <form method="dialog">
+            <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
+        </form>
+        <h3 class="font-bold text-lg mb-4">Invoice</h3>
+
+        <div id="invoiceBody" class="overflow-auto max-h-[70vh] bg-white p-4">
+            <div id="receiptTemplate"></div>
+        </div>
+
+        <div class="modal-action">
+            <button type="button" class="btn btn-error" id="printInvoice">
+                <i class="fas fa-print mr-2"></i>
+                Print
+            </button>
+            <form method="dialog">
+                <button class="btn">Close</button>
+            </form>
+        </div>
+    </div>
+</dialog>
+
+<!-- Handlebars template for receipt -->
+<script id="entry-template" type="text/x-handlebars-template">
+    @Html.Raw(System.IO.File.ReadAllText(System.IO.Path.Combine(Directory.GetCurrentDirectory(), "Views", "Invoice", "_InvoiceTemplate.html")))
+</script>
+
+@section Scripts {
+    <script src="~/lib/handlebars/handlebars.min.js"></script>
+    <script src="~/lib/html2canvas/html2canvas.min.js"></script>
+    <script src="~/js/invoice.js"></script>
+    <script>
+        // Set up form for Add/Edit
+        $(document).ready(function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const invoiceId = urlParams.get('id');
+
+            if (invoiceId) {
+                $('#pageTitle').text('Edit Invoice');
+                // Load invoice data via editInvoice function
+                editInvoice(parseInt(invoiceId));
+            } else {
+                $('#pageTitle').text('New Invoice');
+            }
+        });
+    </script>
+}

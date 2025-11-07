@@ -6,15 +6,21 @@
 
 <div class="animate-fade-in">
     <!-- Header -->
-    <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6">
-        <div>
-            <h1 class="text-4xl font-bold text-base-content">@ViewData["Title"]</h1>
-            <p class="text-base-content/70 mt-2">Configure tour cost details and pricing</p>
+    <div class="flex items-center justify-between mb-8">
+        <div class="flex items-center gap-4">
+            <a asp-action="Index" class="btn btn-circle btn-ghost">
+                <i class="fas fa-arrow-left text-xl"></i>
+            </a>
+            <div>
+                <div class="text-sm breadcrumbs">
+                    <ul>
+                        <li><a asp-action="Index">Tour Costs</a></li>
+                        <li>@ViewData["Title"]</li>
+                    </ul>
+                </div>
+                <h1 class="text-3xl font-bold">Tour Cost Details</h1>
+            </div>
         </div>
-        <a asp-action="Index" class="btn btn-ghost gap-2">
-            <i class="fas fa-arrow-left"></i>
-            Back to List
-        </a>
     </div>
 
     <!-- Main Form -->
@@ -396,6 +402,9 @@
             }
 
             $('#tourCostDetailBody').html(html);
+
+            // Open the collapse when details are generated
+            $('#collapseToggle').prop('checked', true);
 
             for (let i = 0; i < days; i++) {
                 $(`#TourcostDetail_${i}__Sector1Id`).rules("add", "required");

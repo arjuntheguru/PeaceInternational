@@ -6,14 +6,19 @@
 
 <div class="animate-fade-in">
     <!-- Header -->
-    <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6">
+    <div class="flex items-center justify-between mb-8">
         <div>
-            <h1 class="text-4xl font-bold text-base-content">Tour Cost Management</h1>
-            <p class="text-base-content/70 mt-2">View and manage tour cost calculations</p>
+            <div class="text-sm breadcrumbs">
+                <ul>
+                    <li>Management</li>
+                    <li class="font-semibold">Tour Costs</li>
+                </ul>
+            </div>
+            <h1 class="text-3xl font-bold">Tour Cost Management</h1>
         </div>
         <a asp-action="AddEdit" class="btn btn-primary gap-2">
             <i class="fas fa-plus"></i>
-            Add Tour Cost
+            New Tour Cost
         </a>
     </div>
 

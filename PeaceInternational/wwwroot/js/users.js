@@ -1,274 +1,316 @@
-﻿"use strict";
+"use strict";
 
-//Column Defination for the grid
-const columnDefs = [
-    { headerName: 'Username', field: 'userName' },   
-    { headerName: 'PhoneNo', field: 'phoneNumber', sortable: false, filter: false },   
-    {
-        headerName: 'Change Password', maxWidth: 200, sortable: false, filter: false,
-        cellRenderer: function () {
-            return '<i class="btn fas fa-edit" id="editButton"></i>';
-        },
-        onCellClicked(params) {
-            console.log(params.data);
-            ChangePassword(params.data);
-        }
-    },
-    {
-        headerName: 'Delete', maxWidth: 200, sortable: false, filter: false,
-        cellRenderer: function () {
-            return '<i class="btn fas fa-trash" id="trashButton"></i>';
-        },
-        onCellClicked(params) {
-            console.log(params.data);
-            Delete(params.data);
+let usersData = [];
 
-        }
-    }
-];
+// Function to show toast notification
+const showToast = (type, message) => {
+    Toast.show(type, message, 3000);
+};
 
-//Function to set the data for the grid
-const setGridData = () => {
-
+// Function to load users
+const loadUsers = () => {
     $.ajax({
         url: 'Users/Get',
         method: 'GET',
         success: (data) => {
-            gridOptions.api.setRowData(data);
-            console.log(data);
+            usersData = data;
+            renderTable(data);
+        },
+        error: () => {
+            showToast('error', 'Failed to load users');
         }
     });
 };
 
-//Settings for the Users grid
-let gridOptions = {
-    columnDefs: columnDefs,
-    rowHeight: 40,
-    defaultColDef: {
-        sortable: true,
-        filter: true
-    },
-    paginationAutoPageSize: true,
-    pagination: true,
-    accentedSort: true,
-    onGridSizeChanged: (params) => {
-        params.api.sizeColumnsToFit();
+// Function to render table
+const renderTable = (data) => {
+    const tableBody = document.getElementById('tableBody');
+
+    if (!data || data.length === 0) {
+        tableBody.innerHTML = `
+            <tr>
+                <td colspan="4" class="text-center py-12">
+                    <div class="flex flex-col items-center gap-4">
+                        <i class="fas fa-user-shield fa-4x text-base-300"></i>
+                        <div>
+                            <h3 class="font-bold text-lg">No users found</h3>
+                            <p class="text-base-content/70">Start by adding your first user</p>
+                        </div>
+                        <label for="user-drawer" class="btn btn-primary gap-2 drawer-button">
+                            <i class="fas fa-plus"></i>
+                            Add User
+                        </label>
+                    </div>
+                </td>
+            </tr>
+        `;
+        return;
     }
+
+    tableBody.innerHTML = data.map(user => `
+        <tr class="hover transition-colors duration-200"
+            data-username="${(user.userName || '').toLowerCase()}">
+            <td class="font-semibold">${user.userName || '-'}</td>
+            <td>${user.phoneNumber || '-'}</td>
+            <td>
+                <div class="badge ${user.role === 'Admin' ? 'badge-primary' : 'badge-secondary'}">${user.role || '-'}</div>
+            </td>
+            <td>
+                <div class="flex gap-2 justify-center">
+                    <button onclick="changePassword(${user.id}, '${user.userName}')" class="btn btn-sm btn-warning gap-2" title="Change Password">
+                        <i class="fas fa-key"></i>
+                    </button>
+                    <button onclick="deleteUser(${user.id})" class="btn btn-sm btn-error gap-2" title="Delete">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                </div>
+            </td>
+        </tr>
+    `).join('');
 };
 
-//Function to clear create users form
-const Clear = () => {
-    removeBorderClass();
-    $("#id").val('');
-    $('#username').val('');   
-    $('#phoneNo').val('');
-    $('#password').val('');
-    $('#confirmPassword').val('');
-    $('#role').val('');
-};
+// Function to filter table
+const filterTable = () => {
+    const searchTerm = document.getElementById('searchField').value.toLowerCase();
 
-
-//Function to clear change password form
-const ClearChangePassword = () => {
-    removeBorderClass();
-    $("#id").val('');
-    $('#changePwdUserName').val('');
-    $('#newPassword').val('');
-    $('#confirmNewPassword').val('');    
-};
-
-//Function specifying rules for validating the form
-const usersValidation = () => {
-
-    $('#usersForm').validate({
-        rules: {
-            username: {
-                required: true,
-                maxlength: 100,
-                isOnlyWhiteSpace: true
-            },
-            email: {
-                required: true,
-                email: true
-            },
-            role: {
-                required: true
-            },
-            phoneNo: {
-                required: true,
-                digits: true
-            },
-            password: {
-                required: true,
-                minlength: 5
-            },
-            confirmPassword: {
-                required: true,
-                equalTo: "#password",
-                minlength: 5
-            }   
-        }
-    });
-};
-
-//Change password form validation
-const changePasswordValidation = () => {
-    $('#changePasswordForm').validate({
-        rules: {
-            newPassword: {
-                required: true,
-                minlength: 5
-            },
-            confirmNewPassword: {
-                required: true,
-                equalTo: "#newPassword",
-                minlength: 5
-            }
-        }
-    });
-};
-
-const ChangePassword = (data) => {
-
-
-    $('#userId').val(data.id);
-    $('#newPassword').val('');
-    $('#confirmNewPassword').val('');
-    removeBorderClass();
-    $('#changePasswordForm').validate().destroy();
-    changePasswordValidation();
-    $('#changePasswordForm').validate().resetForm();
-    $('#changePwdUserName').val(data.userName);
-    $('#changePassword').modal('toggle');
-
-};
-
-
-const Save = () => {
-
-    $('#usersForm').off('submit').on('submit', function (e) {
-
-        e.preventDefault();
-
-        var record = {
-            Id: $('#id').val(),
-            Username: $('#username').val(),
-            Password: $('#password').val(),
-            ConfirmPassword: $('#confirmPassword').val(),
-            PhoneNumber: $('#phoneNo').val(),
-            Role: $('#role').val()
-        };
-
-        $.ajax({
-            url: 'Users/Save',
-            method: 'POST',
-            data: { newUser: record },
-            success: function (data) {
-                console.log(data);
-                noty({
-                    type: data.type,
-                    text: data.message,
-                    layout: 'topCenter',
-                    timeout: 2000
-                });
-                $('#createUsers').modal('toggle');
-                setGridData();
-            }
-        });
-
-    });
-};
-
-const SaveNewPassword = () => {
-
-    $('#changePasswordForm').off('submit').on('submit', function (e) {
-
-        e.preventDefault();
-
-        var record = {
-            UserId: $('#userId').val(),
-            NewPassword: $('#newPassword').val(),
-            ConfirmNewPassword: $('#confirmNewPassword').val()            
-        };
-
-        $.ajax({
-            url: 'Users/ChangePassword',
-            method: 'POST',
-            data: { newPassword: record },
-            success: function (data) {
-                console.log(data);
-                noty({
-                    type: data.type,
-                    text: data.message,
-                    layout: 'topCenter',
-                    timeout: 2000
-                });
-                $('#changePassword').modal('toggle');               
-            }
-        });
-
+    const filtered = usersData.filter(user => {
+        return (user.userName || '').toLowerCase().includes(searchTerm);
     });
 
+    renderTable(filtered);
 };
 
-const Delete = (data) => {
+// Function to clear form
+const clearForm = () => {
+    document.getElementById('id').value = '';
+    document.getElementById('username').value = '';
+    document.getElementById('email').value = '';
+    document.getElementById('phoneNo').value = '';
+    document.getElementById('role').value = '';
+    document.getElementById('password').value = '';
+    document.getElementById('confirmPassword').value = '';
 
-    var confirm = window.confirm("Are you sure you want to delete?");
+    // Clear error messages
+    document.querySelectorAll('.label-text-alt.text-error').forEach(el => el.textContent = '');
+};
 
-    if (confirm) {
-        $.ajax({
-            url: 'Users/Delete',
-            method: 'POST',
-            data: { id: data.id },
-            success: function (data) {
-                console.log(data);
-                noty({
-                    type: data.type,
-                    text: data.message,
-                    layout: 'topCenter',
-                    timeout: 2000
-                });
+// Function to clear password form
+const clearPasswordForm = () => {
+    document.getElementById('userId').value = '';
+    document.getElementById('changePwdUserName').value = '';
+    document.getElementById('newPassword').value = '';
+    document.getElementById('confirmNewPassword').value = '';
 
-                setGridData();
-            }
-        });
+    // Clear error messages
+    document.querySelectorAll('.label-text-alt.text-error').forEach(el => el.textContent = '');
+};
+
+// Function to validate user form
+const validateForm = () => {
+    let isValid = true;
+
+    // Clear previous errors
+    document.querySelectorAll('.label-text-alt.text-error').forEach(el => el.textContent = '');
+
+    // Username validation
+    const username = document.getElementById('username').value.trim();
+    if (!username) {
+        document.getElementById('username-error').textContent = 'Username is required';
+        isValid = false;
     }
+
+    // Email validation
+    const email = document.getElementById('email').value.trim();
+    if (!email) {
+        document.getElementById('email-error').textContent = 'Email is required';
+        isValid = false;
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+        document.getElementById('email-error').textContent = 'Invalid email format';
+        isValid = false;
+    }
+
+    // Phone validation
+    const phoneNo = document.getElementById('phoneNo').value.trim();
+    if (!phoneNo) {
+        document.getElementById('phoneNo-error').textContent = 'Phone number is required';
+        isValid = false;
+    }
+
+    // Role validation
+    const role = document.getElementById('role').value;
+    if (!role) {
+        document.getElementById('role-error').textContent = 'Role is required';
+        isValid = false;
+    }
+
+    // Password validation
+    const password = document.getElementById('password').value;
+    if (!password) {
+        document.getElementById('password-error').textContent = 'Password is required';
+        isValid = false;
+    } else if (password.length < 5) {
+        document.getElementById('password-error').textContent = 'Password must be at least 5 characters';
+        isValid = false;
+    }
+
+    // Confirm Password validation
+    const confirmPassword = document.getElementById('confirmPassword').value;
+    if (!confirmPassword) {
+        document.getElementById('confirmPassword-error').textContent = 'Confirm password is required';
+        isValid = false;
+    } else if (password !== confirmPassword) {
+        document.getElementById('confirmPassword-error').textContent = 'Passwords do not match';
+        isValid = false;
+    }
+
+    return isValid;
 };
 
+// Function to validate password form
+const validatePasswordForm = () => {
+    let isValid = true;
+
+    // Clear previous errors
+    document.querySelectorAll('.label-text-alt.text-error').forEach(el => el.textContent = '');
+
+    // New Password validation
+    const newPassword = document.getElementById('newPassword').value;
+    if (!newPassword) {
+        document.getElementById('newPassword-error').textContent = 'New password is required';
+        isValid = false;
+    } else if (newPassword.length < 5) {
+        document.getElementById('newPassword-error').textContent = 'Password must be at least 5 characters';
+        isValid = false;
+    }
+
+    // Confirm New Password validation
+    const confirmNewPassword = document.getElementById('confirmNewPassword').value;
+    if (!confirmNewPassword) {
+        document.getElementById('confirmNewPassword-error').textContent = 'Confirm password is required';
+        isValid = false;
+    } else if (newPassword !== confirmNewPassword) {
+        document.getElementById('confirmNewPassword-error').textContent = 'Passwords do not match';
+        isValid = false;
+    }
+
+    return isValid;
+};
+
+// Function to change password
+window.changePassword = (userId, username) => {
+    document.getElementById('userId').value = userId;
+    document.getElementById('changePwdUserName').value = username;
+    document.getElementById('newPassword').value = '';
+    document.getElementById('confirmNewPassword').value = '';
+
+    // Clear error messages
+    document.querySelectorAll('.label-text-alt.text-error').forEach(el => el.textContent = '');
+
+    // Open drawer
+    document.getElementById('password-drawer').checked = true;
+};
+
+// Function to delete user
+window.deleteUser = (id) => {
+    if (!confirm('Are you sure you want to delete this user?')) {
+        return;
+    }
+
+    $.ajax({
+        url: 'Users/Delete',
+        method: 'POST',
+        data: { id: id },
+        success: (data) => {
+            showToast(data.type, data.message);
+            loadUsers();
+        },
+        error: () => {
+            showToast('error', 'Failed to delete user');
+        }
+    });
+};
+
+// Function to save user
+const saveUser = () => {
+    if (!validateForm()) {
+        return;
+    }
+
+    const record = {
+        Id: document.getElementById('id').value,
+        Username: document.getElementById('username').value,
+        Password: document.getElementById('password').value,
+        ConfirmPassword: document.getElementById('confirmPassword').value,
+        PhoneNumber: document.getElementById('phoneNo').value,
+        Role: document.getElementById('role').value
+    };
+
+    $.ajax({
+        url: 'Users/Save',
+        method: 'POST',
+        data: { newUser: record },
+        success: (data) => {
+            showToast(data.type, data.message);
+            document.getElementById('user-drawer').checked = false;
+            loadUsers();
+            clearForm();
+        },
+        error: () => {
+            showToast('error', 'Failed to save user');
+        }
+    });
+};
+
+// Function to save new password
+const saveNewPassword = () => {
+    if (!validatePasswordForm()) {
+        return;
+    }
+
+    const record = {
+        UserId: document.getElementById('userId').value,
+        NewPassword: document.getElementById('newPassword').value,
+        ConfirmNewPassword: document.getElementById('confirmNewPassword').value
+    };
+
+    $.ajax({
+        url: 'Users/ChangePassword',
+        method: 'POST',
+        data: { newPassword: record },
+        success: (data) => {
+            showToast(data.type, data.message);
+            document.getElementById('password-drawer').checked = false;
+            clearPasswordForm();
+        },
+        error: () => {
+            showToast('error', 'Failed to change password');
+        }
+    });
+};
+
+// Document ready
 $(document).ready(function () {
-    var usersGrid = document.querySelector('#usersGrid');
+    // Load users on page load
+    loadUsers();
 
-    new agGrid.Grid(usersGrid, gridOptions);
-
-    setGridData();
-
-    $('#addUsersBtn').click(function () {
-        console.log('Button Pressed');
-        $('#usersTitle').html("Add Users");
-        Clear();
-        $('#usersForm').validate().destroy();
-        usersValidation();
-        $('#usersForm').validate().resetForm();
+    // Add user button click
+    document.querySelector('.drawer-button').addEventListener('click', function() {
+        document.getElementById('userTitle').textContent = 'Add User';
+        clearForm();
     });
 
-    $('#btnSave').off('click').on('click', function () {
-        if ($('#usersForm').valid()) {
-            Save();
-        }
+    // User form submit
+    document.getElementById('usersForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        saveUser();
     });
 
-    $('#btnSaveNewPassword').off('click').on('click', function () {
-        if ($('#changePasswordForm').valid()) {
-            SaveNewPassword();
-        }
+    // Password form submit
+    document.getElementById('changePasswordForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        saveNewPassword();
     });
 
-    $('#searchField').on('keyup', function () {
-        var filter;
-        filter = {
-            userName: { type: 'contains', filter: $('#searchField').val() }
-        };
-        gridOptions.api.setFilterModel(filter);
-        gridOptions.api.onFilterChanged();
-    });
+    // Search filter
+    document.getElementById('searchField').addEventListener('input', filterTable);
 });

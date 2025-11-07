@@ -1,495 +1,365 @@
-﻿
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Service Voucher";
 }
 
-<style>
-    /*CSS for A4 print
-    ==================*/
-    /*body {
-        font-size: 14px;
-    }*/
-
-    .invcontainer {
-        height: 1125px;
-        width: 800px;
-        /*background-color: grey;*/
-        padding-left: 130px;
-        padding-right: 30px;
-        padding-top: 45px;
-    }
-
-    #page {
-        border-collapse: collapse;
-        border: 2px solid;
-        position: relative;
-        font-family: Arial, Helvetica, sans-serif;
-    }
-
-    h5 {
-        font-size: 19px;
-    }
-
-    h6 {
-        font-size: 19px;
-        margin-bottom: 1px;
-    }
-
-    .h7 {
-        font-size: 21px;
-        margin-bottom: 5px;
-    }
-
-    .h8 {
-        font-size: 24px;
-    }
-
-    .head {
-        height: 150px;
-        margin-bottom: 40px;
-    }
-
-    .logo img {
-        max-height: 100%;
-        max-width: 80%;
-        margin-left: 50px;
-    }
-
-    .detail {
-        margin-left: 3px;
-        margin-bottom: 22px;
-    }
-
-    .ptable {
-        height: 750px;
-        background-color: red;
-    }
-
-    .pend {
-        margin-top: 30px;
-    }
-
-    .foot {
-        margin-top: 10px;
-    }
-
-    /*==================================================
-    ==================================================*/
-
-    /*Service Voucher CSS*/
-
-    .formsize {
-        height: 820px;
-        margin-top: 0px;
-        margin-bottom: 70px;
-        border-style: solid;
-        border-width: 2px;
-    }
-
-    .address h6 {
-        line-height: 18px;
-    }  
-
-    .svaddress {
-        margin: 10px 0px 10px 5px;
-    }
-
-    .svdata p {
-        padding-left: 10px;
-    }
-
-    .svrcol1 {
-        border-style: solid none solid none;
-        border-width: 2px;
-        width: 70%;
-        padding: 4px 0 2px 10px;
-        float: left;
-    }
-
-    .svrcol2 {
-        border-style: solid none solid solid;
-        border-width: 2px;
-        width: 30%;
-        padding: 4px 0 2px 10px;
-        float: right;
-    }
-
-    .svrcol3 {
-        border-style: none none solid none;
-        border-width: 2px;
-        width: 40%;
-        padding: 4px 0 2px 10px;
-        float: left;
-    }
-
-    .svrcol4 {
-        border-style: none none solid none;
-        border-width: 2px;
-        width: 30%;
-        padding: 4px 0 2px 10px;
-        float: left;
-    }
-
-    .svrcol5 {
-        border-style: none none solid none;
-        border-width: 2px;
-        width: 30%;
-        padding: 4px 0 2px 10px;
-        float: right;
-    }
-
-    /*footer {
-        height: 150px;
-    }*/
-
-    .svcomment {
-        border-style: none none solid none;
-        border-width: 2px;
-    }
-
-        .svcomment .comment {
-            height: 150px;
-            margin: 0px 15px 16px 15px;
-        }
-
-    p.footer {
-        margin-bottom: 0px;
-    }
-
-    .svcomment p {
-        margin-left: 15px;
-    }
-
-    .endfooter {
-        margin-top: 4px;
-    }
-
-    .endfooter1 p {
-        padding-left: 15px;
-    }
-
-    .endfooter1, .endfooter2 p {
-        font-size: 20px;
-    }
-
-    section {
-        overflow: hidden;
-    }
-
-    .svdetail {
-        margin-bottom: 15px;
-    }
-
-    /*====================================*/
-    /*TABLE CSS*/
-
-    .table {
-        display: table;
-        height: 700px;
-        table-layout: fixed;
-        position: relative;
-        width: 100%;
-        border: solid 1px black;
-        margin-bottom: 0px;
-    }
-
-    .td {
-        display: table-cell;
-        /* border-style: solid;
-        border-width: 0px 1px 0px 0px;*/
-        height: 8px;
-    }
-
-    .thead {
-        border-bottom: solid 1px;
-    }
-
-    .body {
-        height: 200px;
-    }
-
-    .sclass {
-        width: 30px;
-        text-align: right;
-        padding-right: 2px;
-    }
-
-    .pclass {
-        width: 640px;
-        padding: 5px;
-    }
-
-    .aclass {
-        width: 120px;
-        text-align: right;
-        padding-right: 10px;
-    }
-
-    .line1 {
-        height: 582px;
-        border-left: solid 1px black;
-        position: absolute;
-        left: 4%;
-    }
-
-    .line2 {
-        height: 657px;
-        border-left: solid 1px black;
-        position: absolute;
-        left: 85%;
-    }
-
-    .vclass {
-        width: 700px;
-        height: 25px;
-        text-align: right;
-        padding-right: 5px;
-        border-style: solid;
-        border-width: 1px 0 0 0;
-    }
-
-    .vaclass {
-        width: 130px;
-        height: 25px;
-        text-align: right;
-        padding-right: 5px;
-        border-style: solid;
-        border-width: 1px 0 0 0;
-    }
-
-    .wclass {
-        width: 830px;
-        border-style: solid;
-        border-width: 1px 0 0 0;
-        padding: 15px;
-        font-size: 14px;
-        word-spacing: 3px;
-    }
-
-        .wclass span {
-            font-size: 11px;
-            word-spacing: 0px;
-        }
-
-        .wclass strong {
-            font-size: 13px;
-        }
-</style>
-<div class="row">
-    <div class="col-md-9">
-        <h1 class="display-4">Service Voucher</h1>
+<div class="animate-fade-in">
+    <!-- Header -->
+    <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6">
+        <div>
+            <h1 class="text-4xl font-bold text-base-content">Service Voucher Management</h1>
+            <p class="text-base-content/70 mt-2">Manage service vouchers for tours</p>
+        </div>
+        <label for="voucher-drawer" class="btn btn-primary gap-2 drawer-button">
+            <i class="fas fa-plus"></i>
+            Add Service Voucher
+        </label>
     </div>
-    <div class="col-md-3">
-        <input type="button" class="btn btn-info mt-4 w-100" data-toggle="modal" data-target="#createServiceVoucher" id="addServiceVoucherBtn" value="Add Service Voucher" />
-    </div>
-</div>
-<hr />
-<div class="row">
-    <div class="col-md-2">
-        <input type="text" class="form-control" id="searchFieldReceipt" placeholder="Receipt No" />
-    </div>
-    <div class="col-md-2">
-        <input type="text" class="form-control" id="searchFieldFileCode" placeholder="File Code No." />
-    </div>
-    <div class="col-md-4">
-        <input type="text" class="form-control" id="searchFieldHotel" placeholder="Hotel" />
-    </div>
-    <div class="col-md-4">
-        <input type="text" class="form-control" id="searchFieldClientname" placeholder="Client name" />
-    </div>
-</div>
-<div style="height: 100%; box-sizing: border-box; padding-top:20px;">
-    <div id="serviceVoucherGrid" style="width: 100%; height:450px" class="ag-theme-balham"></div>
-</div>
-<div class="modal fade" id="createServiceVoucher" tabindex="-1" role="dialog" aria-labelledby="serviceVoucherTitle" aria-hidden="true">
-    <div class="modal-dialog modal-lg" role="document" style="max-width:80%;border:double;" !important;>
-        <form id="serviceVoucherForm">
-            <div class="modal-content" style="background: linear-gradient(225deg, rgba(255,255,255,1) 0%, rgba(232,227,227,1) 100%);">
-                <div class="modal-header bg-info">
-                    <h5 class="modal-title text-light" id="serviceVoucherTitle"></h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span class="text-light" aria-hidden="true">&times;</span>
-                    </button>
+
+    <!-- Multi-field Search -->
+    <div class="card bg-base-200 shadow-lg mb-6">
+        <div class="card-body">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                <div class="form-control">
+                    <input type="text" id="searchFieldReceipt" placeholder="Receipt No..." class="input input-bordered" />
                 </div>
-                <div class="modal-body">
-                    <input type="hidden" id="id" />
-                    <div class="form-row">
-                        <div class="col-md-6">
-                            <label for="date"> Date <span class="text-danger">*</span></label>
-                            <output type="text" class="form-control" name="date" id="date" />
-                        </div>
-                        @*<div class="col-md-4">
-                            <label for="exchangeOrderNo"> Exchange Order No. <span class="text-danger">*</span></label>
-                            <input type="number" class="form-control" name="exchangeOrderNo" id="exchangeOrderNo" />
-                        </div>*@
-                        <div class="col-md-6">
-                            <label for="fileCodeNo"> File Code No. <span class="text-danger">*</span></label>
-                            <input type="text" class="form-control" name="fileCodeNo" id="fileCodeNo" />
-                        </div>
-                    </div>
-                    <br />
-                    <div class="form-row">
-                        <div class="col-md-3">
-                            <label for="hotel">Hotel<span class="text-danger">*</span></label>
-                            <select class="form-control w-100" name="hotel" id="hotel">
-                                <option disabled selected value=" ">Select</option>
-                            </select>
-                        </div>
-                        <div class="col-md-6">
-                            <label for="clientName"> Client Name <span class="text-danger">*</span></label>
-                            <input type="text" class="form-control" name="clientName" id="clientName" oninput="this.value = this.value.toUpperCase()" />
-                        </div>
-                        <div class="col-md-3">
-                            <label for="pax"> PAX <span class="text-danger">*</span></label>
-                            <input type="text" class="form-control" name="pax" id="pax" />
-                        </div>
-                    </div>
-                    <br />
-                    <div class="form-row">
-                        <div class="col-md-4">
-                            <label for="arrivalOn"> Arrival On <span class="text-danger">*</span></label>
-                            <input type="date" class="form-control" name="arrivalOn" id="arrivalOn" />
-                        </div>
-                        <div class="col-md-4">
-                            <label for="from"> From <span class="text-danger">*</span></label>
-                            <input type="text" class="form-control" name="from" id="from" oninput="this.value = this.value.toUpperCase()" />
-                        </div>
-                        <div class="col-md-4">
-                            <label for="arrivalFlight"> Flight No. <span class="text-danger">*</span></label>
-                            <input type="text" class="form-control" name="arrivalFlight" id="arrivalFlight" oninput="this.value = this.value.toUpperCase()" />
-                        </div>
-                    </div>
-                    <br />
-                    <div class="form-row">
-                        <div class="col-md-4">
-                            <label for="departureOn"> Departure On <span class="text-danger">*</span></label>
-                            <input type="date" class="form-control" name="departureOn" id="departureOn" />
-                        </div>
-                        <div class="col-md-4">
-                            <label for="to"> To <span class="text-danger">*</span></label>
-                            <input type="text" class="form-control" name="to" id="to" oninput="this.value = this.value.toUpperCase()" />
-                        </div>
-                        <div class="col-md-4">
-                            <label for="departureFlight"> Flight No. <span class="text-danger">*</span></label>
-                            <input type="text" class="form-control" name="departureFlight" id="departureFlight" oninput="this.value = this.value.toUpperCase()" />
-                        </div>
-                    </div>
-                    <br />
-                    <div class="form-row">
-                        <div class="col-md-12">
-                            <label for="services"> Services <span class="text-danger">*</span></label>
-                            <textarea rows="5" class="form-control" name="services" id="services" placeholder="Add Services Here" oninput="this.value = this.value.toUpperCase()"></textarea>
-                        </div>
-                    </div>
+                <div class="form-control">
+                    <input type="text" id="searchFieldFileCode" placeholder="File Code No..." class="input input-bordered" />
                 </div>
-                <div class="modal-footer">
-                    <button type="submit" class="btn btn-primary" id="btnSave">Save</button>
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <div class="form-control">
+                    <input type="text" id="searchFieldHotel" placeholder="Hotel..." class="input input-bordered" />
                 </div>
-
-            </div>
-        </form>
-    </div>
-</div>
-
-@*View Invoice Modal*@
-<div class="modal fade" id="viewReceipt" tabindex="-1" role="dialog" aria-labelledby="invoiceTitle" aria-hidden="true">
-    <div class="modal-dialog modal-lg" role="document" style="max-width:80%;border:double;" !important;>
-        <div class="modal-content">
-            <div class="modal-header bg-info position-sticky">
-                <h5 class="modal-title text-light">Invoice</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span class="text-light" aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body m-2" id="invoiceBody">
-                <div class="formsize">
-                    <header class="mt-4">
-                        <div class="row header">
-                            <div class="logo col-md-8">
-                                <img src="img/logo2.jpg" style="padding-top: 15px; padding-right: 30px";>
-                            </div>
-                            <div class="col-md-4">
-                                <h6>GPO Box: 9484</h6>
-                                <h6>Lazimpat - 2, Kathmandu, Nepal</h6>
-                                <h6>Tel: (977) 01 4444843/44/45</h6>
-                                <h6>Email: peaceintl.mail@gmail.com</h6>
-                                <h6>&emsp;&emsp;&emsp;mail@peace-intl.com.np </h6>
-                                <h6>Web: peace-intl.com </h6>
-                                <h6>PAN: 302243385 </h6>
-                            </div>
-                        </div>
-                    </header>
-                    <br />
-                    <div id="receiptTemplate1">
-                    </div>
-                    <div>
-                        <div class="row endfooter">
-                            <div class="col-md-8 endfooter1">
-                                <p style="font-size:14px !important;">VALID ONLY FOR SERVICES/AMOUNT STATED ABOVE AND SUBJECT TO TERMS AND CONDITIONS STATED OVERLEAF</p>
-                            </div>
-                            <div class="col-md-4 text-center endfooter2">
-                                <p><strong>&emsp;&emsp;( Authorized Signatory )</strong></p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="formsize">
-                    <header class="mt-4">
-                        <div class="row header">
-                            <div class="logo col-md-8">
-                                <img src="img/logo2.jpg" style="padding-top: 15px; padding-right: 30px" ;>
-                            </div>
-                            <div class="col-md-4 ag-resizer-topRight">
-                                <h6>GPO Box: 9484</h6>
-                                <h6>Lazimpat - 2, Kathmandu, Nepal</h6>
-                                <h6>Tel: (977) 01 4444843/44/45</h6>
-                                <h6>Email: peaceintl.mail@gmail.com</h6>
-                                <h6>&emsp;&emsp;&emsp;mail@peace-intl.com.np </h6>
-                                <h6>Web: peace-intl.com </h6>
-                                <h6>PAN: 302243385 </h6>
-                            </div>
-                        </div>
-                    </header>
-                    <br />
-                    <div id="receiptTemplate2">
-                    </div>
-                    <div>
-                        <div class="row endfooter">
-                            <div class="col-md-8 endfooter1">
-                                <p style="font-size:14px !important;">VALID ONLY FOR SERVICES/AMOUNT STATED ABOVE AND SUBJECT TO TERMS AND CONDITIONS STATED OVERLEAF</p>
-                            </div>
-                            <div class="col-md-4 text-center endfooter2">
-                                <p><strong>&emsp;&emsp;( Authorized Signatory )</strong></p>
-                            </div>
-                        </div>
-                    </div>
+                <div class="form-control">
+                    <input type="text" id="searchFieldClientname" placeholder="Client Name..." class="input input-bordered" />
                 </div>
             </div>
-            <button type="button" class="btn btn-danger" id="printInvoice">Print</button>
+        </div>
+    </div>
+
+    <!-- Service Voucher Table -->
+    <div class="card bg-base-100 shadow-lg">
+        <div class="card-body p-0">
+            <div class="overflow-x-auto">
+                <table class="table table-zebra w-full" id="voucherTable">
+                    <thead class="bg-primary text-primary-content">
+                        <tr>
+                            <th class="normal-case text-base">Receipt No.</th>
+                            <th class="normal-case text-base">File Code</th>
+                            <th class="normal-case text-base">Hotel</th>
+                            <th class="normal-case text-base">Client Name</th>
+                            <th class="normal-case text-base text-center">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tableBody">
+                        <tr>
+                            <td colspan="5" class="text-center py-12">
+                                <div class="loading loading-spinner loading-lg text-primary"></div>
+                                <p class="mt-4">Loading service vouchers...</p>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 </div>
 
-@section Scripts{
+<!-- Drawer for Add/Edit Service Voucher -->
+<div class="drawer drawer-end z-50">
+    <input id="voucher-drawer" type="checkbox" class="drawer-toggle" />
+    <div class="drawer-side">
+        <label for="voucher-drawer" class="drawer-overlay"></label>
+        <div class="bg-base-100 w-full md:w-[800px] min-h-full shadow-2xl">
+            <div class="sticky top-0 bg-primary text-primary-content p-6 z-10">
+                <div class="flex justify-between items-center">
+                    <h2 class="text-2xl font-bold" id="serviceVoucherTitle">Add Service Voucher</h2>
+                    <label for="voucher-drawer" class="btn btn-ghost btn-circle btn-sm">
+                        <i class="fas fa-times text-xl"></i>
+                    </label>
+                </div>
+            </div>
+
+            <form id="serviceVoucherForm" class="p-6">
+                <input type="hidden" id="id" />
+
+                <div class="space-y-4">
+                    <!-- Basic Info -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div class="form-control">
+                            <label class="label">
+                                <span class="label-text font-semibold">Date</span>
+                            </label>
+                            <input type="text" class="input input-bordered" id="date" disabled />
+                        </div>
+
+                        <div class="form-control">
+                            <label class="label">
+                                <span class="label-text font-semibold">File Code No. <span class="text-error">*</span></span>
+                            </label>
+                            <input type="text"
+                                   class="input input-bordered"
+                                   name="fileCodeNo"
+                                   id="fileCodeNo"
+                                   placeholder="Enter file code" />
+                            <label class="label">
+                                <span class="label-text-alt text-error" id="fileCodeNo-error"></span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Hotel and Client Info -->
+                    <div class="divider">Service Details</div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div class="form-control md:col-span-2">
+                            <label class="label">
+                                <span class="label-text font-semibold">Hotel <span class="text-error">*</span></span>
+                            </label>
+                            <select class="select select-bordered" name="hotel" id="hotel">
+                                <option disabled selected value="">Select Hotel</option>
+                            </select>
+                            <label class="label">
+                                <span class="label-text-alt text-error" id="hotel-error"></span>
+                            </label>
+                        </div>
+
+                        <div class="form-control">
+                            <label class="label">
+                                <span class="label-text font-semibold">PAX <span class="text-error">*</span></span>
+                            </label>
+                            <input type="text"
+                                   class="input input-bordered"
+                                   name="pax"
+                                   id="pax"
+                                   placeholder="Number of passengers" />
+                            <label class="label">
+                                <span class="label-text-alt text-error" id="pax-error"></span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="form-control">
+                        <label class="label">
+                            <span class="label-text font-semibold">Client Name <span class="text-error">*</span></span>
+                        </label>
+                        <input type="text"
+                               class="input input-bordered"
+                               name="clientName"
+                               id="clientName"
+                               placeholder="Enter client name"
+                               oninput="this.value = this.value.toUpperCase()" />
+                        <label class="label">
+                            <span class="label-text-alt text-error" id="clientName-error"></span>
+                        </label>
+                    </div>
+
+                    <!-- Arrival Information -->
+                    <div class="divider">Arrival Information</div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div class="form-control">
+                            <label class="label">
+                                <span class="label-text font-semibold">Arrival On <span class="text-error">*</span></span>
+                            </label>
+                            <input type="date"
+                                   class="input input-bordered"
+                                   name="arrivalOn"
+                                   id="arrivalOn" />
+                            <label class="label">
+                                <span class="label-text-alt text-error" id="arrivalOn-error"></span>
+                            </label>
+                        </div>
+
+                        <div class="form-control">
+                            <label class="label">
+                                <span class="label-text font-semibold">From <span class="text-error">*</span></span>
+                            </label>
+                            <input type="text"
+                                   class="input input-bordered"
+                                   name="from"
+                                   id="from"
+                                   placeholder="Origin"
+                                   oninput="this.value = this.value.toUpperCase()" />
+                            <label class="label">
+                                <span class="label-text-alt text-error" id="from-error"></span>
+                            </label>
+                        </div>
+
+                        <div class="form-control">
+                            <label class="label">
+                                <span class="label-text font-semibold">Flight No. <span class="text-error">*</span></span>
+                            </label>
+                            <input type="text"
+                                   class="input input-bordered"
+                                   name="arrivalFlight"
+                                   id="arrivalFlight"
+                                   placeholder="Flight number"
+                                   oninput="this.value = this.value.toUpperCase()" />
+                            <label class="label">
+                                <span class="label-text-alt text-error" id="arrivalFlight-error"></span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Departure Information -->
+                    <div class="divider">Departure Information</div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div class="form-control">
+                            <label class="label">
+                                <span class="label-text font-semibold">Departure On <span class="text-error">*</span></span>
+                            </label>
+                            <input type="date"
+                                   class="input input-bordered"
+                                   name="departureOn"
+                                   id="departureOn" />
+                            <label class="label">
+                                <span class="label-text-alt text-error" id="departureOn-error"></span>
+                            </label>
+                        </div>
+
+                        <div class="form-control">
+                            <label class="label">
+                                <span class="label-text font-semibold">To <span class="text-error">*</span></span>
+                            </label>
+                            <input type="text"
+                                   class="input input-bordered"
+                                   name="to"
+                                   id="to"
+                                   placeholder="Destination"
+                                   oninput="this.value = this.value.toUpperCase()" />
+                            <label class="label">
+                                <span class="label-text-alt text-error" id="to-error"></span>
+                            </label>
+                        </div>
+
+                        <div class="form-control">
+                            <label class="label">
+                                <span class="label-text font-semibold">Flight No. <span class="text-error">*</span></span>
+                            </label>
+                            <input type="text"
+                                   class="input input-bordered"
+                                   name="departureFlight"
+                                   id="departureFlight"
+                                   placeholder="Flight number"
+                                   oninput="this.value = this.value.toUpperCase()" />
+                            <label class="label">
+                                <span class="label-text-alt text-error" id="departureFlight-error"></span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Services -->
+                    <div class="form-control">
+                        <label class="label">
+                            <span class="label-text font-semibold">Services <span class="text-error">*</span></span>
+                        </label>
+                        <textarea rows="5"
+                                  class="textarea textarea-bordered"
+                                  name="services"
+                                  id="services"
+                                  placeholder="Add services here"
+                                  oninput="this.value = this.value.toUpperCase()"></textarea>
+                        <label class="label">
+                            <span class="label-text-alt text-error" id="services-error"></span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Actions -->
+                <div class="flex gap-3 mt-8 sticky bottom-0 bg-base-100 pt-4 border-t border-base-300">
+                    <button type="submit" class="btn btn-primary flex-1" id="btnSave">
+                        <i class="fas fa-save mr-2"></i>
+                        Save Voucher
+                    </button>
+                    <label for="voucher-drawer" class="btn btn-ghost flex-1">
+                        <i class="fas fa-times mr-2"></i>
+                        Cancel
+                    </label>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- View/Print Receipt Modal (Daisy UI Modal) -->
+<dialog id="viewReceipt" class="modal">
+    <div class="modal-box max-w-6xl">
+        <form method="dialog">
+            <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
+        </form>
+        <h3 class="font-bold text-lg mb-4">Service Voucher</h3>
+
+        <div id="invoiceBody" class="overflow-auto max-h-[70vh] bg-white p-4">
+            <!-- Print styles -->
+            <style>
+                .formsize { height: 820px; margin-top: 0px; margin-bottom: 70px; border-style: solid; border-width: 2px; page-break-after: always; }
+                .logo img { max-height: 100%; max-width: 80%; margin-left: 50px; padding-top: 15px; padding-right: 30px; }
+                .svaddress { margin: 10px 0px 10px 5px; }
+                .svrcol1 { border-style: solid none solid none; border-width: 2px; width: 70%; padding: 4px 0 2px 10px; float: left; }
+                .svrcol2 { border-style: solid none solid solid; border-width: 2px; width: 30%; padding: 4px 0 2px 10px; float: right; }
+                .svrcol3 { border-style: none none solid none; border-width: 2px; width: 40%; padding: 4px 0 2px 10px; float: left; }
+                .svrcol4 { border-style: none none solid none; border-width: 2px; width: 30%; padding: 4px 0 2px 10px; float: left; }
+                .svrcol5 { border-style: none none solid none; border-width: 2px; width: 30%; padding: 4px 0 2px 10px; float: right; }
+                .svcomment { border-style: none none solid none; border-width: 2px; }
+                .svcomment .comment { height: 150px; margin: 0px 15px 16px 15px; }
+                .endfooter { margin-top: 4px; }
+                .svdetail { margin-bottom: 15px; }
+                section { overflow: hidden; }
+                h6 { font-size: 19px; margin-bottom: 1px; line-height: 18px; }
+                .h7 { font-size: 21px; margin-bottom: 5px; }
+                .h8 { font-size: 24px; }
+            </style>
+            <div id="receiptTemplate1"></div>
+            <div id="receiptTemplate2"></div>
+        </div>
+
+        <div class="modal-action">
+            <button type="button" class="btn btn-error" id="printInvoice">
+                <i class="fas fa-print mr-2"></i>
+                Print
+            </button>
+            <form method="dialog">
+                <button class="btn">Close</button>
+            </form>
+        </div>
+    </div>
+</dialog>
+
+<!-- Toast Container -->
+<div class="toast toast-top toast-center z-[100]" id="toastContainer"></div>
+
+@section Scripts {
     <partial name="_ValidationScriptsPartial" />
     <script src="~/js/serviceVoucher.js"></script>
     <script id="entry-template" type="text/x-handlebars-template">
-        <section>
-            <strong class="h8">&nbsp; Services to be provided by:</strong>
-            <div class="row svaddress">
-                <div class="col-md-8">
+        <div class="formsize">
+            <header class="mt-4">
+                <div class="flex">
+                    <div class="flex-1 logo">
+                        <img src="img/logo2.jpg">
+                    </div>
+                    <div class="flex-none">
+                        <h6>GPO Box: 9484</h6>
+                        <h6>Lazimpat - 2, Kathmandu, Nepal</h6>
+                        <h6>Tel: (977) 01 4444843/44/45</h6>
+                        <h6>Email: peaceintl.mail@@gmail.com</h6>
+                        <h6>&emsp;&emsp;&emsp;mail@@peace-intl.com.np </h6>
+                        <h6>Web: peace-intl.com </h6>
+                        <h6>PAN: 302243385 </h6>
+                    </div>
+                </div>
+            </header>
+            <br />
+            <section>
+                <strong class="h8">&nbsp; Services to be provided by:</strong>
+                <div class="svaddress">
                     <p class="h7" style="font-size:25px !important;"><strong>{{hotel.name}}</strong></p>
                     <p class="h7" style="font-size:25px !important;"><strong>{{hotel.address}}</strong></p>
-                </div>
-                <div class="col-md-4">
                     <p class="h7"><strong>Exchange Order No. : {{serviceVoucher.exchangeOrderNo}}</strong></p>
                     <p class="h7"><strong>Date: {{chain "splitDate" "customDate" serviceVoucher.createdDate}}</strong></p>
                 </div>
-            </div>
-        </section>
-        <section class="svdetail">
-            <div class="svdata">
+            </section>
+            <section class="svdetail">
                 <div class="svrow1">
                     <div class="svrcol1">
                         <p class="h7">Name <strong>{{serviceVoucher.clientName}} X {{serviceVoucher.pax}} PAX</strong></p>
@@ -520,22 +390,15 @@
                         <p class="h7">By <strong>{{serviceVoucher.departureFlight}}</strong></p>
                     </div>
                 </div>
-            </div>
-        </section>
-        <div class="svcomment">
-            <strong class="h8">&nbsp;&nbsp;Please provide the following services</strong>
-            <p class="comment h7">
-                {{serviceVoucher.services}}
-            </p>
-            <div class="row endfooter2">
-                <div class="col-md-8 endfooter1">
+            </section>
+            <div class="svcomment">
+                <strong class="h8">&nbsp;&nbsp;Please provide the following services</strong>
+                <p class="comment h7">{{serviceVoucher.services}}</p>
+                <div class="endfooter2">
                     <p class="h7"><strong>COLLECT ALL EXTRAS DIRECTLY.</strong></p>
-                </div>
-                <div class="col-md-4 text-center endfooter2">
-                    <p class="h7"><strong>{{userName}}</strong></p>
+                    <p class="h7 text-center"><strong>{{userName}}</strong></p>
                 </div>
             </div>
         </div>
     </script>
 }
-

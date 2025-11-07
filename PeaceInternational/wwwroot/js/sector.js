@@ -120,9 +120,6 @@ const clearForm = () => {
 
     // Clear error messages
     document.querySelectorAll('.label-text-alt.text-error').forEach(el => el.textContent = '');
-
-    // Reset validation
-    $('#sectorForm').validate().resetForm();
 };
 
 // Function to validate form

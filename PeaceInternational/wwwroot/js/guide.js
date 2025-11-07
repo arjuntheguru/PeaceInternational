@@ -95,9 +95,6 @@ const clearForm = () => {
 
     // Clear error messages
     document.querySelectorAll('.label-text-alt.text-error').forEach(el => el.textContent = '');
-
-    // Reset validation
-    $('#guideForm').validate().resetForm();
 };
 
 // Function to validate form

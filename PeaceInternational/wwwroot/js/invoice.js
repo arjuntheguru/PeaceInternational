@@ -1,552 +1,428 @@
-﻿"use strict";
+"use strict";
 
-//Column defination for InvoiceInfo Grid
-const invoiceColumnDefs = [
+let invoicesData = [];
+let itemsList = [];
 
-    { headerName: 'Invoice No', field: 'invoiceNo', maxWidth: 150 },
-    { headerName: 'File Code No.', field: 'fileCodeNo', hide : true },
-    {
-        headerName: 'Date', field: 'createdDate', tooltipField: 'Date', maxWidth: 220,
-        cellRenderer: function (data) {
-            return data.value.split('T')[0];
-        }
-    },
-    { headerName: 'Address', field: 'address', maxWidth: 150 },
-    { headerName: 'Client Name', field: 'clientName', maxWidth: 150 },
-    //{ headerName: 'Currency', field: 'currency', maxWidth: 150 },
-    { headerName: 'PAX', field: 'pax', maxWidth: 100 },
-    //{ headerName: 'Total Due', field: 'totalDue', maxWidth: 100 },
-    //{ headerName: 'Discount', field: 'discount', maxWidth: 80 },
-    {
+// Function to show toast notification
+const showToast = (type, message) => {
+    Toast.show(type, message, 3000);
+};
 
-        headerName: 'Net Amount', field: 'netAmount', maxWidth: 140,
-        cellRenderer: function (data) {
-            return data.value.toFixed(2);
-        }
-    },
-    {
-        headerName: 'Details', maxWidth: 100,
-        cellRenderer: function () {
-            return '<i class="btn fas fa-clipboard" id="detailsButton"></i>';
-        },
-        onCellClicked(params) {
-            InvoiceDetails(params.data.id);
-        }
-    },
-    {
-        headerName: 'Edit', maxWidth: 100,
-        cellRenderer: function () {
-            return '<i class="btn fas fa-edit" id="editButton"></i>';
-        },
-        onCellClicked(params) {
-            Edit(params.data);
-        }
-    },
-    {
-        headerName: 'Invoice', maxWidth: 100,
-        cellRenderer: function () {
-            return '<i class="btn fas fa-file-invoice-dollar" id="generatePdfButton"></i>';
-        },
-        onCellClicked(params) {
-            GenerateInvoice(params.data);
-        }
-    }
-];
-
-
-//Column defination for InvoiceDetails Grid
-const invoiceDetailColumnDefs = [
-
-    { headerName: 'Id', field: 'id', hide: true },
-    { headerName: 'Particulars', field: 'particulars' },
-    { headerName: 'Amount', field: 'amount', maxWidth: 200 }
-
-];
-
-//Function to set the data for the Invoice grid
-const setInvoiceGridData = () => {
-
+// Function to load invoices
+const loadInvoices = () => {
     $.ajax({
         url: 'Invoice/GetInvoice',
         method: 'GET',
         success: (data) => {
-            gridOptions.api.setRowData(data);
+            invoicesData = data;
+            renderTable(data);
+        },
+        error: () => {
+            showToast('error', 'Failed to load invoices');
         }
     });
 };
 
+// Function to render table
+const renderTable = (data) => {
+    const tableBody = document.getElementById('tableBody');
 
-//Function to set the data for the Invoice Detail grid
-const setInvoiceDetailGridData = (invoiceId, callback) => {
+    if (!data || data.length === 0) {
+        tableBody.innerHTML = `
+            <tr>
+                <td colspan="6" class="text-center py-12">
+                    <div class="flex flex-col items-center gap-4">
+                        <i class="fas fa-file-invoice fa-4x text-base-300"></i>
+                        <div>
+                            <h3 class="font-bold text-lg">No invoices found</h3>
+                            <p class="text-base-content/70">Start by adding your first invoice</p>
+                        </div>
+                        <label for="invoice-drawer" class="btn btn-primary gap-2 drawer-button">
+                            <i class="fas fa-plus"></i>
+                            Add Invoice
+                        </label>
+                    </div>
+                </td>
+            </tr>
+        `;
+        return;
+    }
+
+    tableBody.innerHTML = data.map(invoice => `
+        <tr class="hover transition-colors duration-200"
+            data-invoice="${invoice.invoiceNo || ''}"
+            data-filecode="${(invoice.fileCodeNo || '').toLowerCase()}"
+            data-client="${(invoice.clientName || '').toLowerCase()}">
+            <td>
+                <div class="badge badge-primary badge-lg">${invoice.invoiceNo || '-'}</div>
+            </td>
+            <td>
+                <span class="font-mono text-sm">${invoice.fileCodeNo || '-'}</span>
+            </td>
+            <td class="font-semibold">${invoice.clientName || '-'}</td>
+            <td>
+                <div class="badge badge-outline">${invoice.currency || '-'}</div>
+            </td>
+            <td class="font-bold text-success">${parseFloat(invoice.netAmount || 0).toFixed(2)}</td>
+            <td>
+                <div class="flex gap-2 justify-center">
+                    <button onclick="editInvoice(${invoice.id})" class="btn btn-sm btn-info gap-2" title="Edit">
+                        <i class="fas fa-edit"></i>
+                    </button>
+                    <button onclick="generateInvoice(${invoice.id})" class="btn btn-sm btn-success gap-2" title="View">
+                        <i class="fas fa-file-invoice"></i>
+                    </button>
+                </div>
+            </td>
+        </tr>
+    `).join('');
+};
+
+// Function to filter table
+const filterTable = () => {
+    const invoiceNo = document.getElementById('searchField').value.toLowerCase();
+    const fileCode = document.getElementById('searchFieldFileCode').value.toLowerCase();
+    const client = document.getElementById('searchFieldClient').value.toLowerCase();
+
+    const filtered = invoicesData.filter(invoice => {
+        const matchInvoice = !invoiceNo || (invoice.invoiceNo || '').toLowerCase().includes(invoiceNo);
+        const matchFileCode = !fileCode || (invoice.fileCodeNo || '').toLowerCase().includes(fileCode);
+        const matchClient = !client || (invoice.clientName || '').toLowerCase().includes(client);
+
+        return matchInvoice && matchFileCode && matchClient;
+    });
+
+    renderTable(filtered);
+};
+
+// Function to clear form
+const clearForm = () => {
+    document.getElementById('id').value = '';
+    document.getElementById('date').value = new Date().toISOString().slice(0, 10);
+    document.getElementById('dr').value = '';
+    document.getElementById('currency').value = '';
+    document.getElementById('referenceNo').value = '';
+    document.getElementById('fileCodeNo').value = '';
+    document.getElementById('isTicket').checked = false;
+    document.getElementById('address').value = '';
+    document.getElementById('clientName').value = '';
+    document.getElementById('pax').value = '';
+    document.getElementById('guide').value = '';
+    document.getElementById('vehicle').value = '';
+    document.getElementById('particulars').value = '';
+    document.getElementById('particularAmount').value = '';
+    document.getElementById('discount').value = '0';
+    document.getElementById('totalDue').value = '0.00';
+    document.getElementById('netAmount').value = '0.00';
+
+    // Clear items list
+    itemsList = [];
+    renderItemsTable();
+
+    // Show file code field
+    document.getElementById('fileCodeNo').parentElement.style.display = 'block';
+
+    // Clear error messages
+    document.querySelectorAll('.label-text-alt.text-error').forEach(el => el.textContent = '');
+};
+
+// Function to render items table
+const renderItemsTable = () => {
+    const tbody = document.getElementById('itemsTableBody');
+
+    if (itemsList.length === 0) {
+        tbody.innerHTML = `
+            <tr>
+                <td colspan="3" class="text-center py-4 text-base-content/50">
+                    No items added yet
+                </td>
+            </tr>
+        `;
+        return;
+    }
+
+    tbody.innerHTML = itemsList.map((item, index) => `
+        <tr class="hover">
+            <td>${item.particulars}</td>
+            <td class="text-right font-mono">${parseFloat(item.amount).toFixed(2)}</td>
+            <td class="text-center">
+                <button type="button" onclick="removeItem(${index})" class="btn btn-xs btn-error btn-circle">
+                    <i class="fas fa-times"></i>
+                </button>
+            </td>
+        </tr>
+    `).join('');
+
+    calcTotal();
+};
+
+// Function to add item
+const addItem = () => {
+    const particulars = document.getElementById('particulars').value.trim();
+    const amount = document.getElementById('particularAmount').value;
+
+    if (!particulars) {
+        showToast('error', 'Particulars cannot be empty');
+        return;
+    }
+
+    if (!amount || parseFloat(amount) <= 0) {
+        showToast('error', 'Amount must be greater than 0');
+        return;
+    }
+
+    itemsList.push({
+        id: 0,
+        particulars: particulars,
+        amount: parseFloat(amount)
+    });
+
+    document.getElementById('particulars').value = '';
+    document.getElementById('particularAmount').value = '';
+
+    renderItemsTable();
+};
+
+// Function to remove item
+window.removeItem = (index) => {
+    itemsList.splice(index, 1);
+    renderItemsTable();
+};
+
+// Function to calculate totals
+const calcTotal = () => {
+    const total = itemsList.reduce((sum, item) => sum + parseFloat(item.amount), 0);
+    const discount = parseFloat(document.getElementById('discount').value) || 0;
+    const netAmount = total - discount;
+
+    document.getElementById('totalDue').value = total.toFixed(2);
+    document.getElementById('netAmount').value = netAmount.toFixed(2);
+};
+
+// Function to validate form
+const validateForm = () => {
+    let isValid = true;
+
+    // Clear previous errors
+    document.querySelectorAll('.label-text-alt.text-error').forEach(el => el.textContent = '');
+
+    // Dr validation
+    const dr = document.getElementById('dr').value.trim();
+    if (!dr) {
+        document.getElementById('dr-error').textContent = 'Dr. is required';
+        isValid = false;
+    }
+
+    // Currency validation
+    const currency = document.getElementById('currency').value.trim();
+    if (!currency) {
+        document.getElementById('currency-error').textContent = 'Currency is required';
+        isValid = false;
+    }
+
+    // Client Name validation
+    const clientName = document.getElementById('clientName').value.trim();
+    if (!clientName) {
+        document.getElementById('clientName-error').textContent = 'Client name is required';
+        isValid = false;
+    }
+
+    // Items validation
+    if (itemsList.length === 0) {
+        showToast('error', 'Please add at least one item');
+        isValid = false;
+    }
+
+    return isValid;
+};
+
+// Function to edit invoice
+window.editInvoice = (id) => {
+    const invoice = invoicesData.find(inv => inv.id === id);
+    if (!invoice) return;
+
+    document.getElementById('invoiceTitle').textContent = 'Edit Invoice';
+    document.getElementById('id').value = invoice.id;
+    document.getElementById('date').value = invoice.createdDate ? invoice.createdDate.split('T')[0] : '';
+    document.getElementById('dr').value = invoice.dr || '';
+    document.getElementById('currency').value = invoice.currency || '';
+    document.getElementById('referenceNo').value = invoice.referenceNo || '';
+    document.getElementById('fileCodeNo').value = invoice.fileCodeNo || '';
+    document.getElementById('isTicket').checked = invoice.isTicket || false;
+    document.getElementById('address').value = invoice.address || '';
+    document.getElementById('clientName').value = invoice.clientName || '';
+    document.getElementById('pax').value = invoice.pax || '';
+    document.getElementById('guide').value = invoice.guide || '';
+    document.getElementById('vehicle').value = invoice.vehicle || '';
+    document.getElementById('discount').value = invoice.discount || '0';
+    document.getElementById('totalDue').value = parseFloat(invoice.totalDue || 0).toFixed(2);
+    document.getElementById('netAmount').value = parseFloat(invoice.netAmount || 0).toFixed(2);
+
+    // Toggle file code field
+    if (invoice.isTicket) {
+        document.getElementById('fileCodeNo').parentElement.style.display = 'none';
+    }
+
+    // Load invoice details
     $.ajax({
         url: 'Invoice/GetInvoiceDetail',
         method: 'GET',
-        data: { invoiceId: invoiceId },
+        data: { invoiceId: id },
         success: (data) => {
-            invoiceDetailGridOptions.api.setRowData(data);
-            console.log(data);
-            callback(data);
+            itemsList = data.map(item => ({
+                id: item.id,
+                particulars: item.particulars,
+                amount: parseFloat(item.amount)
+            }));
+            renderItemsTable();
         }
     });
+
+    // Open drawer
+    document.getElementById('invoice-drawer').checked = true;
 };
 
-//Settings for the Invoice grid
-const gridOptions = {
-    columnDefs: invoiceColumnDefs,
-    rowHeight: 40,
-    defaultColDef: {
-        sortable: true,
-        filter: true
-    },
-    paginationAutoPageSize: true,
-    pagination: true,
-    accentedSort: true,
-    enableBrowserTooltips: true,
-    onGridSizeChanged: (params) => {
-        params.api.sizeColumnsToFit();
-    }
-};
-
-//Settings for the Invoice Detail grid
-const invoiceDetailGridOptions = {
-    columnDefs: invoiceDetailColumnDefs,
-    rowHeight: 40,
-    defaultColDef: {
-        sortable: true,
-        filter: true
-    },
-    paginationAutoPageSize: true,
-    pagination: true,
-    accentedSort: true,
-    onGridSizeChanged: (params) => {
-        params.api.sizeColumnsToFit();
-    }
-};
-
-//Function to generate Invoice
-const GenerateInvoice = (invoiceData) => {
-
+// Function to generate/view invoice
+window.generateInvoice = (id) => {
     $.ajax({
         url: 'Invoice/GetInvoiceInfo',
         method: 'GET',
-        data: { id: invoiceData.id },
+        data: { id: id },
         success: (data) => {
             data.invoice.fileCodeNo = data.invoice.fileCodeNo ? data.invoice.fileCodeNo.split('/')[1] : data.invoice.fileCodeNo;
-            console.log(data);
+
             var source = document.getElementById("entry-template").innerHTML;
             var template = Handlebars.compile(source);
             var result = template(data);
 
-            $('#receiptTemplate').html(result);
-            $('#viewInvoice').modal('toggle');
+            document.getElementById('receiptTemplate').innerHTML = result;
+            document.getElementById('viewInvoice').showModal();
+        },
+        error: () => {
+            showToast('error', 'Failed to load invoice');
         }
     });
-
 };
 
-
-//Invoice Details
-const InvoiceDetails = (invoiceId) => {
-
-    $('#invoiceDetailModal').modal('toggle');
-    setInvoiceDetailGridData(invoiceId, () => { });
-
-};
-
-const itemListColumnDefs = [
-
-    {
-        headerName: 'Id', field: 'id', hide: true,
-        cellStyle: () => {
-            return { 'font-size': '16px' };
-        },
-        cellClass: ['text-monospace']
-    },
-    {
-        headerName: 'Particulars', field: 'particulars', maxWidth: 450,
-        cellStyle: () => {
-            return { 'font-size': '16px' };
-        },
-        cellClass: ['text-monospace']
-    },
-    {
-        headerName: 'Amount', field: 'amount', maxWidth: 250,       
-        cellStyle: () => {
-            return { 'font-size': '16px' };
-        },
-        cellClass: ['text-monospace']
-    },
-    {
-        headerName: 'Remove', maxWidth: 150,
-        cellRenderer: () => {
-            return `<button type='button' class='btn btn-danger btn-sm m-1 shadow w-100'><i class='fas fa-times'></i></button>`;
-        },
-        onCellClicked(params) {
-           
-            itemListGridOptions.api.updateRowData({ remove: [params.data] });
-            $('#particulars').val(params.data.particulars);
-            $('#particularAmount').val(params.data.amount);
-            calcTotal();
-        }
+// Function to save invoice
+const saveInvoice = () => {
+    if (!validateForm()) {
+        return;
     }
-];
 
-const itemListGridOptions = {
-
-    columnDefs: itemListColumnDefs,
-    rowHeight: 50,
-    rowData: false,
-    onGridSizeChanged: (params) => {
-        params.api.sizeColumnsToFit();
-    }
-};
-
-function getItemList() {
-
-    let itemList = [];
-    itemListGridOptions.api.forEachNode(function (node) {
-        itemList.push(node.data);
-    });
-
-    return itemList;
-}
-
-function clear() {
-
-    $('#particulars').val('');
-    $('#particularAmount').val('');
-}
-
-function call() {
-
-    let filter = {
-        invoiceNo: { type: 'contains', filter: $('#searchField').val() },      
-        fileCodeNo: { type: 'contains', filter: $('#searchFieldFileCode').val() },
-        clientName: { type: 'contains', filter: $('#searchFieldClient').val() }
+    const record = {
+        Id: document.getElementById('id').value,
+        IsTicket: document.getElementById('isTicket').checked,
+        FileCodeNo: document.getElementById('fileCodeNo').value,
+        ReferenceNo: document.getElementById('referenceNo').value,
+        Dr: document.getElementById('dr').value,
+        Address: document.getElementById('address').value,
+        Currency: document.getElementById('currency').value,
+        ClientName: document.getElementById('clientName').value,
+        PAX: document.getElementById('pax').value,
+        Guide: document.getElementById('guide').value,
+        Vehicle: document.getElementById('vehicle').value,
+        TotalDue: document.getElementById('totalDue').value,
+        Discount: document.getElementById('discount').value,
+        NetAmount: document.getElementById('netAmount').value,
+        InvoiceDetails: itemsList
     };
-    gridOptions.api.setFilterModel(filter);
-    gridOptions.api.onFilterChanged();
-}
 
-const Edit = (data) => {
-
-    ClearInvoiceForm();
-    $('#invoiceForm').validate().destroy();
-    invoiceFormValidation();
-    $('#invoiceForm').validate().resetForm();
-
-    console.log(data);
-    $('#createInvoice').modal('toggle');
-    $("#id").val(data.id);
-    $('#isTicket').prop('checked', data.isTicket);
-
-    if ($('#isTicket').is(":checked")) {
-        $('#fileCodeNoDiv').hide();
-        $('#fileCodeNo').val('');
-    }
-
-    $('#date').val(data.createdDate.split('T')[0]);
-    $("#fileCodeNo").val(data.fileCodeNo);
-    $('#referenceNo').val(data.referenceNo);
-    $('#dr').val(data.dr);
-    $('#address').val(data.address);
-    $('#currency').val(data.currency);
-    $('#clientName').val(data.clientName);
-    $('#pax').val(data.pax);
-    $('#guide').val(data.guide);
-    $('#vehicle').val(data.vehicle);
-    $('#totalDue').val(data.totalDue.toFixed(2));
-    $('#discount').val(data.discount.toFixed(2));
-    $('#netAmount').val(data.netAmount.toFixed(2));
-    setInvoiceDetailGridData(data.id, setItemListData);
-};
-
-const setItemListData = (data) => {
-    itemListGridOptions.api.setRowData(data);
-};
-
-
-
-const ClearInvoiceForm = () => {
-
-    removeBorderClass();
-    $("#id").val('');
-    $('#date').val(new Date().toISOString().slice(0, 10));
-    $('#isTicket').prop('checked', false);
-    $('#fileCodeNoDiv').show();
-    $('#referenceNo').val('');
-    $('#dr').val('');
-    $('#fileCodeNo').val('');
-    $('#address').val('');
-    $('#currency').val('');
-    $('#clientName').val('');
-    $('#pax').val('');
-    $('#guide').val('');
-    $('#vehicle').val('');
-    $('#totalDue').val('');
-    $('#discount').val('');
-    $('#netAmount').val('');
-    itemListGridOptions.api.setRowData([]);
-};
-
-
-const invoiceFormValidation = () => {
-
-    $('#invoiceForm').validate({
-        rules: {
-            date: {
-                required: true
-            },
-            dr: {
-                required: true,
-                maxlength: 100
-            },
-            fileCodeNo: {                
-                checkFileCodeNo: true
-            },            
-            currency: {
-                required: true
-            },
-            clientName: {
-                required: true
-            },
-            discount: {
-                min: 0
-            }
+    $.ajax({
+        url: 'Invoice/Save',
+        method: 'POST',
+        data: { invoice: record },
+        success: (data) => {
+            showToast(data.type, data.message);
+            document.getElementById('invoice-drawer').checked = false;
+            loadInvoices();
+            clearForm();
+        },
+        error: () => {
+            showToast('error', 'Failed to save invoice');
         }
     });
 };
 
-const addParticularsValidation = () => {
+// Document ready
+$(document).ready(function () {
+    // Load invoices on page load
+    loadInvoices();
 
-    if ($('#particulars').val()) {
-        if ($('#particularAmount').val()) {
-            addParticulars();
+    // Set current date
+    document.getElementById('date').value = new Date().toISOString().slice(0, 10);
+
+    // Add invoice button click
+    const drawerButton = document.querySelector('label[for="invoice-drawer"]');
+    if (drawerButton) {
+        drawerButton.addEventListener('click', function() {
+            document.getElementById('invoiceTitle').textContent = 'Add Invoice';
+            clearForm();
+        });
+    }
+
+    // Form submit
+    document.getElementById('invoiceForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        saveInvoice();
+    });
+
+    // Add product button
+    document.getElementById('addProduct').addEventListener('click', addItem);
+
+    // Enter key on amount field
+    document.getElementById('particularAmount').addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            addItem();
         }
-        else {
-            noty({
-                type: 'error',
-                text: 'Amount cannot be empty',
-                layout: 'center',
-                timeout: 1000,
-                killer: true
+    });
+
+    // Discount change
+    document.getElementById('discount').addEventListener('input', calcTotal);
+
+    // Is Ticket checkbox
+    document.getElementById('isTicket').addEventListener('change', function() {
+        if (this.checked) {
+            document.getElementById('fileCodeNo').parentElement.style.display = 'none';
+            document.getElementById('fileCodeNo').value = '';
+        } else {
+            document.getElementById('fileCodeNo').parentElement.style.display = 'block';
+        }
+    });
+
+    // File code change - auto fill client data
+    document.getElementById('fileCodeNo').addEventListener('change', function() {
+        const fileCode = this.value;
+        if (fileCode) {
+            $.ajax({
+                url: 'Customer/Get',
+                method: 'GET',
+                data: { fileCodeNo: fileCode },
+                success: function(data) {
+                    document.getElementById('clientName').value = data.tourName || '';
+                    document.getElementById('guide').value = data.guideName || '';
+                }
             });
         }
-    }
-    else {
-        noty({
-            type: 'error',
-            text: 'Particulars cannot be empty',
-            layout: 'center',
-            timeout: 1000,
-            killer: true
-        });
-    }
-};
-
-const addParticulars = () => {
-
-    const newData = {
-
-        id: 0,
-        particulars: $('#particulars').val(),
-        amount: parseFloat($('#particularAmount').val()).toFixed(2)
-    };
-
-    itemListGridOptions.api.updateRowData({ add: [newData] });
-    calcTotal();
-    clear();
-};
-
-function calcTotal() {
-
-    let itemList = getItemList();
-    let amount = 0;
-    let discount = $('#discount').val();
-    let netAmount = 0;
-
-    $(itemList).each(function (idx, item) {
-        amount += parseFloat(item.amount);
     });
 
-    netAmount = amount - discount;
-    if ($('#discount').val() > amount || $('#discount').val() < 0) {
-        $('#discount').addClass('is-invalid');
-    }
-    else {
-        $('#discount').removeClass('is-invalid');
-    }
+    // Search filters
+    document.getElementById('searchField').addEventListener('input', filterTable);
+    document.getElementById('searchFieldFileCode').addEventListener('input', filterTable);
+    document.getElementById('searchFieldClient').addEventListener('input', filterTable);
 
-    $('#totalDue').val(parseFloat(amount).toFixed(2));
-    $('#netAmount').val(parseFloat(netAmount).toFixed(2));
-    console.log(amount, netAmount);
-    return [parseFloat(amount), parseFloat(netAmount)];
-
-}
-
-const getItemListData = () => {
-
-    let itemList = [];
-    itemListGridOptions.api.forEachNode(function (node) {
-        itemList.push(node.data);
-    });
-    console.log(itemList);
-    return itemList;
-};
-
-//const getCurrentNepaliYear = () => {
-
-//    var year = new Date().getFullYear();
-//    const startingNepaliYear = calendarFunctions.getBsYearByAdDate(year, 1, 1);
-//    const endingNepaliYear = calendarFunctions.getBsYearByAdDate(year, 12, 31);
-//    var invoiceNoPrefix = startingNepaliYear.toString().slice(2, 4) + endingNepaliYear.toString().slice(2, 4);
-//    return invoiceNoPrefix;
-//};
-
-const Save = () => {
-
-    $('#invoiceForm').off('submit').on('submit', function (e) {
-
-        e.preventDefault();
-
-        var record = {
-            Id: $('#id').val(),  
-            IsTicket: $('#isTicket').is(":checked"),
-            FileCodeNo: $('#fileCodeNo').val(),
-            ReferenceNo: $('#referenceNo').val(),
-            Dr: $('#dr').val(),
-            Address: $('#address').val(),
-            Currency: $('#currency').val(),
-            ClientName: $('#clientName').val(),
-            PAX: $('#pax').val(),
-            Guide: $('#guide').val(),
-            Vehicle: $('#vehicle').val(),
-            TotalDue: $('#totalDue').val(),
-            Discount: $('#discount').val(),
-            NetAmount: $('#netAmount').val(),
-            InvoiceDetails: getItemListData()
-        };
-
-        $.ajax({
-            url: 'Invoice/Save',
-            method: 'POST',
-            data: { invoice: record },
-            success: function (data) {
-                noty({
-                    type: data.type,
-                    text: data.message,
-                    layout: 'topCenter',
-                    timeout: 2000
-                });
-                $('#createInvoice').modal('toggle');
-                setInvoiceGridData();
-            }
-        });
-
-    });
-};
-
-$(document).ready(function () {
-
-    var invoiceGrid = document.querySelector('#invoiceGrid');
-    new agGrid.Grid(invoiceGrid, gridOptions);
-
-    var itemDetailsGrid = document.querySelector('#invoiceDetailsGrid');
-    new agGrid.Grid(itemDetailsGrid, invoiceDetailGridOptions);
-
-    setInvoiceGridData();
-
-    var itemListGrid = document.querySelector('#itemListGrid');
-    new agGrid.Grid(itemListGrid, itemListGridOptions);
-
-    $('#addProduct').on('click', function () {
-        addParticularsValidation();
-    });
-
-    $('#currency').on('keyup', () => {
-        $('.currency').html($('#currency').val());
-    });
-
-    $('#discount').on('change', () => { calcTotal(); });
-
-    //getCurrentNepaliYear();
-
-    //if ($('#isTicket').is(":checked"))
-    //{
-    //    $('#fileCodeNoDiv').hide();
-    //    $('#fileCodeNo').val('');
-    //}
-
-    $('#isTicket').on('change', function () {
-        if ($('#isTicket').is(":checked")) {
-            $('#fileCodeNoDiv').hide();
-            $('#fileCodeNo').val('');
-        }
-        else {
-            $('#fileCodeNoDiv').show();
-        }
-    });
-
-
-    $('#addInvoiceBtn').click(function () {
-        ClearInvoiceForm();
-        $('#invoiceForm').validate().destroy();
-        invoiceFormValidation();
-        $('#invoiceForm').validate().resetForm();
-    });
-
-    $('#btnSave').off('click').on('click', function () {
-        if ($('#invoiceForm').valid()) {
-            console.log($('#invoiceForm').valid());
-            Save();
-        }
-    });
-
-    $('#printInvoice').off('click').on('click', function () {
-
-        html2canvas($("#invoiceBody")[0], {
+    // Print invoice button
+    document.getElementById('printInvoice').addEventListener('click', function() {
+        html2canvas(document.getElementById("invoiceBody"), {
             scale: 3
         }).then(function (canvas) {
             var myImage = canvas.toDataURL("image/png");
             var tWindow = window.open("");
-            $(tWindow.document.body)
-                .html("<img id='Image' src=" + myImage + " style='width:100%;'></img>")
-                .ready(function () {
-                    tWindow.focus();
-                    tWindow.print();
-                });
-        });
-
-    });
-
-    $('#searchField').on('keyup', function () {
-        call();
-    });
-
-    $('#searchFieldAgent').on('keyup', function () {
-        call();
-    });
-
-    $('#searchFieldClient').on('keyup', function () {
-        call();
-    });
-
-    $('#searchFieldFileCode').on('keyup', function () {
-        call();
-    });
-
-    $('#fileCodeNo').on('change', function () {
-        $.ajax({
-            url: 'Customer/Get',
-            method: 'GET',
-            data: { fileCodeNo: $('#fileCodeNo').val() },
-            success: function (data) {
-                console.log(data);
-                $('#clientName').val(data.tourName);
-                $('#guide').val(data.guideName);
-            }
+            tWindow.document.body.innerHTML = "<img id='Image' src='" + myImage + "' style='width:100%;'></img>";
+            tWindow.document.close();
+            tWindow.focus();
+            tWindow.print();
         });
     });
 });
-
-

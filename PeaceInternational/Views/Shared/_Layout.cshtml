@@ -14,7 +14,7 @@
     <!-- Custom CSS (for backward compatibility if needed) -->
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
 </head>
-<body class="bg-base-100">
+<body class="bg-base-100 flex flex-col min-h-screen">
     <!-- Clean Navbar -->
     <div class="navbar bg-base-100 border-b border-base-300 sticky top-0 z-50">
         <div class="navbar-start">
@@ -84,14 +84,14 @@
     <partial name="_CookieConsentPartial" />
 
     <!-- Main Content -->
-    <main class="container mx-auto px-4 py-6 max-w-7xl">
+    <main class="container mx-auto px-4 py-6 max-w-7xl flex-grow">
         @RenderBody()
     </main>
 
     <!-- Footer -->
-    <footer class="bg-base-200 border-t border-base-300 py-8 mt-20">
+    <footer class="bg-base-200 border-t border-base-300 py-6 mt-auto">
         <div class="max-w-6xl mx-auto px-4">
-            <div class="flex flex-col items-center gap-4 text-center">
+            <div class="flex flex-col items-center gap-2 text-center">
                 <div class="text-sm text-base-content/70">
                     &copy; 2025 Peace International Tours. All rights reserved.
                 </div>

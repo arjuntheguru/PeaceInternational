@@ -15,7 +15,7 @@ namespace PeaceInternational.Infrastructure.EntityConfiguration
             builder.HasKey(p => p.Id);
 
             builder.Property(p => p.Id)
-                .UseIdentityColumn();
+                .ValueGeneratedOnAdd();
 
             builder.Property(p => p.CreatedBy)
                 .HasMaxLength(256)
@@ -23,7 +23,7 @@ namespace PeaceInternational.Infrastructure.EntityConfiguration
 
             builder.Property(p => p.CreatedDate)
                 .HasColumnType("datetime")
-                .HasDefaultValueSql("GETDATE()");
+                .HasDefaultValueSql("CURRENT_TIMESTAMP");
 
             builder.Property(p => p.ModifiedBy)
                .HasMaxLength(256);

@@ -1,0 +1,23 @@
+{
+  "name": "peaceinternational",
+  "version": "1.0.0",
+  "description": "Modern UI for Peace International Tour Company",
+  "scripts": {
+    "build:css": "npx tailwindcss -i ./wwwroot/css/input.css -o ./wwwroot/css/output.css --minify",
+    "watch:css": "npx tailwindcss -i ./wwwroot/css/input.css -o ./wwwroot/css/output.css --watch",
+    "dev": "npm run watch:css"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@tailwindcss/forms": "^0.5.9",
+    "@tailwindcss/typography": "^0.5.15",
+    "autoprefixer": "^10.4.20",
+    "postcss": "^8.4.49",
+    "tailwindcss": "^3.4.14"
+  },
+  "dependencies": {
+    "daisyui": "^4.12.14"
+  }
+}

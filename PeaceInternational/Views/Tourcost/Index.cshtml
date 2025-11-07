@@ -1,101 +1,243 @@
-﻿@model IEnumerable<PeaceInternational.Core.Entity.Tourcost>
+@model IEnumerable<PeaceInternational.Core.Entity.Tourcost>
 
 @{
-    ViewData["Title"] = "Tourcost";
+    ViewData["Title"] = "Tour Cost";
 }
 
-<div class="row">
-    <div class="col-md-10">
-        <h1 class="display-4">Tourcost</h1>
+<div class="animate-fade-in">
+    <!-- Header -->
+    <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6">
+        <div>
+            <h1 class="text-4xl font-bold text-base-content">Tour Cost Management</h1>
+            <p class="text-base-content/70 mt-2">View and manage tour cost calculations</p>
+        </div>
+        <a asp-action="AddEdit" class="btn btn-primary gap-2">
+            <i class="fas fa-plus"></i>
+            Add Tour Cost
+        </a>
     </div>
-    <div class="col-md-2">
-        <a class="btn btn-info mt-4 w-100" asp-action="AddEdit">Add Tourcost</a>
-    </div>
-</div>
-<hr />
-<div class="row">
-    <div class="col-md-6">
-        <input type="text" class="form-control" id="searchField" placeholder="Client Name" />
-    </div>
-</div>
-<div style="height: 100%; box-sizing: border-box; padding-top:20px;">
-    <div id="tourcostGrid" style="width:100%; height:450px" class="ag-theme-balham"></div>
-</div>
 
-@section Scripts{
-    <script type="text/javascript">
-        const columnDefs = [
-            { headerName: 'Client Name', field: 'clientName' },
+    <!-- Search and Filters -->
+    <div class="card bg-base-200 shadow-xl mb-6">
+        <div class="card-body">
+            <div class="form-control">
+                <div class="input-group">
+                    <input type="text" id="searchField" placeholder="Search by client name..." class="input input-bordered flex-1" />
+                    <button class="btn btn-square btn-primary">
+                        <i class="fas fa-search"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Tour Cost Table -->
+    <div class="card bg-base-100 shadow-xl">
+        <div class="card-body p-0">
+            <div class="overflow-x-auto">
+                <table class="table table-zebra w-full" id="tourcostTable">
+                    <thead class="bg-primary text-primary-content">
+                        <tr>
+                            <th class="normal-case text-base">
+                                <div class="flex items-center gap-2">
+                                    Client Name
+                                    <i class="fas fa-sort text-xs cursor-pointer" data-sort="clientName"></i>
+                                </div>
+                            </th>
+                            <th class="normal-case text-base">
+                                <div class="flex items-center gap-2">
+                                    Date
+                                    <i class="fas fa-sort text-xs cursor-pointer" data-sort="date"></i>
+                                </div>
+                            </th>
+                            <th class="normal-case text-base text-center">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tableBody">
+                        @if (Model != null && Model.Any())
+                        {
+                            @foreach (var item in Model)
+                            {
+                                <tr class="hover transition-colors duration-200" data-client-name="@item.ClientName?.ToLower()">
+                                    <td class="font-medium">
+                                        <div class="flex items-center gap-3">
+                                            <div class="avatar placeholder">
+                                                <div class="bg-primary text-primary-content rounded-full w-10">
+                                                    <span class="text-lg">@item.ClientName?.Substring(0, 1).ToUpper()</span>
+                                                </div>
+                                            </div>
+                                            <div>
+                                                <div class="font-bold">@item.ClientName</div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="flex items-center gap-2">
+                                            <i class="fas fa-calendar text-primary"></i>
+                                            <span>@item.CreatedDate.ToString("MMM dd, yyyy")</span>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="flex gap-2 justify-center">
+                                            <a href="@Url.Action("AddEdit", new { id = item.Id })" class="btn btn-sm btn-info gap-2" title="Edit">
+                                                <i class="fas fa-edit"></i>
+                                                Edit
+                                            </a>
+                                            <a href="@Url.Action("View", new { id = item.Id })" class="btn btn-sm btn-success gap-2" title="View">
+                                                <i class="fas fa-eye"></i>
+                                                View
+                                            </a>
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+                        }
+                        else
+                        {
+                            <tr>
+                                <td colspan="3" class="text-center py-12">
+                                    <div class="flex flex-col items-center gap-4">
+                                        <i class="fas fa-inbox fa-4x text-base-300"></i>
+                                        <div>
+                                            <h3 class="font-bold text-lg">No tour costs found</h3>
+                                            <p class="text-base-content/70">Start by adding your first tour cost</p>
+                                        </div>
+                                        <a asp-action="AddEdit" class="btn btn-primary gap-2">
+                                            <i class="fas fa-plus"></i>
+                                            Add Tour Cost
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Pagination Info -->
+            @if (Model != null && Model.Any())
             {
-                headerName: 'Date', field: 'createdDate', tooltipField: 'Date', maxWidth: 220,
-                cellRenderer: function (data) {
-                    return data.value.split('T')[0];
-                }
-            },
-            {
-                headerName: 'Edit', maxWidth: 150, sortable: false, filter: false,
-                cellRenderer: function () {
-                    return '<i class="btn fas fa-edit"></i>';
-                },
-                onCellClicked(params) {                  
-                    window.open(`Tourcost/AddEdit?id=${params.data.id}`, '_self')
-                }
-            },
-            {
-                headerName: 'View', maxWidth: 150, sortable: false, filter: false,
-                cellRenderer: function () {
-                    return '<i class="btn fas fa-eye"></i>';
-                },
-                onCellClicked(params) {
-                    window.open(`Tourcost/View?id=${params.data.id}`, '_self')
-                }
+                <div class="flex justify-between items-center p-4 border-t border-base-300">
+                    <div class="text-sm text-base-content/70">
+                        Showing <span id="showingCount">@Model.Count()</span> of <span id="totalCount">@Model.Count()</span> tour costs
+                    </div>
+                    <div class="join">
+                        <button class="join-item btn btn-sm" id="prevPage" disabled>«</button>
+                        <button class="join-item btn btn-sm">Page <span id="currentPage">1</span></button>
+                        <button class="join-item btn btn-sm" id="nextPage" disabled>»</button>
+                    </div>
+                </div>
             }
-            //{
-            //    headerName: 'Delete', maxWidth: 150, sortable: false, filter: false,
-            //    cellRenderer: function () {
-            //        return '<i class="btn fas fa-trash" id="trashButton"></i>';
-            //    },
-            //    onCellClicked(params) {
-            //        console.log(params.data);
-            //        Delete(params.data);
+        </div>
+    </div>
+</div>
 
-            //    }
-            //}
-        ];
+@section Scripts {
+    <script>
+        // Modern table search functionality
+        const searchField = document.getElementById('searchField');
+        const tableBody = document.getElementById('tableBody');
+        const rows = tableBody.getElementsByTagName('tr');
+        const showingCount = document.getElementById('showingCount');
+        const totalCount = document.getElementById('totalCount');
 
-        let gridOptions = {
-            columnDefs: columnDefs,
-            rowHeight: 40,
-            defaultColDef: {
-                sortable: true,
-                filter: true
-            },
-            paginationAutoPageSize: true,
-            pagination: true,
-            accentedSort: true,
-            onGridSizeChanged: (params) => {
-                params.api.sizeColumnsToFit();
-            }
-        };
+        // Search functionality
+        searchField.addEventListener('input', function() {
+            const searchTerm = this.value.toLowerCase().trim();
+            let visibleCount = 0;
 
-        $(document).ready(function () {
-            var tourcostGrid = document.querySelector('#tourcostGrid');
+            Array.from(rows).forEach(row => {
+                const clientName = row.getAttribute('data-client-name') || '';
 
-            new agGrid.Grid(tourcostGrid, gridOptions);
-
-            var data = @Html.Raw(Json.Serialize(Model));
-            console.log(data);
-            gridOptions.api.setRowData(data);
-
-            $('#searchField').on('keyup', function () {
-                var filter;
-                filter = {
-                    clientName: { type: 'contains', filter: $('#searchField').val() }
-                };
-                gridOptions.api.setFilterModel(filter);
-                gridOptions.api.onFilterChanged();
+                if (clientName.includes(searchTerm)) {
+                    row.style.display = '';
+                    visibleCount++;
+                } else {
+                    row.style.display = 'none';
+                }
             });
-            
+
+            // Update showing count
+            if (showingCount && totalCount) {
+                showingCount.textContent = visibleCount;
+            }
+
+            // Show no results message if needed
+            if (visibleCount === 0 && searchTerm) {
+                let noResultsRow = document.getElementById('noResultsRow');
+                if (!noResultsRow) {
+                    noResultsRow = document.createElement('tr');
+                    noResultsRow.id = 'noResultsRow';
+                    noResultsRow.innerHTML = `
+                        <td colspan="3" class="text-center py-12">
+                            <div class="flex flex-col items-center gap-4">
+                                <i class="fas fa-search fa-4x text-base-300"></i>
+                                <div>
+                                    <h3 class="font-bold text-lg">No results found</h3>
+                                    <p class="text-base-content/70">Try adjusting your search terms</p>
+                                </div>
+                            </div>
+                        </td>
+                    `;
+                    tableBody.appendChild(noResultsRow);
+                }
+            } else {
+                const noResultsRow = document.getElementById('noResultsRow');
+                if (noResultsRow) {
+                    noResultsRow.remove();
+                }
+            }
+        });
+
+        // Simple sort functionality
+        document.querySelectorAll('[data-sort]').forEach(sortBtn => {
+            sortBtn.addEventListener('click', function() {
+                const sortField = this.getAttribute('data-sort');
+                const rowsArray = Array.from(rows);
+                const isAscending = this.classList.contains('fa-sort-up');
+
+                rowsArray.sort((a, b) => {
+                    let aValue, bValue;
+
+                    if (sortField === 'clientName') {
+                        aValue = a.getAttribute('data-client-name') || '';
+                        bValue = b.getAttribute('data-client-name') || '';
+                    } else if (sortField === 'date') {
+                        aValue = a.cells[1]?.textContent.trim() || '';
+                        bValue = b.cells[1]?.textContent.trim() || '';
+                    }
+
+                    if (isAscending) {
+                        return aValue < bValue ? 1 : -1;
+                    } else {
+                        return aValue > bValue ? 1 : -1;
+                    }
+                });
+
+                // Update sort icons
+                document.querySelectorAll('[data-sort]').forEach(btn => {
+                    btn.className = 'fas fa-sort text-xs cursor-pointer';
+                });
+
+                this.className = isAscending
+                    ? 'fas fa-sort-down text-xs cursor-pointer'
+                    : 'fas fa-sort-up text-xs cursor-pointer';
+
+                // Re-append sorted rows
+                rowsArray.forEach(row => tableBody.appendChild(row));
+            });
+        });
+
+        // Add row hover effect with scale
+        document.querySelectorAll('#tourcostTable tbody tr').forEach(row => {
+            if (!row.id || row.id !== 'noResultsRow') {
+                row.addEventListener('mouseenter', function() {
+                    this.style.transform = 'scale(1.01)';
+                });
+                row.addEventListener('mouseleave', function() {
+                    this.style.transform = 'scale(1)';
+                });
+            }
         });
     </script>
 }

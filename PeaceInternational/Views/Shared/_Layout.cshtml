@@ -1,89 +1,174 @@
-﻿<!DOCTYPE html>
-<html>
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - PeaceInternational</title>
+    <title>@ViewData["Title"] - Peace International Tours</title>
 
-    <environment include="Development">
-        <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
-    </environment>
-    <environment exclude="Development">
-        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
-              asp-fallback-href="~/lib/bootstrap/dist/css/bootstrap.min.css"
-              asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute"
-              crossorigin="anonymous"
-              integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" />
-    </environment>
-    <link href="~/lib/ag-grid/ag-grid.css" rel="stylesheet" />
-    <link href="~/lib/ag-grid/ag-theme-balham.css" rel="stylesheet" />
+    <!-- Tailwind CSS + Daisy UI -->
+    <link rel="stylesheet" href="~/css/output.css" asp-append-version="true" />
+
+    <!-- Font Awesome -->
     <link rel="stylesheet" href="~/lib/fontawesome-free-5.11.2-web/css/all.css" />
-    <link rel="stylesheet" href="~/css/site.css" />  
+
+    <!-- Custom CSS (for backward compatibility if needed) -->
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
 </head>
-<body>
-    <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-info border-bottom box-shadow mb-3">
-            <div class="container">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index"><img src="~/img/logo.png" /></a>
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
-                    <partial name="_LoginPartial" />
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item ml-2">
-                        </li>
-                        <li class="nav-item ml-2">
-                            <a class="nav-link text-light" asp-area="" asp-controller="Invoice" asp-action="Index"><i class="fas fa-file-invoice-dollar fa-lg"></i> Invoice</a>
-                        </li>
-                        <li class="nav-item ml-2">
-                            <a class="nav-link text-light" asp-area="" asp-controller="ServiceVoucher" asp-action="Index"><i class="fas fa-receipt fa-lg"></i> Service Voucher</a>
-                        </li>
-                        <li class="nav-item ml-2">
-                            <a class="nav-link text-light" asp-area="" asp-controller="TourCost" asp-action="Index"><i class="fas fa-dollar-sign fa-lg"></i> Tour Cost</a>
-                        </li>
-                        <li class="nav-item ml-2">
-                        </li>
-                        <li class="nav-item ml-2">
-                            <a class="nav-link text-light" asp-area="" asp-controller="Users" asp-action="Index"><i class="fas fa-users fa-lg"></i> Users</a>
-                        </li>
-                        <li class="nav-item ml-2">
-                            <div class="dropdown">
-                                <button class="btn dropdown-toggle text-light" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    <i class="fas fa-funnel-dollar fa-lg"></i> Rate Sheet
-                                </button>
-                                <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
-                                    <a class="dropdown-item text-dark mt-1" asp-area="" asp-controller="Hotel" asp-action="Index"><i class="fas fa-hotel fa-lg mr-2"></i> Hotel </a>
-                                    <a class="dropdown-item text-dark mt-1" asp-area="" asp-controller="Hotel" asp-action="HotelRoomRate"><i class="fas fa-glass-martini-alt fa-lg mr-2"></i> Hotel Room Rate</a>
-                                    <a class="dropdown-item text-dark mt-1" asp-area="" asp-controller="Customer" asp-action="Index"><i class="fas fa-user-astronaut fa-lg mr-2"></i> Customer</a>
-                                    <a class="dropdown-item text-dark mt-1" asp-area="" asp-controller="Guide" asp-action="Index"><i class="fas fa-dove fa-lg mr-2"></i> Guide</a>
-                                    <a class="dropdown-item text-dark mt-1" asp-area="" asp-controller="Sector" asp-action="Index"><i class="fas fa-snowflake fa-lg mr-2"></i> Sector</a>
-                                    @*<a class="dropdown-item text-dark mt-1" asp-area="" asp-controller="Transport" asp-action="Index"><i class="fas fa-car fa-lg mr-2"></i> Transport</a>*@
-                                </div>
-                            </div>
-                        </li>
-                    </ul>
-                </div>
+<body class="bg-base-100">
+    <!-- Modern Navbar with Daisy UI -->
+    <div class="navbar bg-primary text-primary-content shadow-lg sticky top-0 z-50">
+        <div class="navbar-start">
+            <!-- Mobile Menu Toggle -->
+            <div class="dropdown lg:hidden">
+                <label tabindex="0" class="btn btn-ghost">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                    </svg>
+                </label>
+                <ul tabindex="0" class="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-72 text-base-content">
+                    <li>
+                        <a asp-area="" asp-controller="Invoice" asp-action="Index" class="gap-2">
+                            <i class="fas fa-file-invoice-dollar"></i>
+                            Invoice
+                        </a>
+                    </li>
+                    <li>
+                        <a asp-area="" asp-controller="ServiceVoucher" asp-action="Index" class="gap-2">
+                            <i class="fas fa-receipt"></i>
+                            Service Voucher
+                        </a>
+                    </li>
+                    <li>
+                        <a asp-area="" asp-controller="TourCost" asp-action="Index" class="gap-2">
+                            <i class="fas fa-dollar-sign"></i>
+                            Tour Cost
+                        </a>
+                    </li>
+                    <li>
+                        <a asp-area="" asp-controller="Users" asp-action="Index" class="gap-2">
+                            <i class="fas fa-users"></i>
+                            Users
+                        </a>
+                    </li>
+                    <li>
+                        <details>
+                            <summary class="gap-2">
+                                <i class="fas fa-funnel-dollar"></i>
+                                Rate Sheet
+                            </summary>
+                            <ul class="p-2">
+                                <li><a asp-area="" asp-controller="Hotel" asp-action="Index"><i class="fas fa-hotel mr-2"></i>Hotel</a></li>
+                                <li><a asp-area="" asp-controller="Hotel" asp-action="HotelRoomRate"><i class="fas fa-glass-martini-alt mr-2"></i>Hotel Room Rate</a></li>
+                                <li><a asp-area="" asp-controller="Customer" asp-action="Index"><i class="fas fa-user-astronaut mr-2"></i>Customer</a></li>
+                                <li><a asp-area="" asp-controller="Guide" asp-action="Index"><i class="fas fa-dove mr-2"></i>Guide</a></li>
+                                <li><a asp-area="" asp-controller="Sector" asp-action="Index"><i class="fas fa-snowflake mr-2"></i>Sector</a></li>
+                            </ul>
+                        </details>
+                    </li>
+                </ul>
             </div>
-        </nav>
-    </header>
-    <div class="container">
-        <partial name="_CookieConsentPartial" />
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
+
+            <!-- Logo -->
+            <a asp-area="" asp-controller="Home" asp-action="Index" class="btn btn-ghost normal-case text-xl gap-2">
+                <img src="~/img/logo.png" alt="Peace International" class="h-8" />
+                <span class="hidden sm:inline">Peace International</span>
+            </a>
+        </div>
+
+        <!-- Desktop Menu -->
+        <div class="navbar-center hidden lg:flex">
+            <ul class="menu menu-horizontal px-1 gap-1">
+                <li>
+                    <a asp-area="" asp-controller="Invoice" asp-action="Index" class="gap-2">
+                        <i class="fas fa-file-invoice-dollar"></i>
+                        Invoice
+                    </a>
+                </li>
+                <li>
+                    <a asp-area="" asp-controller="ServiceVoucher" asp-action="Index" class="gap-2">
+                        <i class="fas fa-receipt"></i>
+                        Service Voucher
+                    </a>
+                </li>
+                <li>
+                    <a asp-area="" asp-controller="TourCost" asp-action="Index" class="gap-2">
+                        <i class="fas fa-dollar-sign"></i>
+                        Tour Cost
+                    </a>
+                </li>
+                <li>
+                    <a asp-area="" asp-controller="Users" asp-action="Index" class="gap-2">
+                        <i class="fas fa-users"></i>
+                        Users
+                    </a>
+                </li>
+                <li>
+                    <details>
+                        <summary class="gap-2">
+                            <i class="fas fa-funnel-dollar"></i>
+                            Rate Sheet
+                        </summary>
+                        <ul class="p-2 bg-base-100 text-base-content rounded-box shadow-xl z-50 w-56">
+                            <li><a asp-area="" asp-controller="Hotel" asp-action="Index"><i class="fas fa-hotel mr-2"></i>Hotel</a></li>
+                            <li><a asp-area="" asp-controller="Hotel" asp-action="HotelRoomRate"><i class="fas fa-glass-martini-alt mr-2"></i>Hotel Room Rate</a></li>
+                            <li><a asp-area="" asp-controller="Customer" asp-action="Index"><i class="fas fa-user-astronaut mr-2"></i>Customer</a></li>
+                            <li><a asp-area="" asp-controller="Guide" asp-action="Index"><i class="fas fa-dove mr-2"></i>Guide</a></li>
+                            <li><a asp-area="" asp-controller="Sector" asp-action="Index"><i class="fas fa-snowflake mr-2"></i>Sector</a></li>
+                        </ul>
+                    </details>
+                </li>
+            </ul>
+        </div>
+
+        <!-- User Menu -->
+        <div class="navbar-end gap-2">
+            <!-- Theme Toggle -->
+            <label class="swap swap-rotate btn btn-ghost btn-circle">
+                <input type="checkbox" id="theme-toggle" />
+                <svg class="swap-on fill-current w-6 h-6" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M5.64,17l-.71.71a1,1,0,0,0,0,1.41,1,1,0,0,0,1.41,0l.71-.71A1,1,0,0,0,5.64,17ZM5,12a1,1,0,0,0-1-1H3a1,1,0,0,0,0,2H4A1,1,0,0,0,5,12Zm7-7a1,1,0,0,0,1-1V3a1,1,0,0,0-2,0V4A1,1,0,0,0,12,5ZM5.64,7.05a1,1,0,0,0,.7.29,1,1,0,0,0,.71-.29,1,1,0,0,0,0-1.41l-.71-.71A1,1,0,0,0,4.93,6.34Zm12,.29a1,1,0,0,0,.7-.29l.71-.71a1,1,0,1,0-1.41-1.41L17,5.64a1,1,0,0,0,0,1.41A1,1,0,0,0,17.66,7.34ZM21,11H20a1,1,0,0,0,0,2h1a1,1,0,0,0,0-2Zm-9,8a1,1,0,0,0-1,1v1a1,1,0,0,0,2,0V20A1,1,0,0,0,12,19ZM18.36,17A1,1,0,0,0,17,18.36l.71.71a1,1,0,0,0,1.41,0,1,1,0,0,0,0-1.41ZM12,6.5A5.5,5.5,0,1,0,17.5,12,5.51,5.51,0,0,0,12,6.5Zm0,9A3.5,3.5,0,1,1,15.5,12,3.5,3.5,0,0,1,12,15.5Z"/></svg>
+                <svg class="swap-off fill-current w-6 h-6" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21.64,13a1,1,0,0,0-1.05-.14,8.05,8.05,0,0,1-3.37.73A8.15,8.15,0,0,1,9.08,5.49a8.59,8.59,0,0,1,.25-2A1,1,0,0,0,8,2.36,10.14,10.14,0,1,0,22,14.05,1,1,0,0,0,21.64,13Zm-9.5,6.69A8.14,8.14,0,0,1,7.08,5.22v.27A10.15,10.15,0,0,0,17.22,15.63a9.79,9.79,0,0,0,2.1-.22A8.11,8.11,0,0,1,12.14,19.73Z"/></svg>
+            </label>
+
+            <partial name="_LoginPartial" />
+        </div>
     </div>
 
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2019 - Voberry Technologies
+    <!-- Cookie Consent -->
+    <partial name="_CookieConsentPartial" />
+
+    <!-- Main Content -->
+    <main class="container mx-auto px-4 py-6 max-w-7xl">
+        @RenderBody()
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer footer-center p-10 bg-base-200 text-base-content mt-20">
+        <div class="grid grid-flow-col gap-4">
+            <a asp-area="" asp-controller="Home" asp-action="Index" class="link link-hover">Home</a>
+            <a asp-area="" asp-controller="Home" asp-action="Privacy" class="link link-hover">Privacy</a>
+        </div>
+        <div>
+            <div class="grid grid-flow-col gap-4">
+                <a href="#" class="btn btn-ghost btn-circle">
+                    <i class="fab fa-facebook-f text-xl"></i>
+                </a>
+                <a href="#" class="btn btn-ghost btn-circle">
+                    <i class="fab fa-instagram text-xl"></i>
+                </a>
+                <a href="#" class="btn btn-ghost btn-circle">
+                    <i class="fab fa-twitter text-xl"></i>
+                </a>
+            </div>
+        </div>
+        <div>
+            <p>&copy; 2025 Peace International Tours. All rights reserved.</p>
+            <p class="text-sm opacity-70">Powered by Voberry Technologies</p>
         </div>
     </footer>
 
+    <!-- Scripts -->
     <environment include="Development">
         <script src="~/lib/jquery/dist/jquery.js"></script>
-        <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.js"></script>
     </environment>
     <environment exclude="Development">
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"
@@ -92,24 +177,35 @@
                 crossorigin="anonymous"
                 integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=">
         </script>
-        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js"
-                asp-fallback-src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"
-                asp-fallback-test="window.jQuery && window.jQuery.fn && window.jQuery.fn.modal"
-                crossorigin="anonymous"
-                integrity="sha384-xrRywqdh3PHs8keKZN+8zzc5TX0GRTLCcmivcbNJWm2rs5C8PRhcEn3czEjhAO9o">
-        </script>
     </environment>
 
     <script src="~/js/customValidation.js"></script>
-    <script src="~/lib/ag-grid/ag-grid-community.min.noStyle.js"></script>
-    <script src="~/lib/noty-2.4.1/js/noty/packaged/jquery.noty.packaged.js"></script>
     <script src="~/lib/jquery.nepaliDatePicker.min.js"></script>
     <script src="~/lib/handlebars-v4.4.3.js"></script>
     <script src="~/lib/customHelper.js"></script>
     <script src="~/lib/html2canvas.js"></script>
-    <script src="~/lib/popper.min.js"></script>
-    <script src="~/lib/tippy-bundle.iife.min.js"></script>
+    <script src="~/js/toast-helper.js" asp-append-version="true"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
+
+    <!-- Theme Toggle Script -->
+    <script>
+        const themeToggle = document.getElementById('theme-toggle');
+        const htmlElement = document.documentElement;
+
+        // Load saved theme
+        const savedTheme = localStorage.getItem('theme') || 'light';
+        htmlElement.setAttribute('data-theme', savedTheme);
+        if (savedTheme === 'dark') {
+            themeToggle.checked = true;
+        }
+
+        // Toggle theme
+        themeToggle.addEventListener('change', function() {
+            const theme = this.checked ? 'dark' : 'light';
+            htmlElement.setAttribute('data-theme', theme);
+            localStorage.setItem('theme', theme);
+        });
+    </script>
 
     @RenderSection("Scripts", required: false)
 </body>

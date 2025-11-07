@@ -1,249 +1,247 @@
-﻿"use strict";
+"use strict";
 
-//Column Defination for the grid
-const columnDefs = [
-    { headerName: 'File Code No.', field: 'fileCodeNo', maxWidth: 100 },
-    { headerName: 'Tour Name', field: 'tourName' },
-    { headerName: 'Country', field: 'country' },
-    {
-        headerName: 'Arrival Date', field: 'arrivalDate',
-        cellRenderer: function (data) {
-            return data.value.split('T')[0];
-        }
-    },
-    {
-        headerName: 'Departure Date', field: 'departureDate',
-        cellRenderer: function (data) {
-            return data.value.split('T')[0];
-        }
-    },
-    { headerName: 'Agent', field: 'agent' },
-    { headerName: 'Agent Staff', field: 'agentStaff' },
-    { headerName: 'Guide', field: 'guideName' },
-    {
-        headerName: 'Edit', maxWidth: 80, sortable: false, filter: false,
-        cellRenderer: function () {
-            return '<i class="btn fas fa-edit" id="editButton"></i>';
-        },
-        onCellClicked(params) {
-            console.log(params.data);
-            Edit(params.data);
+let customersData = [];
 
-        }
-    },
-    //{
-    //    headerName: 'Delete', maxWidth: 80, sortable: false, filter: false,
-    //    cellRenderer: function () {
-    //        return '<i class="btn fas fa-trash" id="trashButton"></i>';
-    //    },
-    //    onCellClicked(params) {
-    //        console.log(params.data);
-    //        Delete(params.data);
+// Function to show toast notification
+const showToast = (type, message) => {
+    const toastContainer = document.getElementById('toastContainer');
+    const alertClass = type === 'success' ? 'alert-success' : type === 'error' ? 'alert-error' : 'alert-info';
 
-    //    }
-    //}
-];
+    const toast = document.createElement('div');
+    toast.className = `alert ${alertClass} shadow-lg`;
+    toast.innerHTML = `
+        <div>
+            <i class="fas ${type === 'success' ? 'fa-check-circle' : 'fa-exclamation-circle'} mr-2"></i>
+            <span>${message}</span>
+        </div>
+    `;
 
-//Function to set the data for the grid
-const setGridData = () => {
+    toastContainer.appendChild(toast);
 
+    setTimeout(() => {
+        toast.remove();
+    }, 3000);
+};
+
+// Function to load customer data
+const loadCustomers = () => {
     $.ajax({
         url: 'Customer/Get',
         method: 'GET',
         success: (data) => {
-            gridOptions.api.setRowData(data);
-            console.log(data);
+            customersData = data;
+            renderTable(data);
+        },
+        error: () => {
+            showToast('error', 'Failed to load customers');
         }
     });
 };
 
+// Function to render table
+const renderTable = (data) => {
+    const tableBody = document.getElementById('tableBody');
 
-//Settings for the Customer grid
-let gridOptions = {
-    columnDefs: columnDefs,
-    rowHeight: 40,
-    defaultColDef: {
-        sortable: true,
-        filter: true
-    },
-    paginationAutoPageSize: true,
-    pagination: true,
-    accentedSort: true,
-    onGridSizeChanged: (params) => {
-        params.api.sizeColumnsToFit();
+    if (!data || data.length === 0) {
+        tableBody.innerHTML = `
+            <tr>
+                <td colspan="9" class="text-center py-12">
+                    <div class="flex flex-col items-center gap-4">
+                        <i class="fas fa-users fa-4x text-base-300"></i>
+                        <div>
+                            <h3 class="font-bold text-lg">No customers found</h3>
+                            <p class="text-base-content/70">Start by adding your first customer</p>
+                        </div>
+                        <label for="customer-drawer" class="btn btn-primary gap-2 drawer-button">
+                            <i class="fas fa-plus"></i>
+                            Add Customer
+                        </label>
+                    </div>
+                </td>
+            </tr>
+        `;
+        return;
     }
+
+    tableBody.innerHTML = data.map(customer => `
+        <tr class="hover transition-colors duration-200"
+            data-file-code="${customer.fileCodeNo || ''}"
+            data-tour-name="${(customer.tourName || '').toLowerCase()}"
+            data-agent="${(customer.agent || '').toLowerCase()}">
+            <td class="font-semibold">${customer.fileCodeNo || '-'}</td>
+            <td>
+                <div class="font-medium">${customer.tourName || '-'}</div>
+            </td>
+            <td>
+                <div class="badge badge-outline">${customer.country || '-'}</div>
+            </td>
+            <td>
+                <div class="flex items-center gap-2">
+                    <i class="fas fa-plane-arrival text-primary text-xs"></i>
+                    <span class="text-sm">${customer.arrivalDate ? new Date(customer.arrivalDate).toLocaleDateString() : '-'}</span>
+                </div>
+            </td>
+            <td>
+                <div class="flex items-center gap-2">
+                    <i class="fas fa-plane-departure text-secondary text-xs"></i>
+                    <span class="text-sm">${customer.departureDate ? new Date(customer.departureDate).toLocaleDateString() : '-'}</span>
+                </div>
+            </td>
+            <td>${customer.agent || '-'}</td>
+            <td>${customer.agentStaff || '-'}</td>
+            <td>${customer.guideName || '-'}</td>
+            <td>
+                <div class="flex gap-2 justify-center">
+                    <button onclick="editCustomer(${customer.id})" class="btn btn-sm btn-info gap-2" title="Edit">
+                        <i class="fas fa-edit"></i>
+                    </button>
+                </div>
+            </td>
+        </tr>
+    `).join('');
 };
 
-//Function to clear form
-const Clear = () => {
-    removeBorderClass();
-    $("#id").val('');
-    $('#tourName').val('');
-    $('#country').val('');
-    $('#arrivalDate').val('');
-    $('#departureDate').val('');
-    $('#agent').val('');
-    $('#agentStaff').val('');
-    $('#guideName').val('');
-};
+// Function to filter table
+const filterTable = () => {
+    const fileCodeFilter = document.getElementById('searchFieldFileCode').value.toLowerCase();
+    const tourNameFilter = document.getElementById('searchFieldTourName').value.toLowerCase();
+    const agentFilter = document.getElementById('searchFieldAgent').value.toLowerCase();
 
-//Function specifying rules for validating the form
-const customerValidation = () => {
+    const filtered = customersData.filter(customer => {
+        const matchesFileCode = !fileCodeFilter || (customer.fileCodeNo || '').toLowerCase().includes(fileCodeFilter);
+        const matchesTourName = !tourNameFilter || (customer.tourName || '').toLowerCase().includes(tourNameFilter);
+        const matchesAgent = !agentFilter || (customer.agent || '').toLowerCase().includes(agentFilter);
 
-    $('#customerForm').validate({
-        rules: {
-            tourName: {
-                required: true,
-                maxlength: 100,
-                isOnlyWhiteSpace: true
-            },
-            country: {
-                required: true,
-                isOnlyWhiteSpace: true
-            },
-            agent: {
-                isOnlyWhiteSpace: true
-            },
-            agentStaff: {
-                isOnlyWhiteSpace: true
-            },
-            guideName: {
-                isOnlyWhiteSpace: true
-            },
-            arrivalDate: {
-                required: true,
-                lesserDate: '#departureDate'
-            },
-            departureDate: {
-                required: true,
-                greaterDate: '#arrivalDate'               
-            }
-        }
+        return matchesFileCode && matchesTourName && matchesAgent;
     });
+
+    renderTable(filtered);
 };
 
-const call = () => {
-    let filter = {
-        fileCodeNo: { type: 'contains', filter: $('#searchFieldFileCode').val() },   
-        tourName: { type: 'contains', filter: $('#searchFieldTourName').val() },        
-        agent: { type: 'contains', filter: $('#searchFieldAgent').val() }
-    };
-    gridOptions.api.setFilterModel(filter);
-    gridOptions.api.onFilterChanged();
-};   
+// Function to clear form
+const clearForm = () => {
+    document.getElementById('id').value = '';
+    document.getElementById('tourName').value = '';
+    document.getElementById('country').value = '';
+    document.getElementById('arrivalDate').value = '';
+    document.getElementById('departureDate').value = '';
+    document.getElementById('agent').value = '';
+    document.getElementById('agentStaff').value = '';
+    document.getElementById('guideName').value = '';
 
-const Edit = (data) => {
+    // Clear error messages
+    document.querySelectorAll('.label-text-alt.text-error').forEach(el => el.textContent = '');
 
-    Clear();
-    $('#customerTitle').html("Edit Customer");
-    $('#id').val(data.id);
-    $('#tourName').val(data.tourName);
-    $('#country').val(data.country);
-    $('#arrivalDate').val(data.arrivalDate.split('T')[0]);
-    $('#departureDate').val(data.departureDate.split('T')[0]);
-    $('#agent').val(data.agent);
-    $('#agentStaff').val(data.agentStaff);
-    $('#guideName').val(data.guideName);
-    $('#customerForm').validate().destroy();
-    customerValidation();
+    // Reset validation
     $('#customerForm').validate().resetForm();
-    $('#createCustomer').modal('toggle');
 };
 
-const Delete = (data) => {
+// Function to validate form
+const validateForm = () => {
+    let isValid = true;
 
-    var confirm = window.confirm("Are you sure you want to delete?");
+    // Clear previous errors
+    document.querySelectorAll('.label-text-alt.text-error').forEach(el => el.textContent = '');
 
-    if (confirm) {
-        $.ajax({
-            url: 'Customer/Delete',
-            method: 'POST',
-            data: { id: data.id },
-            success: function (data) {
-                console.log(data);
-                noty({
-                    type: data.type,
-                    text: data.message,
-                    layout: 'topCenter',
-                    timeout: 2000
-                });
-
-                setGridData();
-            }
-        });
+    // Tour Name validation
+    const tourName = document.getElementById('tourName').value.trim();
+    if (!tourName) {
+        document.getElementById('tourName-error').textContent = 'Tour name is required';
+        isValid = false;
     }
+
+    // Country validation
+    const country = document.getElementById('country').value.trim();
+    if (!country) {
+        document.getElementById('country-error').textContent = 'Country is required';
+        isValid = false;
+    }
+
+    // Date validation
+    const arrivalDate = document.getElementById('arrivalDate').value;
+    const departureDate = document.getElementById('departureDate').value;
+
+    if (arrivalDate && departureDate) {
+        if (new Date(arrivalDate) > new Date(departureDate)) {
+            document.getElementById('arrivalDate-error').textContent = 'Arrival date must be before departure date';
+            isValid = false;
+        }
+    }
+
+    return isValid;
 };
 
+// Function to edit customer
+window.editCustomer = (id) => {
+    const customer = customersData.find(c => c.id === id);
+    if (!customer) return;
 
-const Save = () => {
+    document.getElementById('customerTitle').textContent = 'Edit Customer';
+    document.getElementById('id').value = customer.id;
+    document.getElementById('tourName').value = customer.tourName || '';
+    document.getElementById('country').value = customer.country || '';
+    document.getElementById('arrivalDate').value = customer.arrivalDate ? customer.arrivalDate.split('T')[0] : '';
+    document.getElementById('departureDate').value = customer.departureDate ? customer.departureDate.split('T')[0] : '';
+    document.getElementById('agent').value = customer.agent || '';
+    document.getElementById('agentStaff').value = customer.agentStaff || '';
+    document.getElementById('guideName').value = customer.guideName || '';
 
-    $('#customerForm').off('submit').on('submit', function (e) {
-
-        e.preventDefault();
-
-        var record = {
-            Id: $('#id').val(),
-            TourName: $('#tourName').val(),
-            Country: $('#country').val(),
-            ArrivalDate: $('#arrivalDate').val(),
-            DepartureDate: $('#departureDate').val(),
-            Agent: $('#agent').val(),
-            AgentStaff: $('#agentStaff').val(),
-            GuideName: $('#guideName').val()
-        };
-
-        $.ajax({
-            url: 'Customer/Save',
-            method: 'POST',
-            data: { customer: record },
-            success: function (data) {
-                console.log(data);
-                noty({
-                    type: data.type,
-                    text: data.message,
-                    layout: 'topCenter',
-                    timeout: 2000
-                });
-                $('#createCustomer').modal('toggle');
-                setGridData();
-            }
-        });
-
-    });
+    // Open drawer
+    document.getElementById('customer-drawer').checked = true;
 };
 
-$(document).ready(function () {
-    var customerGrid = document.querySelector('#customerGrid');
+// Function to save customer
+const saveCustomer = () => {
+    if (!validateForm()) {
+        return;
+    }
 
-    new agGrid.Grid(customerGrid, gridOptions);
+    const record = {
+        Id: document.getElementById('id').value,
+        TourName: document.getElementById('tourName').value,
+        Country: document.getElementById('country').value,
+        ArrivalDate: document.getElementById('arrivalDate').value,
+        DepartureDate: document.getElementById('departureDate').value,
+        Agent: document.getElementById('agent').value,
+        AgentStaff: document.getElementById('agentStaff').value,
+        GuideName: document.getElementById('guideName').value
+    };
 
-    setGridData();
-
-    $('#addCustomerBtn').click(function () {
-        console.log('Button Pressed');
-        $('#customerTitle').html("Add Customer");
-        Clear();
-        $('#customerForm').validate().destroy();
-        customerValidation();
-        $('#customerForm').validate().resetForm();
-    });
-
-    $('#btnSave').off('click').on('click', function () {
-        if ($('#customerForm').valid()) {
-            Save();
+    $.ajax({
+        url: 'Customer/Save',
+        method: 'POST',
+        data: { customer: record },
+        success: (data) => {
+            showToast(data.type, data.message);
+            document.getElementById('customer-drawer').checked = false;
+            loadCustomers();
+            clearForm();
+        },
+        error: () => {
+            showToast('error', 'Failed to save customer');
         }
     });
+};
 
+// Document ready
+$(document).ready(function () {
+    // Load customers on page load
+    loadCustomers();
 
-    $('#searchFieldFileCode').on('keyup', function () {
-        call();
+    // Add customer button click
+    document.querySelector('.drawer-button').addEventListener('click', function() {
+        document.getElementById('customerTitle').textContent = 'Add Customer';
+        clearForm();
     });
 
-    $('#searchFieldTourName').on('keyup', function () {
-        call();
+    // Form submit
+    document.getElementById('customerForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        saveCustomer();
     });
 
-    $('#searchFieldAgent').on('keyup', function () {
-        call();
-    });
+    // Search filters
+    document.getElementById('searchFieldFileCode').addEventListener('input', filterTable);
+    document.getElementById('searchFieldTourName').addEventListener('input', filterTable);
+    document.getElementById('searchFieldAgent').addEventListener('input', filterTable);
 });

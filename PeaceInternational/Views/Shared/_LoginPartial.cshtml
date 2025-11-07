@@ -2,25 +2,49 @@
 @inject SignInManager<IdentityUser> SignInManager
 @inject UserManager<IdentityUser> UserManager
 
-<ul class="navbar-nav">
 @if (SignInManager.IsSignedIn(User))
 {
-    <li class="nav-item">
-        <a  class="nav-link text-light" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Hello @User.Identity.Name!</a>
-    </li>
-    <li class="nav-item">
-        <form  class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
-            <button  type="submit" class="nav-link btn btn-link text-light">Logout</button>
-        </form>
-    </li>
+    <div class="dropdown dropdown-end">
+        <label tabindex="0" class="btn btn-ghost btn-circle avatar">
+            <div class="w-10 rounded-full bg-primary-content text-primary flex items-center justify-center">
+                <span class="text-lg font-bold">@User.Identity.Name.Substring(0, 1).ToUpper()</span>
+            </div>
+        </label>
+        <ul tabindex="0" class="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52 text-base-content">
+            <li class="menu-title">
+                <span>@User.Identity.Name</span>
+            </li>
+            <li>
+                <a asp-area="Identity" asp-page="/Account/Manage/Index" class="gap-2">
+                    <i class="fas fa-user"></i>
+                    Profile
+                </a>
+            </li>
+            <li>
+                <a asp-area="Identity" asp-page="/Account/Manage/ChangePassword" class="gap-2">
+                    <i class="fas fa-key"></i>
+                    Change Password
+                </a>
+            </li>
+            <li>
+                <form asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })" class="w-full">
+                    <button type="submit" class="w-full text-left gap-2 flex items-center">
+                        <i class="fas fa-sign-out-alt"></i>
+                        Logout
+                    </button>
+                </form>
+            </li>
+        </ul>
+    </div>
 }
 else
 {
-    <li class="nav-item">
-        <a class="nav-link text-light" asp-area="Identity" asp-page="/Account/Register">Register</a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link text-light" asp-area="Identity" asp-page="/Account/Login">Login</a>
-    </li>
+    <div class="gap-2 flex">
+        <a asp-area="Identity" asp-page="/Account/Login" class="btn btn-ghost">
+            Login
+        </a>
+        <a asp-area="Identity" asp-page="/Account/Register" class="btn btn-outline btn-primary-content">
+            Register
+        </a>
+    </div>
 }
-</ul>

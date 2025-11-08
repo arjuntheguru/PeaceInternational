@@ -19,57 +19,57 @@ module.exports = {
       {
         light: {
           ...require("daisyui/src/theming/themes")["light"],
-          primary: "#3b82f6",        // Blue 500 - Vibrant and modern
-          "primary-focus": "#2563eb", // Blue 600
+          primary: "#4A7C59",
+          "primary-focus": "#3d6649",
           "primary-content": "#ffffff",
 
-          secondary: "#8b5cf6",      // Violet 500 - Complementary
-          "secondary-focus": "#7c3aed",
+          secondary: "#6B8E7F",
+          "secondary-focus": "#5a7869",
           "secondary-content": "#ffffff",
 
-          accent: "#06b6d4",         // Cyan 500 - Fresh accent
-          "accent-focus": "#0891b2",
-          "accent-content": "#ffffff",
+          accent: "#D4A574",
+          "accent-focus": "#c89560",
+          "accent-content": "#2d2d2d",
 
-          neutral: "#1e293b",        // Slate 800
+          neutral: "#2d2d2d",
           "neutral-content": "#ffffff",
 
-          "base-100": "#ffffff",
-          "base-200": "#f8fafc",     // Slate 50
-          "base-300": "#e2e8f0",     // Slate 200
-          "base-content": "#1e293b",
+          "base-100": "#fafaf9",
+          "base-200": "#f5f5f4",
+          "base-300": "#e7e5e4",
+          "base-content": "#2d2d2d",
 
-          info: "#0ea5e9",
-          success: "#10b981",
-          warning: "#f59e0b",
-          error: "#ef4444",
+          info: "#5B9BD5",
+          success: "#4A7C59",
+          warning: "#D4A574",
+          error: "#C85A54",
         },
         dark: {
           ...require("daisyui/src/theming/themes")["dark"],
-          primary: "#60a5fa",        // Blue 400 - Bright for dark mode
-          "primary-focus": "#3b82f6",
+          primary: "#6B8E7F",
+          "primary-focus": "#5a7869",
           "primary-content": "#ffffff",
 
-          secondary: "#a78bfa",      // Violet 400
-          "secondary-focus": "#8b5cf6",
+          secondary: "#4A7C59",
+          "secondary-focus": "#3d6649",
           "secondary-content": "#ffffff",
 
-          accent: "#22d3ee",         // Cyan 400
-          "accent-focus": "#06b6d4",
-          "accent-content": "#0f172a",
+          accent: "#D4A574",
+          "accent-focus": "#c89560",
+          "accent-content": "#1a1a1a",
 
-          neutral: "#1e293b",
-          "neutral-content": "#f1f5f9",
+          neutral: "#2d2d2d",
+          "neutral-content": "#e7e5e4",
 
-          "base-100": "#0f172a",     // Slate 900
-          "base-200": "#1e293b",     // Slate 800
-          "base-300": "#334155",     // Slate 700
-          "base-content": "#f1f5f9", // Slate 100
+          "base-100": "#1a1a1a",
+          "base-200": "#2d2d2d",
+          "base-300": "#404040",
+          "base-content": "#e7e5e4",
 
-          info: "#38bdf8",
-          success: "#34d399",
-          warning: "#fbbf24",
-          error: "#f87171",
+          info: "#5B9BD5",
+          success: "#6B8E7F",
+          warning: "#D4A574",
+          error: "#C85A54",
         }
       },
     ],

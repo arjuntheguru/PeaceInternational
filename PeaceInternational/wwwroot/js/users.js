@@ -57,11 +57,11 @@ const renderTable = (data) => {
             </td>
             <td>
                 <div class="flex gap-2 justify-center">
-                    <button onclick="changePassword(${user.id}, '${user.userName}')" class="btn btn-sm btn-warning gap-2" title="Change Password">
-                        <i class="fas fa-key"></i>
+                    <button onclick="editUser(${user.id})" class="btn btn-ghost btn-sm text-primary hover:bg-primary/10" title="Edit">
+                        <i class="fas fa-edit"></i>
                     </button>
-                    <button onclick="deleteUser(${user.id})" class="btn btn-sm btn-error gap-2" title="Delete">
-                        <i class="fas fa-trash"></i>
+                    <button onclick="viewUser(${user.id})" class="btn btn-ghost btn-sm text-info hover:bg-info/10" title="View">
+                        <i class="fas fa-eye"></i>
                     </button>
                 </div>
             </td>

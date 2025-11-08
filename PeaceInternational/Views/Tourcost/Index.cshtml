@@ -10,12 +10,12 @@
         <div class="relative z-10 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
             <div>
                 <div class="flex items-center gap-3 mb-3">
-                    <div class="w-12 h-12 rounded-xl bg-white/20 backdrop-blur-sm flex items-center justify-center">
-                        <i class="fas fa-dollar-sign text-2xl text-white"></i>
+                    <div class="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center">
+                        <i class="fas fa-dollar-sign text-2xl text-primary"></i>
                     </div>
                     <div>
-                        <h1 class="text-4xl font-bold text-white">Tour Cost Management</h1>
-                        <p class="text-white/80 mt-1">Create and manage tour pricing and itineraries</p>
+                        <h1 class="text-4xl font-bold text-base-content">Tour Cost Management</h1>
+                        <p class="text-base-content/70 mt-1">Create and manage tour pricing and itineraries</p>
                     </div>
                 </div>
             </div>
@@ -27,18 +27,15 @@
     </div>
 
     <!-- Search and Filters -->
-    <div class="section-modern mb-6">
-        <div class="flex items-center gap-3 mb-4">
-            <i class="fas fa-search text-xl text-primary"></i>
-            <h2 class="text-xl font-semibold">Search Tour Costs</h2>
-        </div>
+    <div class="bg-base-200 rounded-lg p-6 mb-6">
         <div class="form-control">
-            <div class="input-group">
-                <input type="text" id="searchField" placeholder="Search by client name..." class="input input-bordered flex-1 focus:input-primary" />
-                <button class="btn btn-primary">
-                    <i class="fas fa-search"></i>
-                </button>
-            </div>
+            <label class="label">
+                <span class="label-text font-medium">Client Name</span>
+            </label>
+            <label class="input flex items-center gap-2 bg-base-100">
+                <i class="fas fa-user text-base-content/40"></i>
+                <input type="text" id="searchField" placeholder="Search..." class="grow" />
+            </label>
         </div>
     </div>
 
@@ -89,13 +86,11 @@
                                     </td>
                                     <td>
                                         <div class="flex gap-2 justify-center">
-                                            <a href="@Url.Action("AddEdit", new { id = item.Id })" class="btn btn-sm btn-info gap-2" title="Edit">
+                                            <a href="@Url.Action("AddEdit", new { id = item.Id })" class="btn btn-ghost btn-sm text-primary hover:bg-primary/10" title="Edit">
                                                 <i class="fas fa-edit"></i>
-                                                Edit
                                             </a>
-                                            <a href="@Url.Action("View", new { id = item.Id })" class="btn btn-sm btn-success gap-2" title="View">
+                                            <a href="@Url.Action("View", new { id = item.Id })" class="btn btn-ghost btn-sm text-info hover:bg-info/10" title="View">
                                                 <i class="fas fa-eye"></i>
-                                                View
                                             </a>
                                         </div>
                                     </td>

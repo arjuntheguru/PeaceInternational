@@ -5,89 +5,130 @@
 }
 
 <style type="text/css">
-    p {
-        margin-bottom: 2px;
-        font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif
+    @@media print { 
+        body { margin: 0; padding: 20px; }
+        .page-header, .fixed, .btn, .toast, #toastContainer, .loader, #loader { display: none !important; }
+        .card { box-shadow: none; border: 1px solid #e5e7eb; }
     }
-
-    th {
-        text-align: center;
-        font-size: 12px;
+    #tourcostTemplate .border-secondary, #pppTemplate .border-secondary { border-color: #4A7C59 !important; }
+    #tourcostTemplate .h5, #tourcostTemplate h5, #pppTemplate .h5, #pppTemplate h5 { 
+        font-size: 1.25rem; 
+        font-weight: 700; 
+        color: #4A7C59; 
+        margin: 1rem 0;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
     }
-
-    td {
-        text-align: center;
-        font-size: 14px;
-        padding: 0.3rem !important;
+    #tourcostTemplate .h6, #tourcostTemplate h6, #pppTemplate .h6, #pppTemplate h6 { 
+        font-size: 1.1rem; 
+        font-weight: 600; 
+        color: #1f2937; 
     }
-
-    .wrap {
-        text-wrap: normal;
-        word-wrap: break-word;
+    #pppTemplate .card-body p.h5 { font-size: 0.95rem; font-weight: 500; }
+    #pppTemplate .form-row { display: flex; justify-content: flex-end; gap: 2rem; margin-top: 1rem; }
+    #pppTemplate .form-row .col-md-4 { width: auto; }
+    #pppTemplate .form-row p.h5 { font-size: 0.9rem; font-weight: 500; margin: 0.25rem 0; float: none !important; }
+    #tourcostTemplate .text-monospace, #pppTemplate .text-monospace { font-family: 'Courier New', monospace; }
+    #tourcostTemplate .font-weight-bold, #pppTemplate .font-weight-bold { font-weight: 700; color: #4A7C59; }
+    #pppTemplate .card { background: #f8f9fa; padding: 1rem; border-radius: 0.5rem; margin: 1rem 0; }
+    #pppTemplate .card-body p { font-size: 1rem; color: #1f2937; }
+    #tourcostTemplate table, #pppTemplate table { width: 100%; border-collapse: collapse; }
+    #tourcostTemplate table td, #tourcostTemplate table th,
+    #pppTemplate table td, #pppTemplate table th { 
+        padding: 8px; 
+        border: 1px solid #e5e7eb; 
+        color: #1f2937;
     }
-
-    .float {
-        position: fixed;
-        width: 60px;
-        height: 60px;
-        bottom: 40px;
-        right: 40px;
-        background-color: #0C9;
-        border-radius: 50px;
-        text-align: center;
-        box-shadow: 2px 2px 3px #999;
+    #tourcostTemplate table th, #pppTemplate table th { 
+        background-color: #4A7C59; 
+        color: white; 
+        font-weight: 600;
     }
-
-    .floate {
-        position: fixed;
-        width: 60px;
-        height: 60px;
-        bottom: 140px;
-        right: 40px;
-        background-color: cadetblue;
-        border-radius: 50px;
-        text-align: center;
-        box-shadow: 2px 2px 3px #999;
+    #tourcostTemplate .border, #pppTemplate .border { border: 2px solid #4A7C59; }
+    #tourcostTemplate h6, #pppTemplate h6 { color: #1f2937; margin: 8px 0; }
+    #tourcostTemplate label, #pppTemplate label { color: #1f2937; }
+    .loader { 
+        position: fixed; 
+        left: 50%; 
+        top: 50%; 
+        transform: translate(-50%, -50%); 
+        z-index: 9999;
+        width: 50px;
+        height: 50px;
+        border: 5px solid #4A7C59; 
+        border-top-color: transparent; 
+        border-radius: 50%; 
+        animation: spin 1s linear infinite;
     }
-
-    img {
-        position: relative;
-        max-height: 30%;
-        max-width: 30%;
-        margin-left: 10px;
-        top: -70px;
-    }
-
-    .loader {
-        position: fixed;
-        left: 50%;
-        top: 50%;
-        border: 16px solid #f3f3f3; /* Light grey */
-        border-top: 16px solid #3498db; /* Blue */
-        border-radius: 50%;
-        width: 120px;
-        height: 120px;
-        animation: spin 2s linear infinite;
-    }
-
-    @@keyframes spin {
-        0% {
-            transform: rotate(0deg);
-        }
-
-        100% {
-            transform: rotate(360deg);
-        }
-    }
+    @@keyframes spin { to { transform: rotate(360deg); } }
 </style>
-<div id="tourcostTemplate"></div>
-<hr />
-<div id="backPage">
-    <div id="pppTemplate"></div>
-    <img src="~/img/logo2.jpg" />
+
+<div class="animate-fade-in">
+    <!-- Page Header -->
+    <div class="page-header mb-6">
+        <div class="flex items-center gap-4">
+            <a href="@Url.Action("Index")" class="btn btn-circle btn-ghost">
+                <i class="fas fa-arrow-left text-xl"></i>
+            </a>
+            <div class="flex items-center gap-3">
+                <div class="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center">
+                    <i class="fas fa-file-invoice-dollar text-2xl text-primary"></i>
+                </div>
+                <div>
+                    <h1 class="text-4xl font-bold text-base-content">Tour Cost Details</h1>
+                    <p class="text-base-content/70 mt-1">View and print tour cost breakdown</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Tour Cost Content -->
+    <div class="card bg-base-100 shadow-lg mb-6">
+        <div class="card-body">
+            <div class="flex items-center gap-3 mb-6 pb-4 border-b-2 border-primary/20">
+                <div class="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center">
+                    <i class="fas fa-table text-xl text-primary"></i>
+                </div>
+                <h2 class="text-2xl font-bold text-base-content tracking-tight">Tour Cost Breakdown</h2>
+            </div>
+            <div id="tourcostTemplate" class="overflow-x-auto"></div>
+        </div>
+    </div>
+
+    <!-- PPP Content -->
+    <div class="card bg-base-100 shadow-lg mb-6">
+        <div class="card-body">
+            <div class="flex items-center gap-3 mb-6 pb-4 border-b-2 border-primary/20">
+                <div class="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center">
+                    <i class="fas fa-calculator text-xl text-primary"></i>
+                </div>
+                <h2 class="text-2xl font-bold text-base-content tracking-tight">Per Person Pricing</h2>
+            </div>
+            <div id="backPage">
+                <div id="pppTemplate" class="overflow-x-auto"></div>
+                <div class="mt-6">
+                    <img src="~/img/logo2.jpg" class="max-w-xs" />
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
-<button class="btn floate" id="printTourcost"><i class="fa fa-print fa-2x"></i></button>
-<button class="btn float" id="printPPPcost"><i class="fa fa-print fa-2x"></i></button>
+
+<!-- Floating Action Buttons -->
+<div class="fixed bottom-6 right-6 flex flex-col gap-3 z-50">
+    <div class="tooltip tooltip-left" data-tip="Print Tour Cost">
+        <button class="btn btn-circle btn-primary btn-lg shadow-lg" id="printTourcost">
+            <i class="fas fa-print text-xl"></i>
+        </button>
+    </div>
+    <div class="tooltip tooltip-left" data-tip="Print PPP Cost">
+        <button class="btn btn-circle btn-accent btn-lg shadow-lg" id="printPPPcost">
+            <i class="fas fa-print text-xl"></i>
+        </button>
+    </div>
+</div>
+
+<!-- Loader -->
 <div id="loader"></div>
 
 @section Scripts{
@@ -95,17 +136,26 @@
     <script src="~/js/ppp-template.js"></script>
     <script src="~/js/tourcost-template.js"></script>
     <script type="text/javascript">
-
+        try {
         var data =  @Html.Raw(Json.Serialize(Model));
-        console.log(data);
+        console.log('=== TOUR COST DATA ===');
+        console.log('Full data object:', data);
+        console.log('Client Name:', data?.clientName);
+        console.log('Tour Cost Details:', data?.tourcostDetail);
+        console.log('Guide:', data?.guide);
+        console.log('======================');
+        
+        if (!data) {
+            console.error('ERROR: No data available');
+            document.getElementById('tourcostTemplate').innerHTML = '<div class="alert alert-error"><span>No tour cost data available</span></div>';
+        }
+        
+        if (!data.tourcostDetail || data.tourcostDetail.length === 0) {
+            console.error('ERROR: No tour cost details found');
+            document.getElementById('tourcostTemplate').innerHTML = '<div class="alert alert-warning"><span>No tour cost details found for this tour</span></div>';
+        }
 
-        tippy('#printTourcost', {
-            content: "Print Tourcost"
-        });
-
-        tippy('#printPPPcost', {
-            content: "Print Per Person Cost"
-        });
+        // Tooltips removed - using DaisyUI tooltips if needed
 
         data.guideTotalCost = 0;
         data.PAX = 0;
@@ -151,9 +201,19 @@
         data.category4Total = 0;
 
         $.each(data.tourcostDetail, function (idx, item) {
+            // Skip if sector data is missing
+            if (!item.sector1 || !item.sector1.sectorTransport || item.sector1.sectorTransport.length < 6) {
+                console.warn('Missing sector transport data for item:', idx);
+                item.t1cost = 0;
+                item.t2cost = 0;
+                item.t3cost = 0;
+                item.t4cost = 0;
+                item.t5cost = 0;
+                item.t6cost = 0;
+                return;
+            }
 
-            if (item.sector2 && item.sector3) {
-
+            if (item.sector2 && item.sector3 && item.sector2.sectorTransport && item.sector3.sectorTransport) {
                 item.t1cost = item.sector1.sectorTransport[0].cost + item.sector2.sectorTransport[0].cost + item.sector3.sectorTransport[0].cost;
                 data.t1total += item.t1cost;
                 item.t2cost = item.sector1.sectorTransport[1].cost + item.sector2.sectorTransport[1].cost + item.sector3.sectorTransport[1].cost;
@@ -166,11 +226,10 @@
                 data.t5total += item.t5cost;
                 item.t6cost = item.sector1.sectorTransport[5].cost + item.sector2.sectorTransport[5].cost + item.sector3.sectorTransport[5].cost;
                 data.t6total += item.t6cost;
-
                 item.sector2.code = `/${item.sector2.code}`
                 item.sector3.code = `/${item.sector3.code}`
             }
-            else if (item.sector2) {
+            else if (item.sector2 && item.sector2.sectorTransport) {
                 item.t1cost = item.sector1.sectorTransport[0].cost + item.sector2.sectorTransport[0].cost;
                 data.t1total += item.t1cost;
                 item.t2cost = item.sector1.sectorTransport[1].cost + item.sector2.sectorTransport[1].cost;
@@ -183,7 +242,6 @@
                 data.t5total += item.t5cost;
                 item.t6cost = item.sector1.sectorTransport[5].cost + item.sector2.sectorTransport[5].cost;
                 data.t6total += item.t6cost;
-
                 item.sector2.code = `/${item.sector2.code}`
             }
             else {
@@ -201,7 +259,7 @@
                 data.t6total += item.t6cost;
             };
 
-            if (item.hotelA) {
+            if (item.hotelA && item.hotelA.hotelRoomRate) {
 
                 if (data.mealType == 'AP') {
 
@@ -220,7 +278,7 @@
                 data.catAETotal += item.hotelA.hotelRoomRate.extraBed;
             }
 
-            if (item.hotelB) {
+            if (item.hotelB && item.hotelB.hotelRoomRate) {
 
                 if (data.mealType == 'AP') {
                     item.hotelB.hotelRoomRate.singleBed += item.hotelB.hotelRoomRate.ap;
@@ -239,7 +297,7 @@
                 data.catBETotal += item.hotelB.hotelRoomRate.extraBed;
             }
 
-            if (item.hotelC) {
+            if (item.hotelC && item.hotelC.hotelRoomRate) {
 
                 if (data.mealType == 'AP') {
                     item.hotelC.hotelRoomRate.singleBed += item.hotelC.hotelRoomRate.ap;
@@ -265,18 +323,22 @@
         });
 
    
+        // Render templates
         var result = Handlebars.templates['tourcost-template'](data);
         $('#tourcostTemplate').html(result);
-    
+        
         var result1 = Handlebars.templates['ppp-template'](data);
         $('#pppTemplate').html(result1);
 
-        for (let i = 0; i < 3; i++) {
 
-            let singleBed = parseFloat($('#hotelTable tbody td:nth-child(4)')[i].innerHTML);
-            let halfTwin = parseFloat($('#hotelTable tbody td:nth-child(3)')[i].innerHTML);
-            let singleSupplement = (singleBed - halfTwin).toFixed(2);
-            $('#hotelTable tbody td:nth-child(5)')[i].innerHTML = singleSupplement;
+        if ($('#hotelTable tbody td:nth-child(4)').length > 0) {
+            for (let i = 0; i < 3; i++) {
+
+                let singleBed = parseFloat($('#hotelTable tbody td:nth-child(4)')[i].innerHTML);
+                let halfTwin = parseFloat($('#hotelTable tbody td:nth-child(3)')[i].innerHTML);
+                let singleSupplement = (singleBed - halfTwin).toFixed(2);
+                $('#hotelTable tbody td:nth-child(5)')[i].innerHTML = singleSupplement;
+            }
         }
 
         let lowerTransportIterator = 0
@@ -413,48 +475,16 @@
         }
 
         $('#printTourcost').off('click').on('click', function () {
-            document.body.scrollTop = 0; // For Safari
-            document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
-            $('#loader').addClass('loader');
-            html2canvas($("#tourcostTemplate")[0], {
-                scale: 5,
-                width: 1200
-            }).then(function (canvas) {
-
-                var myImage = canvas.toDataURL("image/png");
-                var tWindow = window.open("");
-                $(tWindow.document.body)
-                    .html("<img id='Image' src=" + myImage + " style='width:100%;'></img>")
-                    .ready(function () {
-                        $('#loader').removeClass('loader');
-                        tWindow.focus();
-                        tWindow.print();
-                    });
-            });
-
+            window.print();
         });
-
 
         $('#printPPPcost').off('click').on('click', function () {
-            document.body.scrollTop = 0; // For Safari
-            document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
-            $('#loader').addClass('loader');
-            html2canvas($("#backPage")[0], {
-                scale: 5
-            }).then(function (canvas) {
-
-                var myImage = canvas.toDataURL("image/png");
-                var tWindow = window.open("");
-                $(tWindow.document.body)
-                    .html("<img id='Image' src=" + myImage + " style='width:100%;'></img>")
-                    .ready(function () {
-                        $('#loader').removeClass('loader');
-                        tWindow.focus();
-                        tWindow.print();
-                    });
-            });
-
+            window.print();
         });
-
+        
+        } catch(error) {
+            console.error('ERROR in script:', error);
+            $('#tourcostTemplate').html('<div class="alert alert-error"><span>Error loading tour cost: ' + error.message + '</span></div>');
+        }
     </script>
 }

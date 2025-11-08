@@ -62,7 +62,7 @@ namespace PeaceInternational.Web.Controllers
                 }
                 else
                 {
-                    var result = _invoiceCrudService.Get(id);
+                    var result = await _invoiceCrudService.GetAsync(id.Value);
                     return Json(result);
                 }
             }
@@ -74,24 +74,30 @@ namespace PeaceInternational.Web.Controllers
 
         //GET Invoice with Detail
         [HttpGet]
-        public IActionResult GetInvoiceInfo(int? id)
+        public async Task<IActionResult> GetInvoiceInfo(int? id)
         {
             try
             {
-                var invoice = _invoiceCrudService.Get(id);
+                if (!id.HasValue)
+                    return BadRequest("Invoice ID is required");
+
+                var invoice = await _invoiceCrudService.GetAsync(id.Value);
+                if (invoice == null)
+                    return NotFound("Invoice not found");
+
                 var invoiceDetail = _invoiceDetailCrudService.GetAll(p => p.InvoiceId == id);
-                var user = _userManager.FindByIdAsync(invoice.CreatedBy).Result;
+                var user = await _userManager.FindByIdAsync(invoice.CreatedBy);
                 var result = new
                 {
                     invoice,
                     invoiceDetail,
-                    user.UserName
+                    userName = user?.UserName ?? invoice.CreatedBy
                 };
                 return Json(result);
             }
             catch (Exception exception)
             {
-                throw exception;
+                return StatusCode(500, exception.Message);
             }
         }
 

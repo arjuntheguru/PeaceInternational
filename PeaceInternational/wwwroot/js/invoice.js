@@ -43,6 +43,7 @@ const clearForm = () => {
 // Function to render items table
 const renderItemsTable = () => {
     const tbody = document.getElementById('itemsTableBody');
+    console.log('Rendering items table, count:', itemsList.length);
 
     if (itemsList.length === 0) {
         tbody.innerHTML = `
@@ -156,50 +157,63 @@ const validateForm = () => {
 
 // Function to edit invoice (load data for editing)
 window.editInvoice = (id) => {
+    console.log('Loading invoice ID:', id);
+    
     $.ajax({
-        url: 'Invoice/GetInvoice',
+        url: '/Invoice/GetInvoice',
         method: 'GET',
         data: { id: id },
-        success: (data) => {
-            if (!data || data.length === 0) return;
-
-            const invoice = data[0];
-            document.getElementById('id').value = invoice.id;
-            document.getElementById('date').value = invoice.createdDate ? invoice.createdDate.split('T')[0] : '';
-            document.getElementById('dr').value = invoice.dr || '';
-            document.getElementById('currency').value = invoice.currency || '';
-            document.getElementById('referenceNo').value = invoice.referenceNo || '';
-            document.getElementById('fileCodeNo').value = invoice.fileCodeNo || '';
-            document.getElementById('isTicket').checked = invoice.isTicket || false;
-            document.getElementById('address').value = invoice.address || '';
-            document.getElementById('clientName').value = invoice.clientName || '';
-            document.getElementById('pax').value = invoice.pax || '';
-            document.getElementById('guide').value = invoice.guide || '';
-            document.getElementById('vehicle').value = invoice.vehicle || '';
-            document.getElementById('discount').value = invoice.discount || '0';
-            document.getElementById('totalDue').value = parseFloat(invoice.totalDue || 0).toFixed(2);
-            document.getElementById('netAmount').value = parseFloat(invoice.netAmount || 0).toFixed(2);
-
-            // Toggle file code field
-            const fileCodeParent = document.getElementById('fileCodeNo').closest('.form-control');
-            if (invoice.isTicket && fileCodeParent) {
-                fileCodeParent.style.display = 'none';
+        success: (invoice) => {
+            console.log('Invoice data received:', invoice);
+            if (!invoice) {
+                console.error('No invoice data returned');
+                return;
             }
 
-            // Load invoice details
-            $.ajax({
-                url: 'Invoice/GetInvoiceDetail',
-                method: 'GET',
-                data: { invoiceId: id },
-                success: (data) => {
-                    itemsList = data.map(item => ({
-                        id: item.id,
-                        particulars: item.particulars,
-                        amount: parseFloat(item.amount)
-                    }));
-                    renderItemsTable();
-                }
-            });
+            document.getElementById('id').value = invoice.Id || invoice.id || '';
+            document.getElementById('date').value = (invoice.CreatedDate || invoice.createdDate) ? (invoice.CreatedDate || invoice.createdDate).split('T')[0] : '';
+            document.getElementById('dr').value = invoice.Dr || invoice.dr || '';
+            document.getElementById('currency').value = invoice.Currency || invoice.currency || '';
+            document.getElementById('referenceNo').value = invoice.ReferenceNo || invoice.referenceNo || '';
+            document.getElementById('fileCodeNo').value = invoice.FileCodeNo || invoice.fileCodeNo || '';
+            document.getElementById('isTicket').checked = invoice.IsTicket || invoice.isTicket || false;
+            document.getElementById('address').value = invoice.Address || invoice.address || '';
+            document.getElementById('clientName').value = invoice.ClientName || invoice.clientName || '';
+            document.getElementById('pax').value = invoice.PAX || invoice.pax || '';
+            document.getElementById('guide').value = invoice.Guide || invoice.guide || '';
+            document.getElementById('vehicle').value = invoice.Vehicle || invoice.vehicle || '';
+            document.getElementById('discount').value = invoice.Discount || invoice.discount || '0';
+            document.getElementById('totalDue').value = parseFloat(invoice.TotalDue || invoice.totalDue || 0).toFixed(2);
+            document.getElementById('netAmount').value = parseFloat(invoice.NetAmount || invoice.netAmount || 0).toFixed(2);
+
+            const fileCodeParent = document.getElementById('fileCodeNo').closest('.form-control');
+            if ((invoice.IsTicket || invoice.isTicket) && fileCodeParent) {
+                fileCodeParent.style.display = 'none';
+            }
+            
+            console.log('Invoice fields populated');
+        },
+        error: (xhr, status, error) => {
+            console.error('Error loading invoice:', error, xhr.responseText);
+        }
+    });
+    
+    $.ajax({
+        url: '/Invoice/GetInvoiceDetail',
+        method: 'GET',
+        data: { invoiceId: id },
+        success: (details) => {
+            console.log('Invoice details received:', details);
+            itemsList = details.map(item => ({
+                id: item.Id || item.id,
+                particulars: item.Particulars || item.particulars,
+                amount: parseFloat(item.Amount || item.amount)
+            }));
+            renderItemsTable();
+            console.log('Items list populated:', itemsList);
+        },
+        error: (xhr, status, error) => {
+            console.error('Error loading invoice details:', error, xhr.responseText);
         }
     });
 };
@@ -229,7 +243,7 @@ const saveInvoice = () => {
     };
 
     $.ajax({
-        url: 'Invoice/Save',
+        url: '/Invoice/Save',
         method: 'POST',
         data: { invoice: record },
         success: (data) => {
@@ -308,7 +322,7 @@ $(document).ready(function () {
             const fileCode = this.value;
             if (fileCode) {
                 $.ajax({
-                    url: 'Customer/Get',
+                    url: '/Customer/Get',
                     method: 'GET',
                     data: { fileCodeNo: fileCode },
                     success: function(data) {

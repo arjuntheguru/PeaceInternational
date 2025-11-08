@@ -13,12 +13,12 @@ const Toast = {
     show: function(type, message, duration = 3000) {
         const toastContainer = this.getOrCreateContainer();
 
-        const alertClass = {
-            'success': 'alert-success',
-            'error': 'alert-error',
-            'warning': 'alert-warning',
-            'info': 'alert-info'
-        }[type] || 'alert-info';
+        const styles = {
+            'success': 'bg-success text-success-content',
+            'error': 'bg-error text-error-content',
+            'warning': 'bg-warning text-warning-content',
+            'info': 'bg-info text-info-content'
+        }[type] || 'bg-info text-info-content';
 
         const icon = {
             'success': 'fa-check-circle',
@@ -28,11 +28,11 @@ const Toast = {
         }[type] || 'fa-info-circle';
 
         const toast = document.createElement('div');
-        toast.className = `alert ${alertClass} shadow-lg mb-2 animate-slide-in`;
+        toast.className = `alert ${styles} shadow-xl mb-2 animate-slide-in`;
         toast.innerHTML = `
-            <div>
-                <i class="fas ${icon} mr-2"></i>
-                <span>${message}</span>
+            <div class="flex items-center gap-2">
+                <i class="fas ${icon}"></i>
+                <span class="font-medium">${message}</span>
             </div>
         `;
 

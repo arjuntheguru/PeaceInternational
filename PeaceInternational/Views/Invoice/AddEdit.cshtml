@@ -6,16 +6,16 @@
     <!-- Modern Page Header -->
     <div class="page-header mb-6">
         <div class="relative z-10 flex items-center gap-4">
-            <a asp-action="Index" class="btn btn-circle btn-ghost text-white hover:bg-white/20 border-white/30">
+            <a asp-action="Index" class="btn btn-circle btn-ghost">
                 <i class="fas fa-arrow-left text-xl"></i>
             </a>
             <div class="flex items-center gap-3">
-                <div class="w-12 h-12 rounded-xl bg-white/20 backdrop-blur-sm flex items-center justify-center">
-                    <i class="fas fa-file-invoice text-2xl text-white"></i>
+                <div class="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center">
+                    <i class="fas fa-file-invoice text-2xl text-primary"></i>
                 </div>
                 <div>
-                    <h1 class="text-4xl font-bold text-white"><span id="pageTitle">New Invoice</span></h1>
-                    <p class="text-white/80 mt-1">Create and manage invoices for tours</p>
+                    <h1 class="text-4xl font-bold text-base-content"><span id="pageTitle"></span></h1>
+                    <p class="text-base-content/70 mt-1">Create and manage invoices for tours</p>
                 </div>
             </div>
         </div>
@@ -148,24 +148,21 @@
                 </h2>
 
                 <!-- Add Item Section -->
-                <div class="alert alert-info mb-4">
-                    <i class="fas fa-plus-circle"></i>
-                    <div class="flex-1">
-                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                            <div class="form-control md:col-span-2">
-                                <input type="text" class="input input-bordered input-sm bg-base-100" id="particulars"
-                                       placeholder="Description of service or item" />
-                            </div>
+                <div class="bg-base-200 rounded-lg p-4 mb-4">
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div class="form-control md:col-span-2">
+                            <input type="text" class="input input-bordered" id="particulars"
+                                   placeholder="Description of service or item" />
+                        </div>
 
-                            <div class="form-control">
-                                <div class="join w-full">
-                                    <input type="number" class="input input-bordered input-sm join-item flex-1 bg-base-100"
-                                           id="particularAmount" placeholder="0.00" step="0.01" min="0" />
-                                    <button type="button" class="btn btn-success btn-sm join-item" id="addProduct">
-                                        <i class="fas fa-plus"></i>
-                                        Add
-                                    </button>
-                                </div>
+                        <div class="form-control">
+                            <div class="join w-full">
+                                <input type="number" class="input input-bordered join-item flex-1"
+                                       id="particularAmount" placeholder="0.00" step="0.01" min="0" />
+                                <button type="button" class="btn btn-primary join-item" id="addProduct">
+                                    <i class="fas fa-plus"></i>
+                                    Add
+                                </button>
                             </div>
                         </div>
                     </div>

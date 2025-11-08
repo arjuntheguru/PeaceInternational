@@ -71,24 +71,27 @@ namespace PeaceInternational.Web.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetServiceVoucher(int id)
+        public async Task<IActionResult> GetServiceVoucher(int id)
         {
             try
             {
-                var serviceVoucher = _serviceVoucherCrudService.Get(id);
-                var hotel = _hotelCrudService.Get(serviceVoucher.HotelId);
-                var user = _userManager.FindByIdAsync(serviceVoucher.CreatedBy).Result;
+                var serviceVoucher = await _serviceVoucherCrudService.GetAsync(id);
+                if (serviceVoucher == null)
+                    return NotFound("Service Voucher not found");
+
+                var hotel = await _hotelCrudService.GetAsync(serviceVoucher.HotelId);
+                var user = await _userManager.FindByIdAsync(serviceVoucher.CreatedBy);
                 var result = new
                 {
                     serviceVoucher,
                     hotel,
-                    user.UserName
+                    userName = user?.UserName ?? serviceVoucher.CreatedBy
                 };
                 return Json(result);
             }
             catch (Exception exception)
             {
-                throw exception;
+                return StatusCode(500, exception.Message);
             }
         }
 

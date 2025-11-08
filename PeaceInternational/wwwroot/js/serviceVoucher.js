@@ -61,11 +61,11 @@ const renderTable = (data) => {
             <td>${voucher.clientName || '-'}</td>
             <td>
                 <div class="flex gap-2 justify-center">
-                    <button onclick="generateReceipt(${voucher.id})" class="btn btn-sm btn-accent gap-2" title="View Receipt">
-                        <i class="fas fa-clipboard"></i>
-                    </button>
-                    <button onclick="editVoucher(${voucher.id})" class="btn btn-sm btn-info gap-2" title="Edit">
+                    <button onclick="editVoucher(${voucher.id})" class="btn btn-ghost btn-sm text-primary hover:bg-primary/10" title="Edit">
                         <i class="fas fa-edit"></i>
+                    </button>
+                    <button onclick="generateReceipt(${voucher.id})" class="btn btn-ghost btn-sm text-info hover:bg-info/10" title="View">
+                        <i class="fas fa-eye"></i>
                     </button>
                 </div>
             </td>
@@ -334,19 +334,14 @@ $(document).ready(function () {
     document.getElementById('searchFieldClientname').addEventListener('input', filterTable);
 
     // Print invoice button
-    $('#printInvoice').on('click', function () {
-        html2canvas($("#invoiceBody")[0], {
-            scale: 3
-        }).then(function (canvas) {
-            var myImage = canvas.toDataURL("image/png");
-            var tWindow = window.open("");
-            $(tWindow.document.body)
-                .html("<img id='Image' src=" + myImage + " style='width:100%;'></img>")
-                .ready(function () {
-                    tWindow.focus();
-                    tWindow.print();
-                });
-        });
+    document.getElementById('printInvoice').addEventListener('click', function() {
+        var printContent = document.getElementById('invoiceBody').innerHTML;
+        var printWindow = window.open('', '', 'height=600,width=800');
+        printWindow.document.write(printContent);
+        printWindow.document.close();
+        printWindow.focus();
+        printWindow.print();
+        printWindow.close();
     });
 
     // Auto-fill from customer data when file code changes

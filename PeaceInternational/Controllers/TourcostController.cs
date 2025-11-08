@@ -65,7 +65,7 @@ namespace PeaceInternational.Web.Controllers
                 Tourcost tourcost = _tourcostCrudService.Get(id);
 
                 var user = await _userManager.FindByIdAsync(tourcost.CreatedBy);
-                tourcost.CreatedBy = user.UserName;
+                tourcost.CreatedBy = user?.UserName ?? tourcost.CreatedBy;
 
                 tourcost.TourcostDetail = _tourcostDetailCrudService.GetAll(p => p.TourcostId == id).ToList();
                 tourcost.Guide = _guideCrudService.Get(p => p.Id == tourcost.GuideId);

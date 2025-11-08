@@ -3,34 +3,65 @@
 }
 
 <div class="animate-fade-in">
-    <!-- Header -->
-    <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6">
-        <div>
-            <h1 class="text-4xl font-bold text-base-content">Service Voucher Management</h1>
-            <p class="text-base-content/70 mt-2">Manage service vouchers for tours</p>
+    <!-- Modern Page Header -->
+    <div class="page-header">
+        <div class="relative z-10 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+            <div>
+                <div class="flex items-center gap-3 mb-3">
+                    <div class="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center">
+                        <i class="fas fa-receipt text-2xl text-primary"></i>
+                    </div>
+                    <div>
+                        <h1 class="text-4xl font-bold text-base-content">Service Voucher Management</h1>
+                        <p class="text-base-content/70 mt-1">Manage service vouchers for tours</p>
+                    </div>
+                </div>
+            </div>
+            <label for="voucher-drawer" class="btn btn-accent btn-lg gap-2 shadow-lg hover:scale-105 transition-transform drawer-button">
+                <i class="fas fa-plus"></i>
+                Add Service Voucher
+            </label>
         </div>
-        <label for="voucher-drawer" class="btn btn-primary gap-2 drawer-button">
-            <i class="fas fa-plus"></i>
-            Add Service Voucher
-        </label>
     </div>
 
     <!-- Multi-field Search -->
-    <div class="card bg-base-200 shadow-lg mb-6">
-        <div class="card-body">
-            <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
-                <div class="form-control">
-                    <input type="text" id="searchFieldReceipt" placeholder="Receipt No..." class="input input-bordered" />
-                </div>
-                <div class="form-control">
-                    <input type="text" id="searchFieldFileCode" placeholder="File Code No..." class="input input-bordered" />
-                </div>
-                <div class="form-control">
-                    <input type="text" id="searchFieldHotel" placeholder="Hotel..." class="input input-bordered" />
-                </div>
-                <div class="form-control">
-                    <input type="text" id="searchFieldClientname" placeholder="Client Name..." class="input input-bordered" />
-                </div>
+    <div class="bg-base-200 rounded-lg p-6 mb-6">
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+            <div class="form-control">
+                <label class="label">
+                    <span class="label-text font-medium">Receipt No.</span>
+                </label>
+                <label class="input flex items-center gap-2 bg-base-100">
+                    <i class="fas fa-hashtag text-base-content/40"></i>
+                    <input type="text" id="searchFieldReceipt" placeholder="Search..." class="grow" />
+                </label>
+            </div>
+            <div class="form-control">
+                <label class="label">
+                    <span class="label-text font-medium">File Code</span>
+                </label>
+                <label class="input flex items-center gap-2 bg-base-100">
+                    <i class="fas fa-file-code text-base-content/40"></i>
+                    <input type="text" id="searchFieldFileCode" placeholder="Search..." class="grow" />
+                </label>
+            </div>
+            <div class="form-control">
+                <label class="label">
+                    <span class="label-text font-medium">Hotel</span>
+                </label>
+                <label class="input flex items-center gap-2 bg-base-100">
+                    <i class="fas fa-hotel text-base-content/40"></i>
+                    <input type="text" id="searchFieldHotel" placeholder="Search..." class="grow" />
+                </label>
+            </div>
+            <div class="form-control">
+                <label class="label">
+                    <span class="label-text font-medium">Client Name</span>
+                </label>
+                <label class="input flex items-center gap-2 bg-base-100">
+                    <i class="fas fa-user text-base-content/40"></i>
+                    <input type="text" id="searchFieldClientname" placeholder="Search..." class="grow" />
+                </label>
             </div>
         </div>
     </div>
@@ -287,9 +318,14 @@
         <form method="dialog">
             <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
         </form>
-        <h3 class="font-bold text-lg mb-4">Service Voucher</h3>
+        <div class="flex items-center gap-3 mb-4">
+            <div class="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center">
+                <i class="fas fa-receipt text-lg text-primary"></i>
+            </div>
+            <h3 class="font-bold text-2xl">Service Voucher Preview</h3>
+        </div>
 
-        <div id="invoiceBody" class="overflow-auto max-h-[70vh] bg-white p-4">
+        <div id="invoiceBody" class="overflow-auto max-h-[70vh] bg-white">
             <!-- Print styles -->
             <style>
                 .formsize { height: 820px; margin-top: 0px; margin-bottom: 70px; border-style: solid; border-width: 2px; page-break-after: always; }
@@ -314,12 +350,12 @@
         </div>
 
         <div class="modal-action">
-            <button type="button" class="btn btn-error" id="printInvoice">
+            <button type="button" class="btn btn-primary" id="printInvoice">
                 <i class="fas fa-print mr-2"></i>
                 Print
             </button>
             <form method="dialog">
-                <button class="btn">Close</button>
+                <button class="btn btn-ghost">Close</button>
             </form>
         </div>
     </div>
@@ -332,72 +368,81 @@
     <partial name="_ValidationScriptsPartial" />
     <script src="~/js/serviceVoucher.js"></script>
     <script id="entry-template" type="text/x-handlebars-template">
-        <div class="formsize">
-            <header class="mt-4">
-                <div class="flex">
-                    <div class="flex-1 logo">
-                        <img src="img/logo2.jpg">
-                    </div>
-                    <div class="flex-none">
-                        <h6>GPO Box: 9484</h6>
-                        <h6>Lazimpat - 2, Kathmandu, Nepal</h6>
-                        <h6>Tel: (977) 01 4444843/44/45</h6>
-                        <h6>Email: peaceintl.mail@@gmail.com</h6>
-                        <h6>&emsp;&emsp;&emsp;mail@@peace-intl.com.np </h6>
-                        <h6>Web: peace-intl.com </h6>
-                        <h6>PAN: 302243385 </h6>
+        <style>
+            @@media print { 
+                body { margin: 0; padding: 20px; } 
+                .voucher-container { page-break-after: always; }
+            }
+            .voucher-container { font-family: Arial, sans-serif; max-width: 900px; margin: 0 auto 30px auto; padding: 20px; color: #000; border: 2px solid #000; }
+            .voucher-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 20px; padding-bottom: 15px; border-bottom: 2px solid #000; }
+            .logo-section img { max-width: 250px; height: auto; }
+            .company-info { font-size: 11px; line-height: 1.6; text-align: right; }
+            .voucher-title { font-size: 18px; font-weight: bold; margin: 15px 0; }
+            .hotel-info { background: #f5f5f5; padding: 15px; margin: 15px 0; border: 1px solid #ddd; }
+            .voucher-details { border: 1px solid #000; margin: 15px 0; }
+            .detail-row { display: flex; border-bottom: 1px solid #000; }
+            .detail-row:last-child { border-bottom: none; }
+            .detail-cell { padding: 10px; font-size: 13px; border-right: 1px solid #000; }
+            .detail-cell:last-child { border-right: none; }
+            .services-section { border: 1px solid #000; padding: 15px; margin: 15px 0; min-height: 150px; }
+            .footer-section { margin-top: 20px; text-align: center; font-size: 13px; font-weight: bold; }
+        </style>
+
+        <div class="voucher-container">
+            <div class="voucher-header">
+                <div class="logo-section">
+                    <img src="/img/logo2.jpg" alt="Peace International">
+                </div>
+                <div style="text-align: center; flex: 1;">
+                    <h1 style="margin: 0 0 10px 0; font-size: 24px; font-weight: bold;">SERVICE VOUCHER</h1>
+                    <div style="font-size: 13px;">
+                        <strong>Exchange Order No:</strong> {{serviceVoucher.exchangeOrderNo}}<br>
+                        <strong>Date:</strong> {{chain "splitDate" "customDate" serviceVoucher.createdDate}}
                     </div>
                 </div>
-            </header>
-            <br />
-            <section>
-                <strong class="h8">&nbsp; Services to be provided by:</strong>
-                <div class="svaddress">
-                    <p class="h7" style="font-size:25px !important;"><strong>{{hotel.name}}</strong></p>
-                    <p class="h7" style="font-size:25px !important;"><strong>{{hotel.address}}</strong></p>
-                    <p class="h7"><strong>Exchange Order No. : {{serviceVoucher.exchangeOrderNo}}</strong></p>
-                    <p class="h7"><strong>Date: {{chain "splitDate" "customDate" serviceVoucher.createdDate}}</strong></p>
+                <div class="company-info">
+                    <div>GPO Box: 9484</div>
+                    <div>Lazimpat - 2, Kathmandu, Nepal</div>
+                    <div>Tel: (977) 01 4444843/44/45</div>
+                    <div>Email: peaceintl.mail@@gmail.com</div>
+                    <div>mail@@peace-intl.com.np</div>
+                    <div>Web: peace-intl.com</div>
+                    <div>PAN: 302243385</div>
                 </div>
-            </section>
-            <section class="svdetail">
-                <div class="svrow1">
-                    <div class="svrcol1">
-                        <p class="h7">Name <strong>{{serviceVoucher.clientName}} X {{serviceVoucher.pax}} PAX</strong></p>
-                    </div>
-                    <div class="svrcol2">
-                        <p class="h7">File Code No. {{serviceVoucher.fileCodeNo}}</p>
-                    </div>
+            </div>
+
+            <div class="voucher-title">Services to be provided by:</div>
+            <div class="hotel-info">
+                <div style="font-size: 16px; font-weight: bold; margin-bottom: 5px;">{{hotel.name}}</div>
+                <div style="font-size: 14px;">{{hotel.address}}</div>
+            </div>
+
+            <div class="voucher-details">
+                <div class="detail-row">
+                    <div class="detail-cell" style="width: 40%;"><strong>Name:</strong> {{serviceVoucher.clientName}} X {{serviceVoucher.pax}} PAX</div>
+                    <div class="detail-cell" style="width: 30%;"></div>
+                    <div class="detail-cell" style="width: 30%;"><strong>File Code:</strong> {{serviceVoucher.fileCodeNo}}</div>
                 </div>
-                <div class="svrow2">
-                    <div class="svrcol3">
-                        <p class="h7">ARR. On <strong>{{splitDate serviceVoucher.arrivalDate}}</strong></p>
-                    </div>
-                    <div class="svrcol4">
-                        <p class="h7">From  <strong>{{serviceVoucher.from}}</strong></p>
-                    </div>
-                    <div class="svrcol5">
-                        <p class="h7">By <strong>{{serviceVoucher.arrivalFlight}}</strong></p>
-                    </div>
+                <div class="detail-row">
+                    <div class="detail-cell" style="width: 40%;"><strong>ARR. On:</strong> {{splitDate serviceVoucher.arrivalDate}}</div>
+                    <div class="detail-cell" style="width: 30%;"><strong>From:</strong> {{serviceVoucher.from}}</div>
+                    <div class="detail-cell" style="width: 30%;"><strong>By:</strong> {{serviceVoucher.arrivalFlight}}</div>
                 </div>
-                <div class="svrow2">
-                    <div class="svrcol3">
-                        <p class="h7">DEP. On <strong>{{splitDate serviceVoucher.departureDate}}</strong></p>
-                    </div>
-                    <div class="svrcol4">
-                        <p class="h7">For <strong>{{serviceVoucher.to}}</strong></p>
-                    </div>
-                    <div class="svrcol5">
-                        <p class="h7">By <strong>{{serviceVoucher.departureFlight}}</strong></p>
-                    </div>
+                <div class="detail-row">
+                    <div class="detail-cell" style="width: 40%;"><strong>DEP. On:</strong> {{splitDate serviceVoucher.departureDate}}</div>
+                    <div class="detail-cell" style="width: 30%;"><strong>To:</strong> {{serviceVoucher.to}}</div>
+                    <div class="detail-cell" style="width: 30%;"><strong>By:</strong> {{serviceVoucher.departureFlight}}</div>
                 </div>
-            </section>
-            <div class="svcomment">
-                <strong class="h8">&nbsp;&nbsp;Please provide the following services</strong>
-                <p class="comment h7">{{serviceVoucher.services}}</p>
-                <div class="endfooter2">
-                    <p class="h7"><strong>COLLECT ALL EXTRAS DIRECTLY.</strong></p>
-                    <p class="h7 text-center"><strong>{{userName}}</strong></p>
-                </div>
+            </div>
+
+            <div class="voucher-title">Please provide the following services:</div>
+            <div class="services-section">
+                {{serviceVoucher.services}}
+            </div>
+
+            <div class="footer-section">
+                <div style="margin-bottom: 10px;">COLLECT ALL EXTRAS DIRECTLY.</div>
+                <div>{{userName}}</div>
             </div>
         </div>
     </script>

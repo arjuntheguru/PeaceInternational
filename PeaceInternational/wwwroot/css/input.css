@@ -9,33 +9,14 @@
     @apply transition-all duration-300 hover:shadow-xl hover:-translate-y-1;
   }
 
-  /* Gradient backgrounds */
-  .gradient-primary {
-    @apply bg-gradient-to-r from-primary via-primary to-secondary;
-  }
-
-  .gradient-accent {
-    @apply bg-gradient-to-r from-accent to-primary;
-  }
-
-  .gradient-soft {
-    @apply bg-gradient-to-br from-base-100 via-base-200 to-base-100;
-  }
-
-  /* Modern page header */
+  /* Page header */
   .page-header {
-    @apply relative overflow-hidden rounded-2xl bg-gradient-to-r from-primary to-secondary p-8 shadow-lg mb-8;
-  }
-
-  .page-header::before {
-    content: '';
-    @apply absolute inset-0 opacity-10;
-    background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.4'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    @apply rounded-lg bg-base-100 border-l-4 border-primary p-8 mb-8;
   }
 
   /* Tour card styling */
   .tour-card {
-    @apply card bg-base-100 shadow-lg hover:shadow-2xl transition-all duration-300;
+    @apply card bg-base-100 border border-base-300 hover:border-base-400 transition-colors duration-200;
   }
 
   /* Custom table row hover */
@@ -55,7 +36,7 @@
 
   /* Smooth section */
   .section-modern {
-    @apply py-8 px-6 rounded-xl bg-base-100 shadow-sm border border-base-300 hover:shadow-md transition-shadow duration-300;
+    @apply py-8 px-6 rounded-lg bg-base-100 border border-base-300;
   }
 }
 
@@ -93,6 +74,23 @@
 /* Override some default styles */
 body {
   @apply antialiased;
+}
+
+/* Remove border from inputs inside label wrapper */
+label.input input,
+label.input textarea,
+label.input select {
+  border: none;
+  outline: none;
+  box-shadow: none;
+}
+
+label.input input:focus,
+label.input textarea:focus,
+label.input select:focus {
+  border: none;
+  outline: none;
+  box-shadow: none;
 }
 
 /* Custom date input styling - modern calendar icon */
@@ -135,6 +133,19 @@ select:disabled {
   background-color: #1e293b;
   color: #94a3b8;
   border-color: #334155;
+}
+
+/* Custom select dropdown styling */
+select {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3E%3Cpath stroke='%234A7C59' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3E%3C/svg%3E");
+  background-position: right 0.5rem center;
+  background-repeat: no-repeat;
+  background-size: 1.5em 1.5em;
+  padding-right: 2.5rem;
+}
+
+[data-theme="dark"] select {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3E%3Cpath stroke='%236B8E7F' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3E%3C/svg%3E");
 }
 
 /* Custom scrollbar */

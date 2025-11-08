@@ -3,51 +3,56 @@
 }
 
 <div class="animate-fade-in">
-    <!-- Header with cleaner Daisy UI styling -->
-    <div class="flex items-center justify-between mb-8">
-        <div>
-            <div class="text-sm breadcrumbs">
-                <ul>
-                    <li>Management</li>
-                    <li class="font-semibold">Invoices</li>
-                </ul>
+    <!-- Modern Page Header -->
+    <div class="page-header">
+        <div class="relative z-10 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+            <div>
+                <div class="flex items-center gap-3 mb-3">
+                    <div class="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center">
+                        <i class="fas fa-file-invoice-dollar text-2xl text-primary"></i>
+                    </div>
+                    <div>
+                        <h1 class="text-4xl font-bold text-base-content">Invoice Management</h1>
+                        <p class="text-base-content/70 mt-1">Create and manage client invoices</p>
+                    </div>
+                </div>
             </div>
-            <h1 class="text-3xl font-bold">Invoice Management</h1>
+            <a asp-action="AddEdit" class="btn btn-accent btn-lg gap-2 shadow-lg hover:scale-105 transition-transform">
+                <i class="fas fa-plus"></i>
+                New Invoice
+            </a>
         </div>
-        <a asp-action="AddEdit" class="btn btn-primary gap-2">
-            <i class="fas fa-plus"></i>
-            New Invoice
-        </a>
     </div>
 
     <!-- Search Filters -->
-    <div class="card bg-base-100 shadow-lg mb-6">
-        <div class="card-body">
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <div class="form-control">
-                    <div class="input-group">
-                        <span class="bg-base-200 px-4 flex items-center">
-                            <i class="fas fa-hashtag"></i>
-                        </span>
-                        <input type="text" id="searchField" placeholder="Invoice No..." class="input input-bordered flex-1" />
-                    </div>
-                </div>
-                <div class="form-control">
-                    <div class="input-group">
-                        <span class="bg-base-200 px-4 flex items-center">
-                            <i class="fas fa-file-code"></i>
-                        </span>
-                        <input type="text" id="searchFieldFileCode" placeholder="File Code..." class="input input-bordered flex-1" />
-                    </div>
-                </div>
-                <div class="form-control">
-                    <div class="input-group">
-                        <span class="bg-base-200 px-4 flex items-center">
-                            <i class="fas fa-user"></i>
-                        </span>
-                        <input type="text" id="searchFieldClient" placeholder="Client Name..." class="input input-bordered flex-1" />
-                    </div>
-                </div>
+    <div class="bg-base-200 rounded-lg p-6 mb-6">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div class="form-control">
+                <label class="label">
+                    <span class="label-text font-medium">Invoice No.</span>
+                </label>
+                <label class="input flex items-center gap-2 bg-base-100">
+                    <i class="fas fa-hashtag text-base-content/40"></i>
+                    <input type="text" id="searchField" placeholder="Search..." class="grow" />
+                </label>
+            </div>
+            <div class="form-control">
+                <label class="label">
+                    <span class="label-text font-medium">File Code</span>
+                </label>
+                <label class="input flex items-center gap-2 bg-base-100">
+                    <i class="fas fa-file-code text-base-content/40"></i>
+                    <input type="text" id="searchFieldFileCode" placeholder="Search..." class="grow" />
+                </label>
+            </div>
+            <div class="form-control">
+                <label class="label">
+                    <span class="label-text font-medium">Client Name</span>
+                </label>
+                <label class="input flex items-center gap-2 bg-base-100">
+                    <i class="fas fa-user text-base-content/40"></i>
+                    <input type="text" id="searchFieldClient" placeholder="Search..." class="grow" />
+                </label>
             </div>
         </div>
     </div>
@@ -87,19 +92,24 @@
         <form method="dialog">
             <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
         </form>
-        <h3 class="font-bold text-lg mb-4">Invoice</h3>
+        <div class="flex items-center gap-3 mb-4">
+            <div class="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center">
+                <i class="fas fa-file-invoice text-lg text-primary"></i>
+            </div>
+            <h3 class="font-bold text-2xl">Invoice Preview</h3>
+        </div>
 
-        <div id="invoiceBody" class="overflow-auto max-h-[70vh] bg-white p-4">
+        <div id="invoiceBody" class="overflow-auto max-h-[70vh] bg-white">
             <div id="receiptTemplate"></div>
         </div>
 
         <div class="modal-action">
-            <button type="button" class="btn btn-error" id="printInvoice">
+            <button type="button" class="btn btn-primary" id="printInvoice">
                 <i class="fas fa-print mr-2"></i>
                 Print
             </button>
             <form method="dialog">
-                <button class="btn">Close</button>
+                <button class="btn btn-ghost">Close</button>
             </form>
         </div>
     </div>
@@ -121,13 +131,15 @@
         // Function to load invoices
         const loadInvoices = () => {
             $.ajax({
-                url: 'Invoice/GetInvoice',
+                url: '/Invoice/GetInvoice',
                 method: 'GET',
                 success: (data) => {
+                    console.log('Invoices loaded:', data);
                     invoicesData = data;
                     renderTable(data);
                 },
-                error: () => {
+                error: (xhr, status, error) => {
+                    console.error('Error loading invoices:', error, xhr.responseText);
                     showToast('error', 'Failed to load invoices');
                 }
             });
@@ -176,11 +188,11 @@
                     <td class="font-bold text-success text-right">${parseFloat(invoice.netAmount || 0).toFixed(2)}</td>
                     <td>
                         <div class="flex gap-2 justify-center">
-                            <a href="@Url.Action("AddEdit", "Invoice")?id=${invoice.id}" class="btn btn-sm btn-info gap-2" title="Edit">
+                            <a href="@Url.Action("AddEdit", "Invoice")?id=${invoice.id}" class="btn btn-ghost btn-sm text-primary hover:bg-primary/10" title="Edit">
                                 <i class="fas fa-edit"></i>
                             </a>
-                            <button onclick="generateInvoice(${invoice.id})" class="btn btn-sm btn-success gap-2" title="View">
-                                <i class="fas fa-file-invoice"></i>
+                            <button onclick="generateInvoice(${invoice.id})" class="btn btn-ghost btn-sm text-info hover:bg-info/10" title="View">
+                                <i class="fas fa-eye"></i>
                             </button>
                         </div>
                     </td>
@@ -207,21 +219,34 @@
 
         // Function to generate/view invoice
         window.generateInvoice = (id) => {
+            console.log('Generating invoice for ID:', id);
             $.ajax({
-                url: 'Invoice/GetInvoiceInfo',
+                url: '/Invoice/GetInvoiceInfo',
                 method: 'GET',
                 data: { id: id },
                 success: (data) => {
+                    console.log('Raw data from controller:', data);
+                    console.log('Invoice object:', data.invoice);
+                    console.log('Invoice details:', data.invoiceDetail);
+                    console.log('Username:', data.userName);
+                    
                     data.invoice.fileCodeNo = data.invoice.fileCodeNo ? data.invoice.fileCodeNo.split('/')[1] : data.invoice.fileCodeNo;
+                    console.log('After fileCodeNo split:', data.invoice.fileCodeNo);
 
                     var source = document.getElementById("entry-template").innerHTML;
+                    console.log('Template source found:', source ? 'Yes' : 'No');
+                    
                     var template = Handlebars.compile(source);
+                    console.log('Template compiled');
+                    
                     var result = template(data);
+                    console.log('Template rendered');
 
                     document.getElementById('receiptTemplate').innerHTML = result;
                     document.getElementById('viewInvoice').showModal();
                 },
-                error: () => {
+                error: (xhr, status, error) => {
+                    console.error('Error loading invoice info:', error, xhr.responseText);
                     showToast('error', 'Failed to load invoice');
                 }
             });
@@ -239,127 +264,120 @@
 
             // Print invoice button
             document.getElementById('printInvoice').addEventListener('click', function() {
-                html2canvas(document.getElementById("invoiceBody"), {
-                    scale: 3
-                }).then(function (canvas) {
-                    var myImage = canvas.toDataURL("image/png");
-                    var tWindow = window.open("");
-                    tWindow.document.body.innerHTML = "<img id='Image' src='" + myImage + "' style='width:100%;'></img>";
-                    tWindow.document.close();
-                    tWindow.focus();
-                    tWindow.print();
-                });
+                var printContent = document.getElementById('receiptTemplate').innerHTML;
+                var printWindow = window.open('', '', 'height=600,width=800');
+                printWindow.document.write(printContent);
+                printWindow.document.close();
+                printWindow.focus();
+                printWindow.print();
+                printWindow.close();
             });
         });
     </script>
     <script id="entry-template" type="text/x-handlebars-template">
         <style>
-            #page { border-collapse: collapse; border: 2px solid; font-family: Arial, Helvetica, sans-serif; }
-            #page td { padding-top: 1px; margin: 0; font-size: 22px; border-right: 2px solid; }
-            #page th { border-right: 2px solid; border-bottom: 2px solid; }
-            #page tfoot { border-top: 2px solid; }
-            .topRightInfo { padding-left: 6rem; }
-            .topRightInfo h6 { margin-bottom: 1px; font-size:19px; }
-            body h6 { font-size:24px; }
-            span { font-weight: bold; }
+            @@media print {
+                body { margin: 0; padding: 20px; }
+            }
+            .invoice-container { font-family: Arial, sans-serif; max-width: 900px; margin: 0 auto; padding: 20px; color: #000; }
+            .invoice-header { display: flex; justify-content: space-between; margin-bottom: 30px; border-bottom: 2px solid #000; padding-bottom: 15px; }
+            .company-info { font-size: 11px; line-height: 1.6; }
+            .invoice-details { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px; font-size: 13px; }
+            .invoice-table { width: 100%; border-collapse: collapse; margin: 20px 0; }
+            .invoice-table th { background: #f0f0f0; padding: 10px; text-align: left; border: 1px solid #000; font-size: 12px; }
+            .invoice-table td { padding: 10px; border: 1px solid #000; font-size: 12px; }
+            .invoice-table tfoot td { font-weight: bold; background: #f9f9f9; }
+            .text-right { text-align: right; }
+            .text-center { text-center; }
+            .invoice-footer { margin-top: 30px; display: flex; justify-content: space-between; font-size: 11px; }
+            .signature-section { text-align: right; margin-top: 40px; }
+            strong { font-weight: 600; }
         </style>
 
-        <div class="row">
-            <div class="col-md-8">
-                <img src="~/img/logo2.jpg" style="max-width:100%; max-height:80%" />
+        <div class="invoice-container">
+            <div class="invoice-header">
+                <div>
+                    <h2 style="margin: 0 0 10px 0;">Peace International Tours & Travel</h2>
+                    <div class="company-info">
+                        <div>GPO Box: 9484, Lazimpat - 2, Kathmandu, Nepal</div>
+                        <div>Tel: (977) 01 4444843/44/45</div>
+                        <div>Email: peaceintl.mail@@gmail.com | mail@@peace-intl.com.np</div>
+                        <div>Web: peace-intl.com | PAN: 302243385</div>
+                    </div>
+                </div>
+                <div style="text-align: right;">
+                    <h1 style="margin: 0; font-size: 28px;">INVOICE</h1>
+                    <div style="margin-top: 10px; font-size: 13px;">
+                        <div><strong>Invoice No:</strong> {{invoice.invoiceNo}}</div>
+                        <div><strong>Date:</strong> {{chain "splitDate" "customDate" invoice.createdDate}}</div>
+                    </div>
+                </div>
             </div>
-            <div class="col-md-4 topRightInfo">
-                <h6>GPO Box: 9484</h6>
-                <h6>Lazimpat - 2, Kathmandu, Nepal</h6>
-                <h6>Tel: (977) 01 4444843/44/45</h6>
-                <h6>Email: peaceintl.mail@@gmail.com</h6>
-                <h6>&emsp;&emsp;&emsp;mail@@peace-intl.com.np </h6>
-                <h6>Web: peace-intl.com </h6>
-                <h6>PAN: 302243385 </h6>
-            </div>
-        </div>
 
-        <div class="row">
-            <div class="col-md-8">
-                <h6>Dr:&emsp;<span>{{invoice.dr}}</span></h6>
-                <h6>&emsp;&emsp;&emsp;<span>{{invoice.address}}</span></h6>
-                <h6>Ref No:&emsp;{{invoice.referenceNo}}</h6>
-                <h6>Name:&emsp;<span>{{invoice.clientName}} X {{invoice.pax}} PAX</span></h6>
+            <div class="invoice-details">
+                <div>
+                    <div><strong>To:</strong> {{invoice.dr}}</div>
+                    <div style="margin-left: 20px;">{{invoice.address}}</div>
+                    <div style="margin-top: 10px;"><strong>Client:</strong> {{invoice.clientName}} ({{invoice.pax}} PAX)</div>
+                    <div><strong>Guide:</strong> {{invoice.guide}}</div>
+                </div>
+                <div>
+                    <div><strong>Reference No:</strong> {{invoice.referenceNo}}</div>
+                    <div><strong>File Code:</strong> {{invoice.fileCodeNo}}</div>
+                    <div><strong>Currency:</strong> {{invoice.currency}}</div>
+                    <div><strong>Vehicle:</strong> {{invoice.vehicle}}</div>
+                </div>
             </div>
-            <div class="col-md-4" style="padding-left:6rem;">
-                <h6>Date:&emsp;<span>{{chain "splitDate" "customDate" invoice.createdDate}}</span></h6>
-                <h6>Invoice no:&emsp;{{invoice.invoiceNo}}</h6>
-                <h6>File Code No:&emsp;{{invoice.fileCodeNo}}</h6>
-                <h6>Currency:&emsp;<span>{{invoice.currency}}</span></h6>
-            </div>
-        </div>
-        <br />
-        <h6 class="text-center font-weight-bold">Your Account has been debited as per particulars given below:</h6>
-        <div class="row flex-nowrap">
-            <table class="table table-borderless ml-2 mr-2" id="page">
-                <thead class="text-center thead-light">
+
+            <table class="invoice-table">
+                <thead>
                     <tr>
-                        <th width="5%">SN.</th>
-                        <th width="70%">PARTICULARS</th>
-                        <th width="20%">AMOUNT</th>
+                        <th style="width: 50px;">SN</th>
+                        <th>PARTICULARS</th>
+                        <th style="width: 120px;" class="text-right">AMOUNT</th>
                     </tr>
                 </thead>
                 <tbody>
                     {{#each invoiceDetail}}
                     <tr>
-                        <td height="40" align="center">{{inc @@index}}</td>
-                        <td height="40">{{this.particulars}}</td>
-                        <td height="40" class="text-right pr-5">{{distanceFixed this.amount}}</td>
+                        <td class="text-center">{{inc @@index}}</td>
+                        <td>{{this.particulars}}</td>
+                        <td class="text-right">{{distanceFixed this.amount}}</td>
                     </tr>
                     {{/each}}
-                    {{#for invoiceDetail.length 18 1}}
-                    <tr>
-                        <td height="40"></td>
-                        <td height="40"></td>
-                        <td height="40"></td>
-                    </tr>
-                    {{/for}}
                 </tbody>
                 <tfoot>
-                    <tr style="border-bottom:2px solid;">
-                        <td colspan="2" align="right" class="font-weight-bold">Total Due:</td>
-                        <td align="right" class="pr-5">{{distanceFixed invoice.totalDue}}</td>
-                    </tr>
-                    <tr style="border-bottom:2px solid;">
-                        <td colspan="2" align="right" class="font-weight-bold">Discount:</td>
-                        <td align="right" class="pr-5">{{distanceFixed invoice.discount}}</td>
-                    </tr>
-                    <tr style="border-bottom:2px solid;">
-                        <td colspan="2" align="right" class="font-weight-bold">Net Amount:</td>
-                        <td align="right" class="pr-5">{{distanceFixed invoice.netAmount}} </td>
+                    <tr>
+                        <td colspan="2" class="text-right">Total Due:</td>
+                        <td class="text-right">{{distanceFixed invoice.totalDue}}</td>
                     </tr>
                     <tr>
-                        <td colspan="3"><span>In Words:</span> {{inWords invoice.netAmount}}</td>
+                        <td colspan="2" class="text-right">Discount:</td>
+                        <td class="text-right">{{distanceFixed invoice.discount}}</td>
+                    </tr>
+                    <tr>
+                        <td colspan="2" class="text-right">Net Amount:</td>
+                        <td class="text-right"><strong>{{distanceFixed invoice.netAmount}}</strong></td>
+                    </tr>
+                    <tr>
+                        <td colspan="3"><strong>In Words:</strong> {{inWords invoice.netAmount}}</td>
                     </tr>
                 </tfoot>
             </table>
-        </div>
-        <div class="row">
-            <div class="col-md-3">
-                <h6>E. & O. E.</h6>
-                <h6>ENCLOSURES: </h6>
-                <h6>Prepared By: </h6>
-                <h6>Checked By:</h6>
+
+            <div class="invoice-footer">
+                <div>
+                    <div>E. & O. E.</div>
+                    <div>Prepared By: {{userName}}</div>
+                </div>
+                <div class="signature-section">
+                    <div style="margin-bottom: 50px;">For: Peace International Tours & Travel (P) Ltd</div>
+                    <div style="border-top: 1px solid #000; padding-top: 5px;">Authorized Signature</div>
+                </div>
             </div>
-            <div class="col-md-9">
-                <h6 class="font-weight-bold float-right">For : Peace International Tours & Travel (P) Ltd</h6>
-                <br /><br />
-                <h6 class="float-right mr-5">{{userName}}</h6>
-                <br /><br />
-                <h6 class="border-top border-dark float-right">Authorized Signature: </h6>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-md-12 text-center">
-                <br />
-                <h6>
-                    IMPORTANT : 1. If the Payment is to be made through Bank, transfer kindly made it directly either at our <br>A/C No. 01 04 21 7500056 at Nabil Bank, Kantipath, Kathmandu under advise to us.
-                </h6>
+
+            <div style="margin-top: 30px; padding-top: 15px; border-top: 1px solid #ccc; font-size: 10px; text-align: center;">
+                <strong>IMPORTANT:</strong> If the Payment is to be made through Bank, transfer kindly made it directly at our A/C No. 01 04 21 7500056 at Nabil Bank, Kantipath, Kathmandu under advise to us.
             </div>
         </div>
     </script>

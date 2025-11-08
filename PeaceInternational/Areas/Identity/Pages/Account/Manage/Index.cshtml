@@ -8,8 +8,16 @@
 <div class="animate-fade-in">
     <partial name="_StatusMessage" for="StatusMessage" />
 
-    <div class="card bg-base-100 shadow-lg">
-        <div class="card-body">
+    <div class="bg-base-100 rounded-lg border border-base-300 p-8">
+        <div class="mb-6">
+            <h2 class="text-2xl font-bold text-base-content flex items-center gap-3">
+                <div class="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center">
+                    <i class="fas fa-user text-lg text-primary"></i>
+                </div>
+                Profile Information
+            </h2>
+        </div>
+        <div>
             <form id="profile-form" method="post">
                 @if (!ViewData.ModelState.IsValid && ViewData.ModelState.ErrorCount > 0)
                 {
@@ -64,8 +72,8 @@
                 </div>
 
                 <!-- Actions -->
-                <div class="card-actions justify-end mt-6">
-                    <button id="update-profile-button" type="submit" class="btn btn-primary gap-2">
+                <div class="flex justify-end mt-6">
+                    <button id="update-profile-button" type="submit" class="btn btn-primary btn-lg gap-2">
                         <i class="fas fa-save"></i>
                         Save Changes
                     </button>

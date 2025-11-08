@@ -92,8 +92,11 @@ const renderTable = (data) => {
             <td>${customer.guideName || '-'}</td>
             <td>
                 <div class="flex gap-2 justify-center">
-                    <button onclick="editCustomer(${customer.id})" class="btn btn-sm btn-info gap-2" title="Edit">
+                    <button onclick="editCustomer(${customer.id})" class="btn btn-ghost btn-sm text-primary hover:bg-primary/10" title="Edit">
                         <i class="fas fa-edit"></i>
+                    </button>
+                    <button onclick="viewCustomer(${customer.id})" class="btn btn-ghost btn-sm text-info hover:bg-info/10" title="View">
+                        <i class="fas fa-eye"></i>
                     </button>
                 </div>
             </td>

@@ -3,29 +3,37 @@
 }
 
 <div class="animate-fade-in">
-    <!-- Header -->
-    <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6">
-        <div>
-            <h1 class="text-4xl font-bold text-base-content">Sector Management</h1>
-            <p class="text-base-content/70 mt-2">Manage sectors and transportation rates by PAX</p>
+    <!-- Modern Page Header -->
+    <div class="page-header">
+        <div class="relative z-10 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+            <div>
+                <div class="flex items-center gap-3 mb-3">
+                    <div class="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center">
+                        <i class="fas fa-map-marked-alt text-2xl text-primary"></i>
+                    </div>
+                    <div>
+                        <h1 class="text-4xl font-bold text-base-content">Sector Management</h1>
+                        <p class="text-base-content/70 mt-1">Manage sectors and transportation rates by PAX</p>
+                    </div>
+                </div>
+            </div>
+            <label for="sector-drawer" class="btn btn-accent btn-lg gap-2 drawer-button shadow-lg hover:scale-105 transition-transform">
+                <i class="fas fa-plus"></i>
+                Add Sector
+            </label>
         </div>
-        <label for="sector-drawer" class="btn btn-primary gap-2 drawer-button">
-            <i class="fas fa-plus"></i>
-            Add Sector
-        </label>
     </div>
 
     <!-- Search -->
-    <div class="card bg-base-200 shadow-lg mb-6">
-        <div class="card-body">
-            <div class="form-control">
-                <div class="input-group">
-                    <input type="text" id="searchField" placeholder="Search by sector name..." class="input input-bordered flex-1" />
-                    <button class="btn btn-square btn-primary">
-                        <i class="fas fa-search"></i>
-                    </button>
-                </div>
-            </div>
+    <div class="bg-base-200 rounded-lg p-6 mb-6">
+        <div class="form-control">
+            <label class="label">
+                <span class="label-text font-medium">Sector Name</span>
+            </label>
+            <label class="input flex items-center gap-2 bg-base-100">
+                <i class="fas fa-map-marked-alt text-base-content/40"></i>
+                <input type="text" id="searchField" placeholder="Search..." class="grow" />
+            </label>
         </div>
     </div>
 

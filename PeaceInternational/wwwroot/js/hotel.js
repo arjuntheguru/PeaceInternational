@@ -68,10 +68,10 @@ const renderTable = (data) => {
             </td>
             <td>
                 <div class="flex gap-2 justify-center">
-                    <button onclick="editHotel(${hotel.id})" class="btn btn-sm btn-info gap-2" title="Edit">
+                    <button onclick="editHotel(${hotel.id})" class="btn btn-ghost btn-sm text-primary hover:bg-primary/10" title="Edit">
                         <i class="fas fa-edit"></i>
                     </button>
-                    <button onclick="deleteHotel(${hotel.id})" class="btn btn-sm btn-error gap-2" title="Delete">
+                    <button onclick="deleteHotel(${hotel.id})" class="btn btn-ghost btn-sm text-error hover:bg-error/10" title="Delete">
                         <i class="fas fa-trash"></i>
                     </button>
                 </div>

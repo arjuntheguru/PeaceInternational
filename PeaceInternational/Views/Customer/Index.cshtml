@@ -8,12 +8,12 @@
         <div class="relative z-10 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
             <div>
                 <div class="flex items-center gap-3 mb-3">
-                    <div class="w-12 h-12 rounded-xl bg-white/20 backdrop-blur-sm flex items-center justify-center">
-                        <i class="fas fa-users text-2xl text-white"></i>
+                    <div class="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center">
+                        <i class="fas fa-users text-2xl text-primary"></i>
                     </div>
                     <div>
-                        <h1 class="text-4xl font-bold text-white">Customer Management</h1>
-                        <p class="text-white/80 mt-1">Manage tour bookings and customer information</p>
+                        <h1 class="text-4xl font-bold text-base-content">Customer Management</h1>
+                        <p class="text-base-content/70 mt-1">Manage tour bookings and customer information</p>
                     </div>
                 </div>
             </div>
@@ -25,29 +25,34 @@
     </div>
 
     <!-- Search and Filters -->
-    <div class="section-modern mb-6">
-        <div class="flex items-center gap-3 mb-4">
-            <i class="fas fa-search text-xl text-primary"></i>
-            <h2 class="text-xl font-semibold">Search & Filters</h2>
-        </div>
+    <div class="bg-base-200 rounded-lg p-6 mb-6">
         <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div class="form-control">
                 <label class="label">
-                    <span class="label-text font-semibold">File Code No.</span>
+                    <span class="label-text font-medium">File Code No.</span>
                 </label>
-                <input type="text" id="searchFieldFileCode" placeholder="Search by file code..." class="input input-bordered focus:input-primary" />
+                <label class="input flex items-center gap-2 bg-base-100">
+                    <i class="fas fa-file-code text-base-content/40"></i>
+                    <input type="text" id="searchFieldFileCode" placeholder="Search..." class="grow" />
+                </label>
             </div>
             <div class="form-control">
                 <label class="label">
-                    <span class="label-text font-semibold">Tour Name</span>
+                    <span class="label-text font-medium">Tour Name</span>
                 </label>
-                <input type="text" id="searchFieldTourName" placeholder="Search by tour name..." class="input input-bordered focus:input-primary" />
+                <label class="input flex items-center gap-2 bg-base-100">
+                    <i class="fas fa-map-marked-alt text-base-content/40"></i>
+                    <input type="text" id="searchFieldTourName" placeholder="Search..." class="grow" />
+                </label>
             </div>
             <div class="form-control">
                 <label class="label">
-                    <span class="label-text font-semibold">Agent Name</span>
+                    <span class="label-text font-medium">Agent Name</span>
                 </label>
-                <input type="text" id="searchFieldAgent" placeholder="Search by agent..." class="input input-bordered focus:input-primary" />
+                <label class="input flex items-center gap-2 bg-base-100">
+                    <i class="fas fa-user-tie text-base-content/40"></i>
+                    <input type="text" id="searchFieldAgent" placeholder="Search..." class="grow" />
+                </label>
             </div>
         </div>
     </div>
@@ -90,15 +95,15 @@
     <div class="drawer-side">
         <label for="customer-drawer" class="drawer-overlay"></label>
         <div class="bg-base-100 w-full md:w-[600px] min-h-full shadow-2xl">
-            <div class="sticky top-0 gradient-primary text-white p-6 z-10 shadow-lg">
+            <div class="sticky top-0 bg-primary text-primary-content p-6 z-10 shadow-lg">
                 <div class="flex justify-between items-center">
                     <div class="flex items-center gap-3">
-                        <div class="w-10 h-10 rounded-lg bg-white/20 backdrop-blur-sm flex items-center justify-center">
+                        <div class="w-10 h-10 rounded-lg bg-white/20 flex items-center justify-center">
                             <i class="fas fa-user-plus text-lg"></i>
                         </div>
                         <h2 class="text-2xl font-bold" id="customerTitle">Add Customer</h2>
                     </div>
-                    <label for="customer-drawer" class="btn btn-ghost btn-circle text-white hover:bg-white/20">
+                    <label for="customer-drawer" class="btn btn-ghost btn-circle">
                         <i class="fas fa-times text-xl"></i>
                     </label>
                 </div>

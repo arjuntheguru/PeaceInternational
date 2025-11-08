@@ -8,16 +8,16 @@
     <!-- Modern Header -->
     <div class="page-header mb-6">
         <div class="relative z-10 flex items-center gap-4">
-            <a asp-action="Index" class="btn btn-circle btn-ghost text-white hover:bg-white/20 border-white/30">
+            <a asp-action="Index" class="btn btn-circle btn-ghost">
                 <i class="fas fa-arrow-left text-xl"></i>
             </a>
             <div class="flex items-center gap-3">
-                <div class="w-12 h-12 rounded-xl bg-white/20 backdrop-blur-sm flex items-center justify-center">
-                    <i class="fas fa-file-invoice-dollar text-2xl text-white"></i>
+                <div class="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center">
+                    <i class="fas fa-file-invoice-dollar text-2xl text-primary"></i>
                 </div>
                 <div>
-                    <h1 class="text-4xl font-bold text-white">@ViewData["Title"]</h1>
-                    <p class="text-white/80 mt-1">Configure tour itinerary and pricing details</p>
+                    <h1 class="text-4xl font-bold text-base-content">@ViewData["Title"]</h1>
+                    <p class="text-base-content/70 mt-1">Configure tour itinerary and pricing details</p>
                 </div>
             </div>
         </div>
@@ -28,170 +28,149 @@
         <input type="hidden" asp-for="Tourcost.Id" />
 
         <!-- Top Section Cards -->
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
-            <!-- Days & Meal Plan Card -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+            <!-- Client & Tour Info -->
             <div class="section-modern">
-                <div class="flex items-center gap-2 mb-4">
+                <div class="flex items-center gap-2 mb-6">
                     <div class="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center">
-                        <i class="fas fa-calendar-day text-lg text-primary"></i>
+                        <i class="fas fa-user text-lg text-primary"></i>
                     </div>
-                    <h2 class="font-bold text-lg">Days & Meal Plan</h2>
+                    <h2 class="font-bold text-xl">Client & Tour Information</h2>
                 </div>
+                <div class="space-y-4">
                     <div class="form-control">
                         <label class="label">
-                            <span class="label-text font-semibold">Number of Days</span>
+                            <span class="label-text font-semibold text-base">Client Name <span class="text-error">*</span></span>
                         </label>
-                        <input asp-for="Tourcost.Days" class="input input-bordered" type="number" min="1" />
+                        <input asp-for="Tourcost.ClientName" class="input input-bordered input-lg" required />
                     </div>
-                    <div class="divider my-2"></div>
+                    <div class="grid grid-cols-3 gap-4">
+                        <div class="form-control">
+                            <label class="label">
+                                <span class="label-text font-semibold">Number of Days</span>
+                            </label>
+                            <input asp-for="Tourcost.Days" class="input input-bordered" type="number" min="1" />
+                        </div>
+                        <div class="form-control">
+                            <label class="label">
+                                <span class="label-text font-semibold">Min PAX <span class="text-error">*</span></span>
+                            </label>
+                            <input asp-for="Tourcost.MinPAX" class="input input-bordered" type="number" min="1" />
+                        </div>
+                        <div class="form-control">
+                            <label class="label">
+                                <span class="label-text font-semibold">Max PAX <span class="text-error">*</span></span>
+                            </label>
+                            <input asp-for="Tourcost.MaxPAX" class="input input-bordered" type="number" max="100" />
+                        </div>
+                    </div>
                     <div class="form-control">
                         <label class="label">
-                            <span class="label-text font-semibold">Meal Type</span>
+                            <span class="label-text font-semibold">Meal Plan</span>
                         </label>
-                        <div class="flex flex-col gap-2">
-                            <label class="label cursor-pointer justify-start gap-3">
+                        <div class="flex gap-6">
+                            <label class="label cursor-pointer gap-3">
                                 <input type="radio" asp-for="Tourcost.MealType" class="radio radio-primary" value="AP" />
                                 <span class="label-text">AP (American Plan)</span>
                             </label>
-                            <label class="label cursor-pointer justify-start gap-3">
+                            <label class="label cursor-pointer gap-3">
                                 <input type="radio" asp-for="Tourcost.MealType" class="radio radio-primary" value="MAP" />
                                 <span class="label-text">MAP (Modified American Plan)</span>
                             </label>
                         </div>
                     </div>
-            </div>
-
-            <!-- Client & PAX Card -->
-            <div class="section-modern">
-                <div class="flex items-center gap-2 mb-4">
-                    <div class="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center">
-                        <i class="fas fa-user text-lg text-primary"></i>
-                    </div>
-                    <h2 class="font-bold text-lg">Client Details</h2>
                 </div>
-                    <div class="form-control">
-                        <label class="label">
-                            <span class="label-text font-semibold">Client Name <span class="text-error">*</span></span>
-                        </label>
-                        <input asp-for="Tourcost.ClientName" class="input input-bordered" required />
-                    </div>
-                    <div class="divider my-2"></div>
-                    <label class="label">
-                        <span class="label-text font-semibold">PAX Range</span>
-                    </label>
-                    <div class="grid grid-cols-2 gap-2">
-                        <div class="form-control">
-                            <label class="label">
-                                <span class="label-text text-xs">Min PAX <span class="text-error">*</span></span>
-                            </label>
-                            <input asp-for="Tourcost.MinPAX" class="input input-bordered input-sm" type="number" min="1" />
-                        </div>
-                        <div class="form-control">
-                            <label class="label">
-                                <span class="label-text text-xs">Max PAX <span class="text-error">*</span></span>
-                            </label>
-                            <input asp-for="Tourcost.MaxPAX" class="input input-bordered input-sm" type="number" max="100" />
-                        </div>
-                    </div>
             </div>
 
-            <!-- Guide Card -->
+            <!-- Guide & Categories -->
             <div class="section-modern">
-                <div class="flex items-center gap-2 mb-4">
+                <div class="flex items-center gap-2 mb-6">
                     <div class="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center">
                         <i class="fas fa-user-tie text-lg text-primary"></i>
                     </div>
-                    <h2 class="font-bold text-lg">Guide</h2>
+                    <h2 class="font-bold text-xl">Guide & Additional Categories</h2>
                 </div>
+                <div class="space-y-4">
                     <div class="form-control">
                         <label class="label">
-                            <span class="label-text font-semibold">Name</span>
+                            <span class="label-text font-semibold text-base">Guide Name</span>
                         </label>
-                        <select asp-for="Tourcost.GuideId" class="select select-bordered" asp-items="ViewBag.Guide">
+                        <select asp-for="Tourcost.GuideId" class="select select-bordered select-lg" asp-items="ViewBag.Guide">
                             <option value="">Select Guide</option>
                         </select>
                     </div>
-                    <div class="divider my-2"></div>
-                    <div class="grid grid-cols-3 gap-1">
+                    <div class="grid grid-cols-3 gap-4">
                         <div class="form-control">
                             <label class="label">
-                                <span class="label-text text-xs">Half</span>
+                                <span class="label-text font-semibold">Half Day</span>
                             </label>
-                            <input asp-for="Tourcost.GuideDaysHalfDay" class="input input-bordered input-sm" type="number" min="0" />
+                            <input asp-for="Tourcost.GuideDaysHalfDay" class="input input-bordered" type="number" min="0" />
                         </div>
                         <div class="form-control">
                             <label class="label">
-                                <span class="label-text text-xs">Full</span>
+                                <span class="label-text font-semibold">Full Day</span>
                             </label>
-                            <input asp-for="Tourcost.GuideDaysFullDay" class="input input-bordered input-sm" type="number" min="0" />
+                            <input asp-for="Tourcost.GuideDaysFullDay" class="input input-bordered" type="number" min="0" />
                         </div>
                         <div class="form-control">
                             <label class="label">
-                                <span class="label-text text-xs">Escort</span>
+                                <span class="label-text font-semibold">Escort</span>
                             </label>
-                            <input asp-for="Tourcost.GuideDaysEscort" class="input input-bordered input-sm" type="number" min="0" />
+                            <input asp-for="Tourcost.GuideDaysEscort" class="input input-bordered" type="number" min="0" />
                         </div>
                     </div>
-            </div>
-
-            <!-- Additional Categories Card -->
-            <div class="section-modern">
-                <div class="flex items-center gap-2 mb-4">
-                    <div class="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center">
-                        <i class="fas fa-tags text-lg text-primary"></i>
+                    <div class="divider">Additional Categories</div>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="form-control">
+                            <label class="label">
+                                <span class="label-text font-semibold">Category 1</span>
+                            </label>
+                            <input asp-for="Tourcost.Category1" class="input input-bordered" />
+                        </div>
+                        <div class="form-control">
+                            <label class="label">
+                                <span class="label-text font-semibold">Category 2</span>
+                            </label>
+                            <input asp-for="Tourcost.Category2" class="input input-bordered" />
+                        </div>
+                        <div class="form-control">
+                            <label class="label">
+                                <span class="label-text font-semibold">Category 3</span>
+                            </label>
+                            <input asp-for="Tourcost.Category3" class="input input-bordered" />
+                        </div>
+                        <div class="form-control">
+                            <label class="label">
+                                <span class="label-text font-semibold">Category 4</span>
+                            </label>
+                            <input asp-for="Tourcost.Category4" class="input input-bordered" />
+                        </div>
                     </div>
-                    <h2 class="font-bold text-lg">Categories</h2>
                 </div>
-                    <div class="grid grid-cols-2 gap-2">
-                        <div class="form-control">
-                            <label class="label">
-                                <span class="label-text text-xs">Category 1</span>
-                            </label>
-                            <input asp-for="Tourcost.Category1" class="input input-bordered input-sm" />
-                        </div>
-                        <div class="form-control">
-                            <label class="label">
-                                <span class="label-text text-xs">Category 2</span>
-                            </label>
-                            <input asp-for="Tourcost.Category2" class="input input-bordered input-sm" />
-                        </div>
-                        <div class="form-control">
-                            <label class="label">
-                                <span class="label-text text-xs">Category 3</span>
-                            </label>
-                            <input asp-for="Tourcost.Category3" class="input input-bordered input-sm" />
-                        </div>
-                        <div class="form-control">
-                            <label class="label">
-                                <span class="label-text text-xs">Category 4</span>
-                            </label>
-                            <input asp-for="Tourcost.Category4" class="input input-bordered input-sm" />
-                        </div>
-                    </div>
             </div>
         </div>
 
         <!-- Tour Cost Details Collapse -->
         <div class="section-modern mb-6">
-            <div class="collapse collapse-arrow bg-gradient-to-r from-primary/5 to-secondary/5 rounded-xl">
+            <div class="collapse collapse-arrow bg-base-200">
                 <input type="checkbox" id="collapseToggle" />
-                <div class="collapse-title text-xl font-bold">
+                <div class="collapse-title">
                     <div class="flex items-center gap-3">
-                        <div class="w-10 h-10 rounded-lg bg-primary/20 flex items-center justify-center">
+                        <div class="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center">
                             <i class="fas fa-list-alt text-lg text-primary"></i>
                         </div>
-                        <span>Tour Cost Details (Day by Day)</span>
+                        <span class="text-xl font-bold">Tour Cost Details (Day by Day)</span>
                         <span class="badge badge-primary badge-lg" id="daysBadge">0 Days</span>
                     </div>
                 </div>
                 <div class="collapse-content">
                     <div class="pt-4">
                         <!-- Header Row -->
-                        <div class="grid grid-cols-12 gap-2 mb-4 font-semibold text-sm text-base-content/70 bg-base-200 p-3 rounded-lg" id="tourCostDetailHeader">
+                        <div class="grid grid-cols-12 gap-3 mb-4 font-bold text-base bg-base-300 p-4 rounded-lg" id="tourCostDetailHeader">
                             <!-- Dynamically generated header -->
                         </div>
                         <!-- Detail Rows -->
-                        <div id="tourCostDetailBody" class="space-y-2 max-h-[600px] overflow-y-auto pr-2">
+                        <div id="tourCostDetailBody" class="space-y-3 max-h-[600px] overflow-y-auto pr-2">
                             <!-- Dynamically generated rows -->
                         </div>
                     </div>
@@ -331,50 +310,50 @@
         // Create single row template (called once per row)
         function createRowHTML(index) {
             return `
-                <div class="grid grid-cols-12 gap-2 bg-base-100 p-3 rounded-lg hover:bg-base-200 transition-colors" id="detailRow${index}">
+                <div class="grid grid-cols-12 gap-3 bg-base-100 p-4 rounded-lg hover:bg-base-200 transition-colors border border-base-300" id="detailRow${index}">
                     <input type="hidden" id="TourcostDetail_${index}__Id" name="TourcostDetail[${index}].Id"/>
                     <div class="col-span-1">
                         <input id="TourcostDetail_${index}__Day" name="TourcostDetail[${index}].Day"
-                               class="input input-bordered input-sm w-full font-semibold text-center bg-primary/10" value="D${index + 1}" readonly/>
+                               class="input input-bordered w-full font-bold text-center bg-primary/10" value="D${index + 1}" readonly/>
                     </div>
                     <div class="col-span-2">
                         <select id="TourcostDetail_${index}__Sector1Id" name="TourcostDetail[${index}].Sector1Id"
-                                class="select select-bordered select-sm w-full focus:select-primary">
+                                class="select select-bordered w-full focus:select-primary">
                             <option value="">Select</option>
                             ${dropdownCache.sector}
                         </select>
                     </div>
                     <div class="col-span-2">
                         <select id="TourcostDetail_${index}__Sector2Id" name="TourcostDetail[${index}].Sector2Id"
-                                class="select select-bordered select-sm w-full focus:select-primary">
+                                class="select select-bordered w-full focus:select-primary">
                             <option value="">Select</option>
                             ${dropdownCache.sector}
                         </select>
                     </div>
                     <div class="col-span-2">
                         <select id="TourcostDetail_${index}__Sector3Id" name="TourcostDetail[${index}].Sector3Id"
-                                class="select select-bordered select-sm w-full focus:select-primary">
+                                class="select select-bordered w-full focus:select-primary">
                             <option value="">Select</option>
                             ${dropdownCache.sector}
                         </select>
                     </div>
                     <div class="col-span-2">
                         <select id="TourcostDetail_${index}__HotelAId" name="TourcostDetail[${index}].HotelAId"
-                                class="select select-bordered select-sm w-full focus:select-primary">
+                                class="select select-bordered w-full focus:select-primary">
                             <option value="">Select</option>
                             ${dropdownCache.hotelA}
                         </select>
                     </div>
                     <div class="col-span-1">
                         <select id="TourcostDetail_${index}__HotelBId" name="TourcostDetail[${index}].HotelBId"
-                                class="select select-bordered select-sm w-full focus:select-primary">
+                                class="select select-bordered w-full focus:select-primary">
                             <option value="">Select</option>
                             ${dropdownCache.hotelB}
                         </select>
                     </div>
                     <div class="col-span-2">
                         <select id="TourcostDetail_${index}__HotelCId" name="TourcostDetail[${index}].HotelCId"
-                                class="select select-bordered select-sm w-full focus:select-primary">
+                                class="select select-bordered w-full focus:select-primary">
                             <option value="">Select</option>
                             ${dropdownCache.hotelC}
                         </select>

@@ -7,57 +7,50 @@
 <div class="animate-fade-in">
     <!-- Modern Page Header -->
     <div class="page-header">
-        <div class="relative z-10 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-            <div>
-                <div class="flex items-center gap-3 mb-3">
-                    <div class="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center">
-                        <i class="fas fa-dollar-sign text-2xl text-primary"></i>
-                    </div>
-                    <div>
-                        <h1 class="text-4xl font-bold text-base-content">Tour Cost Management</h1>
-                        <p class="text-base-content/70 mt-1">Create and manage tour pricing and itineraries</p>
-                    </div>
+        <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center">
+                    <i data-lucide="dollar-sign" class="w-5 h-5 text-primary"></i>
+                </div>
+                <div>
+                    <h1 class="text-2xl font-bold text-base-content">Tour Cost Management</h1>
+                    <p class="text-sm text-base-content/60">Create and manage tour pricing and itineraries</p>
                 </div>
             </div>
-            <a asp-action="AddEdit" class="btn btn-accent btn-lg gap-2 shadow-lg hover:scale-105 transition-transform">
-                <i class="fas fa-plus"></i>
+            <a asp-action="AddEdit" class="btn btn-accent gap-2">
+                <i data-lucide="plus" class="w-4 h-4"></i>
                 New Tour Cost
             </a>
         </div>
     </div>
 
-    <!-- Search and Filters -->
-    <div class="bg-base-200 rounded-lg p-6 mb-6">
-        <div class="form-control">
-            <label class="label">
-                <span class="label-text font-medium">Client Name</span>
-            </label>
-            <label class="input flex items-center gap-2 bg-base-100">
-                <i class="fas fa-user text-base-content/40"></i>
-                <input type="text" id="searchField" placeholder="Search..." class="grow" />
-            </label>
-        </div>
+    <!-- Search -->
+    <div class="flex flex-wrap gap-3 mb-4">
+        <label class="input input-bordered flex items-center gap-2 flex-1 min-w-[200px]">
+            <i data-lucide="user" class="w-4 h-4 text-base-content/40 shrink-0"></i>
+            <input type="text" id="searchField" placeholder="Client Name..." class="grow" />
+        </label>
     </div>
 
     <!-- Tour Cost Table -->
-    <div class="card bg-base-100 shadow-xl">
-        <div class="card-body p-0">
-            <table class="table table-zebra w-full" id="tourcostTable">
-                    <thead class="bg-primary text-primary-content">
-                        <tr>
-                            <th class="normal-case text-base">
+    <div class="surface-raised overflow-hidden">
+        <div>
+            <table class="table w-full" id="tourcostTable">
+                    <thead>
+                        <tr class="bg-base-200/50 border-b border-base-300">
+                            <th class="text-xs font-semibold uppercase tracking-wider text-base-content/50">
                                 <div class="flex items-center gap-2">
                                     Client Name
-                                    <i class="fas fa-sort text-xs cursor-pointer" data-sort="clientName"></i>
+                                    <i data-lucide="arrow-up-down" class="w-3 h-3 cursor-pointer" data-sort="clientName"></i>
                                 </div>
                             </th>
-                            <th class="normal-case text-base">
+                            <th class="text-xs font-semibold uppercase tracking-wider text-base-content/50">
                                 <div class="flex items-center gap-2">
                                     Date
-                                    <i class="fas fa-sort text-xs cursor-pointer" data-sort="date"></i>
+                                    <i data-lucide="arrow-up-down" class="w-3 h-3 cursor-pointer" data-sort="date"></i>
                                 </div>
                             </th>
-                            <th class="normal-case text-base text-center">Actions</th>
+                            <th class="text-xs font-semibold uppercase tracking-wider text-base-content/50 text-center">Actions</th>
                         </tr>
                     </thead>
                     <tbody id="tableBody">
@@ -80,17 +73,17 @@
                                     </td>
                                     <td>
                                         <div class="flex items-center gap-2">
-                                            <i class="fas fa-calendar text-primary"></i>
+                                            <i data-lucide="calendar" class="w-4 h-4 text-primary"></i>
                                             <span>@item.CreatedDate.ToString("MMM dd, yyyy")</span>
                                         </div>
                                     </td>
                                     <td>
                                         <div class="flex gap-2 justify-center">
                                             <a href="@Url.Action("AddEdit", new { id = item.Id })" class="btn btn-ghost btn-sm text-primary hover:bg-primary/10" title="Edit">
-                                                <i class="fas fa-edit"></i>
+                                                <i data-lucide="pencil" class="w-4 h-4"></i>
                                             </a>
                                             <a href="@Url.Action("View", new { id = item.Id })" class="btn btn-ghost btn-sm text-info hover:bg-info/10" title="View">
-                                                <i class="fas fa-eye"></i>
+                                                <i data-lucide="eye" class="w-4 h-4"></i>
                                             </a>
                                         </div>
                                     </td>
@@ -102,13 +95,13 @@
                             <tr>
                                 <td colspan="3" class="text-center py-12">
                                     <div class="flex flex-col items-center gap-4">
-                                        <i class="fas fa-inbox fa-4x text-base-300"></i>
+                                        <i data-lucide="inbox" class="w-16 h-16 text-base-300"></i>
                                         <div>
                                             <h3 class="font-bold text-lg">No tour costs found</h3>
                                             <p class="text-base-content/70">Start by adding your first tour cost</p>
                                         </div>
                                         <a asp-action="AddEdit" class="btn btn-primary gap-2">
-                                            <i class="fas fa-plus"></i>
+                                            <i data-lucide="plus" class="w-4 h-4"></i>
                                             Add Tour Cost
                                         </a>
                                     </div>
@@ -121,14 +114,12 @@
             <!-- Pagination Info -->
             @if (Model != null && Model.Any())
             {
-                <div class="flex justify-between items-center p-4 border-t border-base-300">
-                    <div class="text-sm text-base-content/70">
-                        Showing <span id="showingCount">@Model.Count()</span> of <span id="totalCount">@Model.Count()</span> tour costs
-                    </div>
+                <div class="flex justify-between items-center px-4 py-3 border-t border-base-300/60 text-sm">
+                    <span class="text-base-content/50">Showing <span id="showingCount">@Model.Count()</span> of <span id="totalCount">@Model.Count()</span></span>
                     <div class="join">
-                        <button class="join-item btn btn-sm" id="prevPage" disabled>«</button>
-                        <button class="join-item btn btn-sm">Page <span id="currentPage">1</span></button>
-                        <button class="join-item btn btn-sm" id="nextPage" disabled>»</button>
+                        <button class="join-item btn btn-sm btn-ghost" id="prevPage" disabled>«</button>
+                        <button class="join-item btn btn-sm btn-ghost">Page <span id="currentPage">1</span></button>
+                        <button class="join-item btn btn-sm btn-ghost" id="nextPage" disabled>»</button>
                     </div>
                 </div>
             }
@@ -175,7 +166,7 @@
                     noResultsRow.innerHTML = `
                         <td colspan="3" class="text-center py-12">
                             <div class="flex flex-col items-center gap-4">
-                                <i class="fas fa-search fa-4x text-base-300"></i>
+                                <i data-lucide="search" class="w-16 h-16 text-base-300"></i>
                                 <div>
                                     <h3 class="font-bold text-lg">No results found</h3>
                                     <p class="text-base-content/70">Try adjusting your search terms</p>
@@ -198,7 +189,7 @@
             sortBtn.addEventListener('click', function() {
                 const sortField = this.getAttribute('data-sort');
                 const rowsArray = Array.from(rows);
-                const isAscending = this.classList.contains('fa-sort-up');
+                const isAscending = this.getAttribute('data-lucide') === 'arrow-up';
 
                 rowsArray.sort((a, b) => {
                     let aValue, bValue;
@@ -220,12 +211,12 @@
 
                 // Update sort icons
                 document.querySelectorAll('[data-sort]').forEach(btn => {
-                    btn.className = 'fas fa-sort text-xs cursor-pointer';
+                    btn.setAttribute('data-lucide', 'arrow-up-down');
+                    lucide.createIcons({ nodes: [btn] });
                 });
 
-                this.className = isAscending
-                    ? 'fas fa-sort-down text-xs cursor-pointer'
-                    : 'fas fa-sort-up text-xs cursor-pointer';
+                this.setAttribute('data-lucide', isAscending ? 'arrow-down' : 'arrow-up');
+                lucide.createIcons({ nodes: [this] });
 
                 // Re-append sorted rows
                 rowsArray.forEach(row => tableBody.appendChild(row));

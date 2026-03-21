@@ -2,53 +2,48 @@
     ViewData["Title"] = "Guide";
 }
 
-<div class="animate-fade-in">
-    <!-- Modern Page Header -->
-    <div class="page-header">
-        <div class="relative z-10 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-            <div>
-                <div class="flex items-center gap-3 mb-3">
-                    <div class="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center">
-                        <i class="fas fa-user-tie text-2xl text-primary"></i>
+<div class="drawer drawer-end">
+    <input id="guide-drawer" type="checkbox" class="drawer-toggle" />
+    <div class="drawer-content animate-fade-in">
+
+        <!-- Modern Page Header -->
+        <div class="page-header">
+            <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center">
+                        <i data-lucide="user-check" class="w-5 h-5 text-primary"></i>
                     </div>
                     <div>
-                        <h1 class="text-4xl font-bold text-base-content">Guide Management</h1>
-                        <p class="text-base-content/70 mt-1">Manage tour guides and their rates</p>
+                        <h1 class="text-2xl font-bold text-base-content">Guide Management</h1>
+                        <p class="text-sm text-base-content/60">Manage tour guides and their rates</p>
                     </div>
                 </div>
+                <label for="guide-drawer" class="btn btn-accent gap-2 drawer-button">
+                    <i data-lucide="plus" class="w-4 h-4"></i>
+                    Add Guide
+                </label>
             </div>
-            <label for="guide-drawer" class="btn btn-accent btn-lg gap-2 drawer-button shadow-lg hover:scale-105 transition-transform">
-                <i class="fas fa-plus"></i>
-                Add Guide
+        </div>
+
+        <!-- Search -->
+        <div class="flex flex-wrap gap-3 mb-4">
+            <label class="input input-bordered flex items-center gap-2 flex-1 min-w-[200px]">
+                <i data-lucide="user-check" class="w-4 h-4 text-base-content/40 shrink-0"></i>
+                <input type="text" id="searchField" placeholder="Guide Name..." class="grow" />
             </label>
         </div>
-    </div>
 
-    <!-- Search -->
-    <div class="bg-base-200 rounded-lg p-6 mb-6">
-        <div class="form-control">
-            <label class="label">
-                <span class="label-text font-medium">Guide Name</span>
-            </label>
-            <label class="input flex items-center gap-2 bg-base-100">
-                <i class="fas fa-user-tie text-base-content/40"></i>
-                <input type="text" id="searchField" placeholder="Search..." class="grow" />
-            </label>
-        </div>
-    </div>
-
-    <!-- Guide Table -->
-    <div class="card bg-base-100 shadow-lg">
-        <div class="card-body p-0">
+        <!-- Guide Table -->
+        <div class="surface-raised overflow-hidden">
             <div class="overflow-x-auto">
-                <table class="table table-zebra w-full" id="guideTable">
-                    <thead class="bg-primary text-primary-content">
-                        <tr>
-                            <th class="normal-case text-base">Guide Name</th>
-                            <th class="normal-case text-base">Full Day Rate</th>
-                            <th class="normal-case text-base">Half Day Rate</th>
-                            <th class="normal-case text-base">Overnight Rate</th>
-                            <th class="normal-case text-base text-center">Actions</th>
+                <table class="table w-full" id="guideTable">
+                    <thead>
+                        <tr class="bg-base-200/50 border-b border-base-300">
+                            <th class="text-xs font-semibold uppercase tracking-wider text-base-content/50">Guide Name</th>
+                            <th class="text-xs font-semibold uppercase tracking-wider text-base-content/50">Full Day Rate</th>
+                            <th class="text-xs font-semibold uppercase tracking-wider text-base-content/50">Half Day Rate</th>
+                            <th class="text-xs font-semibold uppercase tracking-wider text-base-content/50">Overnight Rate</th>
+                            <th class="text-xs font-semibold uppercase tracking-wider text-base-content/50 text-center">Actions</th>
                         </tr>
                     </thead>
                     <tbody id="tableBody">
@@ -62,20 +57,18 @@
                 </table>
             </div>
         </div>
-    </div>
-</div>
 
-<!-- Drawer for Add/Edit Guide -->
-<div class="drawer drawer-end z-50">
-    <input id="guide-drawer" type="checkbox" class="drawer-toggle" />
-    <div class="drawer-side">
+    </div><!-- end drawer-content -->
+
+    <!-- Drawer Panel -->
+    <div class="drawer-side z-50">
         <label for="guide-drawer" class="drawer-overlay"></label>
         <div class="bg-base-100 w-full md:w-[600px] min-h-full shadow-2xl">
-            <div class="sticky top-0 bg-primary text-primary-content p-6 z-10">
+            <div class="sticky top-0 bg-base-100 border-b border-base-300 px-6 py-4 z-10">
                 <div class="flex justify-between items-center">
-                    <h2 class="text-2xl font-bold" id="guideTitle">Add Guide</h2>
-                    <label for="guide-drawer" class="btn btn-ghost btn-circle btn-sm">
-                        <i class="fas fa-times text-xl"></i>
+                    <h2 class="text-lg font-semibold" id="guideTitle">Add Guide</h2>
+                    <label for="guide-drawer" class="btn btn-ghost btn-sm btn-circle">
+                        <i data-lucide="x" class="w-4 h-4"></i>
                     </label>
                 </div>
             </div>
@@ -87,7 +80,7 @@
                     <!-- Guide Name -->
                     <div class="form-control">
                         <label class="label">
-                            <span class="label-text font-semibold">Guide Name <span class="text-error">*</span></span>
+                            <span class="label-text font-medium text-base-content/70">Guide Name <span class="text-error">*</span></span>
                         </label>
                         <input type="text"
                                class="input input-bordered"
@@ -101,49 +94,32 @@
                     </div>
 
                     <!-- Rates -->
-                    <div class="divider">Guide Rates</div>
+                    <div class="px-3 py-2 bg-base-200/50 rounded-lg text-xs font-semibold uppercase tracking-wider text-base-content/50">Guide Rates</div>
 
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                         <div class="form-control">
                             <label class="label">
-                                <span class="label-text font-semibold">Full Day Rate <span class="text-error">*</span></span>
+                                <span class="label-text font-medium text-base-content/70">Full Day Rate <span class="text-error">*</span></span>
                             </label>
-                            <input type="number"
-                                   class="input input-bordered"
-                                   name="fullDayRate"
-                                   id="fullDayRate"
-                                   placeholder="0.00"
-                                   step="0.01" />
+                            <input type="number" class="input input-bordered" name="fullDayRate" id="fullDayRate" placeholder="0.00" step="0.01" />
                             <label class="label">
                                 <span class="label-text-alt text-error" id="fullDayRate-error"></span>
                             </label>
                         </div>
-
                         <div class="form-control">
                             <label class="label">
-                                <span class="label-text font-semibold">Half Day Rate <span class="text-error">*</span></span>
+                                <span class="label-text font-medium text-base-content/70">Half Day Rate <span class="text-error">*</span></span>
                             </label>
-                            <input type="number"
-                                   class="input input-bordered"
-                                   name="halfDayRate"
-                                   id="halfDayRate"
-                                   placeholder="0.00"
-                                   step="0.01" />
+                            <input type="number" class="input input-bordered" name="halfDayRate" id="halfDayRate" placeholder="0.00" step="0.01" />
                             <label class="label">
                                 <span class="label-text-alt text-error" id="halfDayRate-error"></span>
                             </label>
                         </div>
-
                         <div class="form-control">
                             <label class="label">
-                                <span class="label-text font-semibold">Overnight Rate <span class="text-error">*</span></span>
+                                <span class="label-text font-medium text-base-content/70">Overnight Rate <span class="text-error">*</span></span>
                             </label>
-                            <input type="number"
-                                   class="input input-bordered"
-                                   name="overnight"
-                                   id="overnight"
-                                   placeholder="0.00"
-                                   step="0.01" />
+                            <input type="number" class="input input-bordered" name="overnight" id="overnight" placeholder="0.00" step="0.01" />
                             <label class="label">
                                 <span class="label-text-alt text-error" id="overnight-error"></span>
                             </label>
@@ -154,21 +130,18 @@
                 <!-- Actions -->
                 <div class="flex gap-3 mt-8 sticky bottom-0 bg-base-100 pt-4 border-t border-base-300">
                     <button type="submit" class="btn btn-primary flex-1" id="btnSave">
-                        <i class="fas fa-save mr-2"></i>
+                        <i data-lucide="save" class="w-4 h-4 mr-2"></i>
                         Save Guide
                     </button>
                     <label for="guide-drawer" class="btn btn-ghost flex-1">
-                        <i class="fas fa-times mr-2"></i>
+                        <i data-lucide="x" class="w-4 h-4 mr-2"></i>
                         Cancel
                     </label>
                 </div>
             </form>
         </div>
-    </div>
-</div>
-
-<!-- Toast Container -->
-<div class="toast toast-top toast-center z-[100]" id="toastContainer"></div>
+    </div><!-- end drawer-side -->
+</div><!-- end drawer -->
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />

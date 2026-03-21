@@ -2,52 +2,48 @@
     ViewData["Title"] = "Users";
 }
 
-<div class="animate-fade-in">
-    <!-- Modern Page Header -->
-    <div class="page-header">
-        <div class="relative z-10 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-            <div>
-                <div class="flex items-center gap-3 mb-3">
-                    <div class="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center">
-                        <i class="fas fa-user-shield text-2xl text-primary"></i>
+<div class="drawer drawer-end">
+    <input id="user-drawer" type="checkbox" class="drawer-toggle" />
+    <input id="password-drawer" type="checkbox" class="drawer-toggle" />
+    <div class="drawer-content animate-fade-in">
+
+        <!-- Modern Page Header -->
+        <div class="page-header">
+            <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center">
+                        <i data-lucide="shield-check" class="w-5 h-5 text-primary"></i>
                     </div>
                     <div>
-                        <h1 class="text-4xl font-bold text-base-content">User Management</h1>
-                        <p class="text-base-content/70 mt-1">Manage system users and their roles</p>
+                        <h1 class="text-2xl font-bold text-base-content">User Management</h1>
+                        <p class="text-sm text-base-content/60">Manage system users and their roles</p>
                     </div>
                 </div>
+                <label for="user-drawer" class="btn btn-accent gap-2 drawer-button">
+                    <i data-lucide="plus" class="w-4 h-4"></i>
+                    Add User
+                </label>
             </div>
-            <label for="user-drawer" class="btn btn-accent btn-lg gap-2 drawer-button shadow-lg hover:scale-105 transition-transform">
-                <i class="fas fa-plus"></i>
-                Add User
+        </div>
+
+        <!-- Search -->
+        <div class="flex flex-wrap gap-3 mb-4">
+            <label class="input input-bordered flex items-center gap-2 flex-1 min-w-[200px]">
+                <i data-lucide="user" class="w-4 h-4 text-base-content/40 shrink-0"></i>
+                <input type="text" id="searchField" placeholder="Username..." class="grow" />
             </label>
         </div>
-    </div>
 
-    <!-- Search -->
-    <div class="bg-base-200 rounded-lg p-6 mb-6">
-        <div class="form-control">
-            <label class="label">
-                <span class="label-text font-medium">Username</span>
-            </label>
-            <label class="input flex items-center gap-2 bg-base-100">
-                <i class="fas fa-user text-base-content/40"></i>
-                <input type="text" id="searchField" placeholder="Search..." class="grow" />
-            </label>
-        </div>
-    </div>
-
-    <!-- Users Table -->
-    <div class="card bg-base-100 shadow-lg">
-        <div class="card-body p-0">
+        <!-- Users Table -->
+        <div class="surface-raised overflow-hidden">
             <div class="overflow-x-auto">
-                <table class="table table-zebra w-full" id="usersTable">
-                    <thead class="bg-primary text-primary-content">
-                        <tr>
-                            <th class="normal-case text-base">Username</th>
-                            <th class="normal-case text-base">Phone Number</th>
-                            <th class="normal-case text-base">Role</th>
-                            <th class="normal-case text-base text-center">Actions</th>
+                <table class="table w-full" id="usersTable">
+                    <thead>
+                        <tr class="bg-base-200/50 border-b border-base-300">
+                            <th class="text-xs font-semibold uppercase tracking-wider text-base-content/50">Username</th>
+                            <th class="text-xs font-semibold uppercase tracking-wider text-base-content/50">Phone Number</th>
+                            <th class="text-xs font-semibold uppercase tracking-wider text-base-content/50">Role</th>
+                            <th class="text-xs font-semibold uppercase tracking-wider text-base-content/50 text-center">Actions</th>
                         </tr>
                     </thead>
                     <tbody id="tableBody">
@@ -61,20 +57,18 @@
                 </table>
             </div>
         </div>
-    </div>
-</div>
 
-<!-- Drawer for Add User -->
-<div class="drawer drawer-end z-50">
-    <input id="user-drawer" type="checkbox" class="drawer-toggle" />
-    <div class="drawer-side">
+    </div><!-- end drawer-content -->
+
+    <!-- Add User Drawer Panel -->
+    <div class="drawer-side z-50">
         <label for="user-drawer" class="drawer-overlay"></label>
         <div class="bg-base-100 w-full md:w-[600px] min-h-full shadow-2xl">
-            <div class="sticky top-0 bg-primary text-primary-content p-6 z-10">
+            <div class="sticky top-0 bg-base-100 border-b border-base-300 px-6 py-4 z-10">
                 <div class="flex justify-between items-center">
-                    <h2 class="text-2xl font-bold" id="userTitle">Add User</h2>
-                    <label for="user-drawer" class="btn btn-ghost btn-circle btn-sm">
-                        <i class="fas fa-times text-xl"></i>
+                    <h2 class="text-lg font-semibold" id="userTitle">Add User</h2>
+                    <label for="user-drawer" class="btn btn-ghost btn-sm btn-circle">
+                        <i data-lucide="x" class="w-4 h-4"></i>
                     </label>
                 </div>
             </div>
@@ -83,128 +77,91 @@
                 <input type="hidden" id="id" />
 
                 <div class="space-y-4">
-                    <!-- User Info -->
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div class="form-control">
                             <label class="label">
-                                <span class="label-text font-semibold">Username <span class="text-error">*</span></span>
+                                <span class="label-text font-medium text-base-content/70">Username <span class="text-error">*</span></span>
                             </label>
-                            <input type="text"
-                                   class="input input-bordered"
-                                   name="username"
-                                   id="username"
-                                   placeholder="Enter username" />
-                            <label class="label">
-                                <span class="label-text-alt text-error" id="username-error"></span>
-                            </label>
+                            <input type="text" class="input input-bordered" name="username" id="username" placeholder="Enter username" />
+                            <label class="label"><span class="label-text-alt text-error" id="username-error"></span></label>
                         </div>
-
                         <div class="form-control">
                             <label class="label">
-                                <span class="label-text font-semibold">Email <span class="text-error">*</span></span>
+                                <span class="label-text font-medium text-base-content/70">Email <span class="text-error">*</span></span>
                             </label>
-                            <input type="email"
-                                   class="input input-bordered"
-                                   name="email"
-                                   id="email"
-                                   placeholder="user@example.com" />
-                            <label class="label">
-                                <span class="label-text-alt text-error" id="email-error"></span>
-                            </label>
+                            <input type="email" class="input input-bordered" name="email" id="email" placeholder="user@example.com" />
+                            <label class="label"><span class="label-text-alt text-error" id="email-error"></span></label>
                         </div>
                     </div>
 
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div class="form-control">
                             <label class="label">
-                                <span class="label-text font-semibold">Phone Number <span class="text-error">*</span></span>
+                                <span class="label-text font-medium text-base-content/70">Phone Number <span class="text-error">*</span></span>
                             </label>
-                            <input type="text"
-                                   class="input input-bordered"
-                                   name="phoneNo"
-                                   id="phoneNo"
-                                   placeholder="Phone number" />
-                            <label class="label">
-                                <span class="label-text-alt text-error" id="phoneNo-error"></span>
-                            </label>
+                            <input type="text" class="input input-bordered" name="phoneNo" id="phoneNo" placeholder="Phone number" />
+                            <label class="label"><span class="label-text-alt text-error" id="phoneNo-error"></span></label>
                         </div>
-
                         <div class="form-control">
                             <label class="label">
-                                <span class="label-text font-semibold">Role <span class="text-error">*</span></span>
+                                <span class="label-text font-medium text-base-content/70">Role <span class="text-error">*</span></span>
                             </label>
                             <select class="select select-bordered" name="role" id="role">
                                 <option disabled selected value="">Select Role</option>
                                 <option value="Admin">Admin</option>
                                 <option value="User">User</option>
                             </select>
-                            <label class="label">
-                                <span class="label-text-alt text-error" id="role-error"></span>
-                            </label>
+                            <label class="label"><span class="label-text-alt text-error" id="role-error"></span></label>
                         </div>
                     </div>
 
-                    <!-- Password Section -->
-                    <div class="divider">Password</div>
+                    <div class="px-3 py-2 bg-base-200/50 rounded-lg text-xs font-semibold uppercase tracking-wider text-base-content/50">Password</div>
 
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div class="form-control">
                             <label class="label">
-                                <span class="label-text font-semibold">Password <span class="text-error">*</span></span>
+                                <span class="label-text font-medium text-base-content/70">Password <span class="text-error">*</span></span>
                             </label>
-                            <input type="password"
-                                   class="input input-bordered"
-                                   name="password"
-                                   id="password"
-                                   placeholder="Enter password" />
-                            <label class="label">
-                                <span class="label-text-alt text-error" id="password-error"></span>
-                            </label>
+                            <input type="password" class="input input-bordered" name="password" id="password" placeholder="Enter password" />
+                            <label class="label"><span class="label-text-alt text-error" id="password-error"></span></label>
                         </div>
-
                         <div class="form-control">
                             <label class="label">
-                                <span class="label-text font-semibold">Confirm Password <span class="text-error">*</span></span>
+                                <span class="label-text font-medium text-base-content/70">Confirm Password <span class="text-error">*</span></span>
                             </label>
-                            <input type="password"
-                                   class="input input-bordered"
-                                   name="confirmPassword"
-                                   id="confirmPassword"
-                                   placeholder="Confirm password" />
-                            <label class="label">
-                                <span class="label-text-alt text-error" id="confirmPassword-error"></span>
-                            </label>
+                            <input type="password" class="input input-bordered" name="confirmPassword" id="confirmPassword" placeholder="Confirm password" />
+                            <label class="label"><span class="label-text-alt text-error" id="confirmPassword-error"></span></label>
                         </div>
                     </div>
                 </div>
 
-                <!-- Actions -->
                 <div class="flex gap-3 mt-8 sticky bottom-0 bg-base-100 pt-4 border-t border-base-300">
                     <button type="submit" class="btn btn-primary flex-1" id="btnSave">
-                        <i class="fas fa-save mr-2"></i>
+                        <i data-lucide="save" class="w-4 h-4 mr-2"></i>
                         Save User
                     </button>
                     <label for="user-drawer" class="btn btn-ghost flex-1">
-                        <i class="fas fa-times mr-2"></i>
+                        <i data-lucide="x" class="w-4 h-4 mr-2"></i>
                         Cancel
                     </label>
                 </div>
             </form>
         </div>
-    </div>
-</div>
+    </div><!-- end drawer-side (user) -->
+</div><!-- end drawer (user) -->
 
-<!-- Drawer for Change Password -->
-<div class="drawer drawer-end z-50">
+<!-- Change Password Drawer (separate drawer root) -->
+<div class="drawer drawer-end">
     <input id="password-drawer" type="checkbox" class="drawer-toggle" />
-    <div class="drawer-side">
+    <div class="drawer-content"></div>
+    <div class="drawer-side z-50">
         <label for="password-drawer" class="drawer-overlay"></label>
         <div class="bg-base-100 w-full md:w-[500px] min-h-full shadow-2xl">
-            <div class="sticky top-0 bg-primary text-primary-content p-6 z-10">
+            <div class="sticky top-0 bg-base-100 border-b border-base-300 px-6 py-4 z-10">
                 <div class="flex justify-between items-center">
-                    <h2 class="text-2xl font-bold">Change Password</h2>
-                    <label for="password-drawer" class="btn btn-ghost btn-circle btn-sm">
-                        <i class="fas fa-times text-xl"></i>
+                    <h2 class="text-lg font-semibold">Change Password</h2>
+                    <label for="password-drawer" class="btn btn-ghost btn-sm btn-circle">
+                        <i data-lucide="x" class="w-4 h-4"></i>
                     </label>
                 </div>
             </div>
@@ -215,51 +172,33 @@
                 <div class="space-y-4">
                     <div class="form-control">
                         <label class="label">
-                            <span class="label-text font-semibold">Username</span>
+                            <span class="label-text font-medium text-base-content/70">Username</span>
                         </label>
-                        <input type="text"
-                               class="input input-bordered"
-                               id="changePwdUserName"
-                               disabled />
+                        <input type="text" class="input input-bordered" id="changePwdUserName" disabled />
                     </div>
-
                     <div class="form-control">
                         <label class="label">
-                            <span class="label-text font-semibold">New Password <span class="text-error">*</span></span>
+                            <span class="label-text font-medium text-base-content/70">New Password <span class="text-error">*</span></span>
                         </label>
-                        <input type="password"
-                               class="input input-bordered"
-                               name="newPassword"
-                               id="newPassword"
-                               placeholder="Enter new password" />
-                        <label class="label">
-                            <span class="label-text-alt text-error" id="newPassword-error"></span>
-                        </label>
+                        <input type="password" class="input input-bordered" name="newPassword" id="newPassword" placeholder="Enter new password" />
+                        <label class="label"><span class="label-text-alt text-error" id="newPassword-error"></span></label>
                     </div>
-
                     <div class="form-control">
                         <label class="label">
-                            <span class="label-text font-semibold">Confirm New Password <span class="text-error">*</span></span>
+                            <span class="label-text font-medium text-base-content/70">Confirm New Password <span class="text-error">*</span></span>
                         </label>
-                        <input type="password"
-                               class="input input-bordered"
-                               name="confirmNewPassword"
-                               id="confirmNewPassword"
-                               placeholder="Confirm new password" />
-                        <label class="label">
-                            <span class="label-text-alt text-error" id="confirmNewPassword-error"></span>
-                        </label>
+                        <input type="password" class="input input-bordered" name="confirmNewPassword" id="confirmNewPassword" placeholder="Confirm new password" />
+                        <label class="label"><span class="label-text-alt text-error" id="confirmNewPassword-error"></span></label>
                     </div>
                 </div>
 
-                <!-- Actions -->
                 <div class="flex gap-3 mt-8 sticky bottom-0 bg-base-100 pt-4 border-t border-base-300">
                     <button type="submit" class="btn btn-primary flex-1" id="btnSaveNewPassword">
-                        <i class="fas fa-save mr-2"></i>
+                        <i data-lucide="save" class="w-4 h-4 mr-2"></i>
                         Save Password
                     </button>
                     <label for="password-drawer" class="btn btn-ghost flex-1">
-                        <i class="fas fa-times mr-2"></i>
+                        <i data-lucide="x" class="w-4 h-4 mr-2"></i>
                         Cancel
                     </label>
                 </div>
@@ -267,9 +206,6 @@
         </div>
     </div>
 </div>
-
-<!-- Toast Container -->
-<div class="toast toast-top toast-center z-[100]" id="toastContainer"></div>
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />

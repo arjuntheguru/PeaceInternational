@@ -2,54 +2,49 @@
     ViewData["Title"] = "Hotel";
 }
 
-<div class="animate-fade-in">
-    <!-- Modern Page Header -->
-    <div class="page-header">
-        <div class="relative z-10 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-            <div>
-                <div class="flex items-center gap-3 mb-3">
-                    <div class="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center">
-                        <i class="fas fa-hotel text-2xl text-primary"></i>
+<div class="drawer drawer-end">
+    <input id="hotel-drawer" type="checkbox" class="drawer-toggle" />
+    <div class="drawer-content animate-fade-in">
+
+        <!-- Modern Page Header -->
+        <div class="page-header">
+            <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center">
+                        <i data-lucide="building-2" class="w-5 h-5 text-primary"></i>
                     </div>
                     <div>
-                        <h1 class="text-4xl font-bold text-base-content">Hotel Management</h1>
-                        <p class="text-base-content/70 mt-1">Manage hotel information and rates</p>
+                        <h1 class="text-2xl font-bold text-base-content">Hotel Management</h1>
+                        <p class="text-sm text-base-content/60">Manage hotel information and rates</p>
                     </div>
                 </div>
+                <label for="hotel-drawer" class="btn btn-accent gap-2 drawer-button">
+                    <i data-lucide="plus" class="w-4 h-4"></i>
+                    Add Hotel
+                </label>
             </div>
-            <label for="hotel-drawer" class="btn btn-accent btn-lg gap-2 drawer-button shadow-lg hover:scale-105 transition-transform">
-                <i class="fas fa-plus"></i>
-                Add Hotel
+        </div>
+
+        <!-- Search -->
+        <div class="flex flex-wrap gap-3 mb-4">
+            <label class="input input-bordered flex items-center gap-2 flex-1 min-w-[200px]">
+                <i data-lucide="building-2" class="w-4 h-4 text-base-content/40 shrink-0"></i>
+                <input type="text" id="searchField" placeholder="Hotel Name..." class="grow" />
             </label>
         </div>
-    </div>
 
-    <!-- Search -->
-    <div class="bg-base-200 rounded-lg p-6 mb-6">
-        <div class="form-control">
-            <label class="label">
-                <span class="label-text font-medium">Hotel Name</span>
-            </label>
-            <label class="input flex items-center gap-2 bg-base-100">
-                <i class="fas fa-hotel text-base-content/40"></i>
-                <input type="text" id="searchField" placeholder="Search..." class="grow" />
-            </label>
-        </div>
-    </div>
-
-    <!-- Hotel Table -->
-    <div class="card bg-base-100 shadow-lg">
-        <div class="card-body p-0">
+        <!-- Hotel Table -->
+        <div class="surface-raised overflow-hidden">
             <div class="overflow-x-auto">
-                <table class="table table-zebra w-full" id="hotelTable">
-                    <thead class="bg-primary text-primary-content">
-                        <tr>
-                            <th class="normal-case text-base">Hotel Name</th>
-                            <th class="normal-case text-base">Code</th>
-                            <th class="normal-case text-base">Category</th>
-                            <th class="normal-case text-base">Address</th>
-                            <th class="normal-case text-base">Phone</th>
-                            <th class="normal-case text-base text-center">Actions</th>
+                <table class="table w-full" id="hotelTable">
+                    <thead>
+                        <tr class="bg-base-200/50 border-b border-base-300">
+                            <th class="text-xs font-semibold uppercase tracking-wider text-base-content/50">Hotel Name</th>
+                            <th class="text-xs font-semibold uppercase tracking-wider text-base-content/50">Code</th>
+                            <th class="text-xs font-semibold uppercase tracking-wider text-base-content/50">Category</th>
+                            <th class="text-xs font-semibold uppercase tracking-wider text-base-content/50">Address</th>
+                            <th class="text-xs font-semibold uppercase tracking-wider text-base-content/50">Phone</th>
+                            <th class="text-xs font-semibold uppercase tracking-wider text-base-content/50 text-center">Actions</th>
                         </tr>
                     </thead>
                     <tbody id="tableBody">
@@ -63,20 +58,18 @@
                 </table>
             </div>
         </div>
-    </div>
-</div>
 
-<!-- Drawer for Add/Edit Hotel -->
-<div class="drawer drawer-end z-50">
-    <input id="hotel-drawer" type="checkbox" class="drawer-toggle" />
-    <div class="drawer-side">
+    </div><!-- end drawer-content -->
+
+    <!-- Drawer Panel -->
+    <div class="drawer-side z-50">
         <label for="hotel-drawer" class="drawer-overlay"></label>
         <div class="bg-base-100 w-full md:w-[600px] min-h-full shadow-2xl">
-            <div class="sticky top-0 bg-primary text-primary-content p-6 z-10">
+            <div class="sticky top-0 bg-base-100 border-b border-base-300 px-6 py-4 z-10">
                 <div class="flex justify-between items-center">
-                    <h2 class="text-2xl font-bold" id="hotelTitle">Add Hotel</h2>
-                    <label for="hotel-drawer" class="btn btn-ghost btn-circle btn-sm">
-                        <i class="fas fa-times text-xl"></i>
+                    <h2 class="text-lg font-semibold" id="hotelTitle">Add Hotel</h2>
+                    <label for="hotel-drawer" class="btn btn-ghost btn-sm btn-circle">
+                        <i data-lucide="x" class="w-4 h-4"></i>
                     </label>
                 </div>
             </div>
@@ -88,14 +81,10 @@
                     <!-- Hotel Name -->
                     <div class="form-control">
                         <label class="label">
-                            <span class="label-text font-semibold">Hotel Name <span class="text-error">*</span></span>
+                            <span class="label-text font-medium text-base-content/70">Hotel Name <span class="text-error">*</span></span>
                         </label>
-                        <input type="text"
-                               class="input input-bordered"
-                               name="name"
-                               id="name"
-                               placeholder="Enter hotel name"
-                               oninput="this.value = this.value.toUpperCase()" />
+                        <input type="text" class="input input-bordered" name="name" id="name"
+                               placeholder="Enter hotel name" oninput="this.value = this.value.toUpperCase()" />
                         <label class="label">
                             <span class="label-text-alt text-error" id="name-error"></span>
                         </label>
@@ -105,22 +94,17 @@
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div class="form-control">
                             <label class="label">
-                                <span class="label-text font-semibold">Code <span class="text-error">*</span></span>
+                                <span class="label-text font-medium text-base-content/70">Code <span class="text-error">*</span></span>
                             </label>
-                            <input type="text"
-                                   class="input input-bordered"
-                                   name="code"
-                                   id="code"
-                                   placeholder="Hotel code"
-                                   oninput="this.value = this.value.toUpperCase()" />
+                            <input type="text" class="input input-bordered" name="code" id="code"
+                                   placeholder="Hotel code" oninput="this.value = this.value.toUpperCase()" />
                             <label class="label">
                                 <span class="label-text-alt text-error" id="code-error"></span>
                             </label>
                         </div>
-
                         <div class="form-control">
                             <label class="label">
-                                <span class="label-text font-semibold">Category <span class="text-error">*</span></span>
+                                <span class="label-text font-medium text-base-content/70">Category <span class="text-error">*</span></span>
                             </label>
                             <select class="select select-bordered" name="category" id="category">
                                 <option disabled selected value="">Select Category</option>
@@ -137,14 +121,10 @@
                     <!-- Address -->
                     <div class="form-control">
                         <label class="label">
-                            <span class="label-text font-semibold">Address <span class="text-error">*</span></span>
+                            <span class="label-text font-medium text-base-content/70">Address <span class="text-error">*</span></span>
                         </label>
-                        <input type="text"
-                               class="input input-bordered"
-                               name="address"
-                               id="address"
-                               placeholder="Hotel address"
-                               oninput="this.value = this.value.toUpperCase()" />
+                        <input type="text" class="input input-bordered" name="address" id="address"
+                               placeholder="Hotel address" oninput="this.value = this.value.toUpperCase()" />
                         <label class="label">
                             <span class="label-text-alt text-error" id="address-error"></span>
                         </label>
@@ -153,13 +133,9 @@
                     <!-- Phone Number -->
                     <div class="form-control">
                         <label class="label">
-                            <span class="label-text font-semibold">Phone Number <span class="text-error">*</span></span>
+                            <span class="label-text font-medium text-base-content/70">Phone Number <span class="text-error">*</span></span>
                         </label>
-                        <input type="tel"
-                               class="input input-bordered"
-                               name="phoneNo"
-                               id="phoneNo"
-                               placeholder="Phone number" />
+                        <input type="tel" class="input input-bordered" name="phoneNo" id="phoneNo" placeholder="Phone number" />
                         <label class="label">
                             <span class="label-text-alt text-error" id="phoneNo-error"></span>
                         </label>
@@ -169,21 +145,18 @@
                 <!-- Actions -->
                 <div class="flex gap-3 mt-8 sticky bottom-0 bg-base-100 pt-4 border-t border-base-300">
                     <button type="submit" class="btn btn-primary flex-1" id="btnSave">
-                        <i class="fas fa-save mr-2"></i>
+                        <i data-lucide="save" class="w-4 h-4 mr-2"></i>
                         Save Hotel
                     </button>
                     <label for="hotel-drawer" class="btn btn-ghost flex-1">
-                        <i class="fas fa-times mr-2"></i>
+                        <i data-lucide="x" class="w-4 h-4 mr-2"></i>
                         Cancel
                     </label>
                 </div>
             </form>
         </div>
-    </div>
-</div>
-
-<!-- Toast Container -->
-<div class="toast toast-top toast-center z-[100]" id="toastContainer"></div>
+    </div><!-- end drawer-side -->
+</div><!-- end drawer -->
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />

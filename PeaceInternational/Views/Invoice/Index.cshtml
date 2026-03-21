@@ -5,83 +5,62 @@
 <div class="animate-fade-in">
     <!-- Modern Page Header -->
     <div class="page-header">
-        <div class="relative z-10 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-            <div>
-                <div class="flex items-center gap-3 mb-3">
-                    <div class="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center">
-                        <i class="fas fa-file-invoice-dollar text-2xl text-primary"></i>
-                    </div>
-                    <div>
-                        <h1 class="text-4xl font-bold text-base-content">Invoice Management</h1>
-                        <p class="text-base-content/70 mt-1">Create and manage client invoices</p>
-                    </div>
+        <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center">
+                    <i data-lucide="file-text" class="w-5 h-5 text-primary"></i>
+                </div>
+                <div>
+                    <h1 class="text-2xl font-bold text-base-content">Invoice Management</h1>
+                    <p class="text-sm text-base-content/60">Create and manage client invoices</p>
                 </div>
             </div>
-            <a asp-action="AddEdit" class="btn btn-accent btn-lg gap-2 shadow-lg hover:scale-105 transition-transform">
-                <i class="fas fa-plus"></i>
+            <a asp-action="AddEdit" class="btn btn-accent gap-2">
+                <i data-lucide="plus" class="w-4 h-4"></i>
                 New Invoice
             </a>
         </div>
     </div>
 
-    <!-- Search Filters -->
-    <div class="bg-base-200 rounded-lg p-6 mb-6">
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <div class="form-control">
-                <label class="label">
-                    <span class="label-text font-medium">Invoice No.</span>
-                </label>
-                <label class="input flex items-center gap-2 bg-base-100">
-                    <i class="fas fa-hashtag text-base-content/40"></i>
-                    <input type="text" id="searchField" placeholder="Search..." class="grow" />
-                </label>
-            </div>
-            <div class="form-control">
-                <label class="label">
-                    <span class="label-text font-medium">File Code</span>
-                </label>
-                <label class="input flex items-center gap-2 bg-base-100">
-                    <i class="fas fa-file-code text-base-content/40"></i>
-                    <input type="text" id="searchFieldFileCode" placeholder="Search..." class="grow" />
-                </label>
-            </div>
-            <div class="form-control">
-                <label class="label">
-                    <span class="label-text font-medium">Client Name</span>
-                </label>
-                <label class="input flex items-center gap-2 bg-base-100">
-                    <i class="fas fa-user text-base-content/40"></i>
-                    <input type="text" id="searchFieldClient" placeholder="Search..." class="grow" />
-                </label>
-            </div>
-        </div>
+    <!-- Search -->
+    <div class="flex flex-wrap gap-3 mb-4">
+        <label class="input input-bordered flex items-center gap-2 flex-1 min-w-[200px]">
+            <i data-lucide="hash" class="w-4 h-4 text-base-content/40 shrink-0"></i>
+            <input type="text" id="searchField" placeholder="Invoice No..." class="grow" />
+        </label>
+        <label class="input input-bordered flex items-center gap-2 flex-1 min-w-[200px]">
+            <i data-lucide="file-code" class="w-4 h-4 text-base-content/40 shrink-0"></i>
+            <input type="text" id="searchFieldFileCode" placeholder="File Code..." class="grow" />
+        </label>
+        <label class="input input-bordered flex items-center gap-2 flex-1 min-w-[200px]">
+            <i data-lucide="user" class="w-4 h-4 text-base-content/40 shrink-0"></i>
+            <input type="text" id="searchFieldClient" placeholder="Client Name..." class="grow" />
+        </label>
     </div>
 
     <!-- Invoice Table -->
-    <div class="card bg-base-100 shadow-lg">
-        <div class="card-body p-0">
-            <div class="overflow-x-auto">
-                <table class="table table-zebra w-full" id="invoiceTable">
-                    <thead class="bg-primary text-primary-content">
-                        <tr>
-                            <th class="normal-case text-base">Invoice No.</th>
-                            <th class="normal-case text-base">File Code</th>
-                            <th class="normal-case text-base">Client Name</th>
-                            <th class="normal-case text-base">Currency</th>
-                            <th class="normal-case text-base text-right">Net Amount</th>
-                            <th class="normal-case text-base text-center">Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody id="tableBody">
-                        <tr>
-                            <td colspan="6" class="text-center py-12">
-                                <div class="loading loading-spinner loading-lg text-primary"></div>
-                                <p class="mt-4">Loading invoices...</p>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
+    <div class="surface-raised overflow-hidden">
+        <div class="overflow-x-auto">
+            <table class="table w-full" id="invoiceTable">
+                <thead>
+                    <tr class="bg-base-200/50 border-b border-base-300">
+                        <th class="text-xs font-semibold uppercase tracking-wider text-base-content/50">Invoice No.</th>
+                        <th class="text-xs font-semibold uppercase tracking-wider text-base-content/50">File Code</th>
+                        <th class="text-xs font-semibold uppercase tracking-wider text-base-content/50">Client Name</th>
+                        <th class="text-xs font-semibold uppercase tracking-wider text-base-content/50">Currency</th>
+                        <th class="text-xs font-semibold uppercase tracking-wider text-base-content/50 text-right">Net Amount</th>
+                        <th class="text-xs font-semibold uppercase tracking-wider text-base-content/50 text-center">Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="tableBody">
+                    <tr>
+                        <td colspan="6" class="text-center py-12">
+                            <div class="loading loading-spinner loading-lg text-primary"></div>
+                            <p class="mt-4">Loading invoices...</p>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
     </div>
 </div>
@@ -94,7 +73,7 @@
         </form>
         <div class="flex items-center gap-3 mb-4">
             <div class="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center">
-                <i class="fas fa-file-invoice text-lg text-primary"></i>
+                <i data-lucide="file-text" class="w-5 h-5 text-primary"></i>
             </div>
             <h3 class="font-bold text-2xl">Invoice Preview</h3>
         </div>
@@ -105,7 +84,7 @@
 
         <div class="modal-action">
             <button type="button" class="btn btn-primary" id="printInvoice">
-                <i class="fas fa-print mr-2"></i>
+                <i data-lucide="printer" class="w-4 h-4 mr-2"></i>
                 Print
             </button>
             <form method="dialog">
@@ -154,13 +133,13 @@
                     <tr>
                         <td colspan="6" class="text-center py-12">
                             <div class="flex flex-col items-center gap-4">
-                                <i class="fas fa-file-invoice fa-4x text-base-300"></i>
+                                <i data-lucide="file-text" class="w-12 h-12 text-base-300"></i>
                                 <div>
                                     <h3 class="font-bold text-lg">No invoices found</h3>
                                     <p class="text-base-content/70">Start by adding your first invoice</p>
                                 </div>
                                 <a href="@Url.Action("AddEdit", "Invoice")" class="btn btn-primary gap-2">
-                                    <i class="fas fa-plus"></i>
+                                    <i data-lucide="plus" class="w-4 h-4"></i>
                                     Add Invoice
                                 </a>
                             </div>
@@ -189,10 +168,10 @@
                     <td>
                         <div class="flex gap-2 justify-center">
                             <a href="@Url.Action("AddEdit", "Invoice")?id=${invoice.id}" class="btn btn-ghost btn-sm text-primary hover:bg-primary/10" title="Edit">
-                                <i class="fas fa-edit"></i>
+                                <i data-lucide="pencil" class="w-4 h-4"></i>
                             </a>
                             <button onclick="generateInvoice(${invoice.id})" class="btn btn-ghost btn-sm text-info hover:bg-info/10" title="View">
-                                <i class="fas fa-eye"></i>
+                                <i data-lucide="eye" class="w-4 h-4"></i>
                             </button>
                         </div>
                     </td>

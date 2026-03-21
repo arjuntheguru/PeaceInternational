@@ -49,7 +49,8 @@ namespace PeaceInternational.Web.Controllers
             }
             catch (Exception exception)
             {
-                throw exception;
+                Console.WriteLine(exception);
+                return StatusCode(500);
             }
         }
         //Save Guide
@@ -58,8 +59,8 @@ namespace PeaceInternational.Web.Controllers
         {
             try
             {
-                var user = _userManager.GetUserAsync(HttpContext.User).Result;
-                notification = new Notification();
+                var user = await _userManager.GetUserAsync(HttpContext.User);
+                var notification = new Notification();
 
                 if (guide.Id > 0)
                 {
@@ -96,16 +97,14 @@ namespace PeaceInternational.Web.Controllers
         {
             try
             {
-                notification = new Notification();
+                var notification = new Notification();
                 notification = DeleteGuide(id);
-
                 return Json(notification);
             }
             catch (Exception exception)
             {
-                notification.Type = "error";
-                notification.Message = "Guide deletion failed.";
-                return Json(notification);
+                Console.WriteLine(exception);
+                return Json(new Notification("error", "Guide deletion failed."));
             }
         }
 

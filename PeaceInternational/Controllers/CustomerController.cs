@@ -54,7 +54,8 @@ namespace PeaceInternational.Web.Controllers
             }
             catch (Exception exception)
             {
-                throw exception;
+                Console.WriteLine(exception);
+                return StatusCode(500);
             }
         }
 
@@ -64,9 +65,9 @@ namespace PeaceInternational.Web.Controllers
         {
             try
             {
-                var user = _userManager.GetUserAsync(HttpContext.User).Result;
+                var user = await _userManager.GetUserAsync(HttpContext.User);
                 var currentFiscalYear = _fiscalYearCrudService.Get(p => DateTime.Now.Date >= p.StartDateAD && DateTime.Now.Date <= p.EndDateAD);
-                notification = new Notification();
+                var notification = new Notification();
 
                 if (customer.Id > 0)
                 {
@@ -108,16 +109,14 @@ namespace PeaceInternational.Web.Controllers
         {
             try
             {
-                notification = new Notification();
+                var notification = new Notification();
                 notification = DeleteCustomer(id);
-
                 return Json(notification);
             }
             catch (Exception exception)
             {
-                notification.Type = "error";
-                notification.Message = "Customer deletion failed.";
-                return Json(notification);
+                Console.WriteLine(exception);
+                return Json(new Notification("error", "Customer deletion failed."));
             }
         }
 

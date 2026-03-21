@@ -12,7 +12,7 @@
         <div class="mb-6">
             <h2 class="text-2xl font-bold text-base-content flex items-center gap-3">
                 <div class="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center">
-                    <i class="fas fa-user text-lg text-primary"></i>
+                    <i data-lucide="user" class="w-5 h-5 text-primary"></i>
                 </div>
                 Profile Information
             </h2>
@@ -43,7 +43,7 @@
                             <div class="join w-full">
                                 <input asp-for="Input.Email" class="input input-bordered join-item flex-1" />
                                 <span class="join-item btn btn-success no-animation cursor-default">
-                                    <i class="fas fa-check-circle"></i>
+                                    <i data-lucide="check-circle-2" class="w-4 h-4"></i>
                                 </span>
                             </div>
                         }
@@ -74,7 +74,7 @@
                 <!-- Actions -->
                 <div class="flex justify-end mt-6">
                     <button id="update-profile-button" type="submit" class="btn btn-primary btn-lg gap-2">
-                        <i class="fas fa-save"></i>
+                        <i data-lucide="save" class="w-4 h-4"></i>
                         Save Changes
                     </button>
                 </div>
@@ -85,4 +85,5 @@
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
+    <script>lucide.createIcons();</script>
 }

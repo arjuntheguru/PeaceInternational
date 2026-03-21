@@ -7,14 +7,14 @@
     <li>
         <a asp-page="./Index"
            class="@(ManageNavPages.IndexNavClass(ViewContext) == "active" ? "bg-primary text-primary-content" : "") flex items-center gap-3 rounded-lg hover:bg-transparent">
-            <i class="fas fa-user"></i>
+            <i data-lucide="user" class="w-4 h-4"></i>
             Profile
         </a>
     </li>
     <li>
         <a asp-page="./ChangePassword"
            class="@(ManageNavPages.ChangePasswordNavClass(ViewContext) == "active" ? "bg-primary text-primary-content" : "") flex items-center gap-3 rounded-lg hover:bg-transparent">
-            <i class="fas fa-key"></i>
+            <i data-lucide="key-round" class="w-4 h-4"></i>
             Password
         </a>
     </li>
@@ -23,7 +23,7 @@
         <li>
             <a asp-page="./ExternalLogins"
                class="@(ManageNavPages.ExternalLoginsNavClass(ViewContext) == "active" ? "active" : "") gap-2">
-                <i class="fas fa-sign-in-alt"></i>
+                <i data-lucide="log-in" class="w-4 h-4"></i>
                 External Logins
             </a>
         </li>
@@ -31,14 +31,14 @@
     <li>
         <a asp-page="./TwoFactorAuthentication"
            class="@(ManageNavPages.TwoFactorAuthenticationNavClass(ViewContext) == "active" ? "active" : "") gap-2">
-            <i class="fas fa-shield-alt"></i>
+            <i data-lucide="shield" class="w-4 h-4"></i>
             Two-Factor Auth
         </a>
     </li>
     <li>
         <a asp-page="./PersonalData"
            class="@(ManageNavPages.PersonalDataNavClass(ViewContext) == "active" ? "active" : "") gap-2">
-            <i class="fas fa-database"></i>
+            <i data-lucide="database" class="w-4 h-4"></i>
             Personal Data
         </a>
     </li>*@

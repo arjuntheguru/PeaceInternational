@@ -26,7 +26,7 @@
                             <span class="label-text font-semibold">Username</span>
                         </label>
                         <label class="input flex items-center gap-2 bg-base-200">
-                            <i class="fas fa-user text-base-content/40"></i>
+                            <i data-lucide="user" class="w-4 h-4 text-base-content/40"></i>
                             <input asp-for="Input.Username"
                                    class="grow"
                                    placeholder="Enter your username"
@@ -43,7 +43,7 @@
                             <span class="label-text font-semibold">Password</span>
                         </label>
                         <label class="input flex items-center gap-2 bg-base-200">
-                            <i class="fas fa-lock text-base-content/40"></i>
+                            <i data-lucide="lock" class="w-4 h-4 text-base-content/40"></i>
                             <input asp-for="Input.Password"
                                    class="grow"
                                    placeholder="Enter your password" />
@@ -64,7 +64,7 @@
                     <!-- Submit Button -->
                     <div class="form-control">
                         <button type="submit" class="btn btn-primary btn-lg btn-block gap-2">
-                            <i class="fas fa-sign-in-alt"></i>
+                            <i data-lucide="log-in" class="w-4 h-4"></i>
                             Log in
                         </button>
                     </div>
@@ -104,4 +104,5 @@
             validationSummary.style.display = 'block';
         }
     </script>
+    <script>lucide.createIcons();</script>
 }

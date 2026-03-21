@@ -2,34 +2,24 @@
 
 let usersData = [];
 
-// Function to show toast notification
-const showToast = (type, message) => {
-    Toast.show(type, message, 3000);
-};
+const showToast = (type, message) => Toast.show(type, message, 3000);
 
-// Function to load users
 const loadUsers = () => {
     $.ajax({
         url: 'Users/Get',
         method: 'GET',
-        success: (data) => {
-            usersData = data;
-            renderTable(data);
-        },
-        error: () => {
-            showToast('error', 'Failed to load users');
-        }
+        success: (data) => { usersData = data; renderTable(data); },
+        error: () => showToast('error', 'Failed to load users')
     });
 };
 
-// Function to render table
 const renderTable = (data) => {
     const tableBody = document.getElementById('tableBody');
 
     if (!data || data.length === 0) {
         tableBody.innerHTML = `
             <tr>
-                <td colspan="4" class="text-center py-12">
+                <td colspan="3" class="text-center py-12">
                     <div class="flex flex-col items-center gap-4">
                         <i data-lucide="shield-check" class="w-16 h-16 text-base-300"></i>
                         <div>
@@ -42,28 +32,24 @@ const renderTable = (data) => {
                         </label>
                     </div>
                 </td>
-            </tr>
-        `;
+            </tr>`;
+        refreshIcons();
         return;
     }
 
     tableBody.innerHTML = data.map(user => `
-        <tr class="hover transition-colors duration-200"
-            data-username="${escapeHtml(user.userName).toLowerCase()}">
+        <tr class="hover transition-colors duration-200" data-username="${escapeHtml(user.userName).toLowerCase()}">
             <td class="font-semibold">${escapeHtml(user.userName) || '-'}</td>
             <td>${escapeHtml(user.phoneNumber) || '-'}</td>
             <td>
-                <div class="badge ${user.role === 'Admin' ? 'badge-primary' : 'badge-secondary'}">${escapeHtml(user.role) || '-'}</div>
-            </td>
-            <td>
                 <div class="flex gap-1 justify-center">
-                    <button onclick="editUser(${user.id})" class="btn btn-ghost btn-xs" title="Edit">
+                    <button onclick="editUser('${user.id}')" class="btn btn-ghost btn-xs" title="Edit">
                         <i data-lucide="pencil" class="w-3.5 h-3.5"></i>
                     </button>
-                    <button onclick="viewUser(${user.id})" class="btn btn-ghost btn-xs text-info" title="Change Password">
+                    <button onclick="changePasswordUser('${user.id}')" class="btn btn-ghost btn-xs text-info" title="Change Password">
                         <i data-lucide="key" class="w-3.5 h-3.5"></i>
                     </button>
-                    <button onclick="deleteUser(${user.id})" class="btn btn-ghost btn-xs text-error" title="Delete">
+                    <button onclick="deleteUser('${user.id}')" class="btn btn-ghost btn-xs text-error" title="Delete">
                         <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
                     </button>
                 </div>
@@ -74,18 +60,11 @@ const renderTable = (data) => {
     refreshIcons();
 };
 
-// Function to filter table
 const filterTable = () => {
     const searchTerm = document.getElementById('searchField').value.toLowerCase();
-
-    const filtered = usersData.filter(user => {
-        return (user.userName || '').toLowerCase().includes(searchTerm);
-    });
-
-    renderTable(filtered);
+    renderTable(usersData.filter(u => (u.userName || '').toLowerCase().includes(searchTerm)));
 };
 
-// Function to clear form
 const clearForm = () => {
     document.getElementById('id').value = '';
     document.getElementById('username').value = '';
@@ -94,37 +73,18 @@ const clearForm = () => {
     document.getElementById('role').value = '';
     document.getElementById('password').value = '';
     document.getElementById('confirmPassword').value = '';
-
-    // Clear error messages
     document.querySelectorAll('.label-text-alt.text-error').forEach(el => el.textContent = '');
 };
 
-// Function to clear password form
-const clearPasswordForm = () => {
-    document.getElementById('userId').value = '';
-    document.getElementById('changePwdUserName').value = '';
-    document.getElementById('newPassword').value = '';
-    document.getElementById('confirmNewPassword').value = '';
-
-    // Clear error messages
-    document.querySelectorAll('.label-text-alt.text-error').forEach(el => el.textContent = '');
-};
-
-// Function to validate user form
-const validateForm = () => {
+const validateForm = (isEdit) => {
     let isValid = true;
-
-    // Clear previous errors
     document.querySelectorAll('.label-text-alt.text-error').forEach(el => el.textContent = '');
 
-    // Username validation
-    const username = document.getElementById('username').value.trim();
-    if (!username) {
+    if (!document.getElementById('username').value.trim()) {
         document.getElementById('username-error').textContent = 'Username is required';
         isValid = false;
     }
 
-    // Email validation
     const email = document.getElementById('email').value.trim();
     if (!email) {
         document.getElementById('email-error').textContent = 'Email is required';
@@ -134,51 +94,43 @@ const validateForm = () => {
         isValid = false;
     }
 
-    // Phone validation
-    const phoneNo = document.getElementById('phoneNo').value.trim();
-    if (!phoneNo) {
+    if (!document.getElementById('phoneNo').value.trim()) {
         document.getElementById('phoneNo-error').textContent = 'Phone number is required';
         isValid = false;
     }
 
-    // Role validation
-    const role = document.getElementById('role').value;
-    if (!role) {
+    if (!document.getElementById('role').value) {
         document.getElementById('role-error').textContent = 'Role is required';
         isValid = false;
     }
 
-    // Password validation
-    const password = document.getElementById('password').value;
-    if (!password) {
-        document.getElementById('password-error').textContent = 'Password is required';
-        isValid = false;
-    } else if (password.length < 5) {
-        document.getElementById('password-error').textContent = 'Password must be at least 5 characters';
-        isValid = false;
-    }
-
-    // Confirm Password validation
-    const confirmPassword = document.getElementById('confirmPassword').value;
-    if (!confirmPassword) {
-        document.getElementById('confirmPassword-error').textContent = 'Confirm password is required';
-        isValid = false;
-    } else if (password !== confirmPassword) {
-        document.getElementById('confirmPassword-error').textContent = 'Passwords do not match';
-        isValid = false;
+    if (!isEdit) {
+        const password = document.getElementById('password').value;
+        if (!password) {
+            document.getElementById('password-error').textContent = 'Password is required';
+            isValid = false;
+        } else if (password.length < 5) {
+            document.getElementById('password-error').textContent = 'Password must be at least 5 characters';
+            isValid = false;
+        }
+        const confirmPassword = document.getElementById('confirmPassword').value;
+        if (!confirmPassword) {
+            document.getElementById('confirmPassword-error').textContent = 'Confirm password is required';
+            isValid = false;
+        } else if (password !== confirmPassword) {
+            document.getElementById('confirmPassword-error').textContent = 'Passwords do not match';
+            isValid = false;
+        }
     }
 
     return isValid;
 };
 
-// Function to validate password form
 const validatePasswordForm = () => {
     let isValid = true;
+    document.getElementById('newPassword-error').textContent = '';
+    document.getElementById('confirmNewPassword-error').textContent = '';
 
-    // Clear previous errors
-    document.querySelectorAll('.label-text-alt.text-error').forEach(el => el.textContent = '');
-
-    // New Password validation
     const newPassword = document.getElementById('newPassword').value;
     if (!newPassword) {
         document.getElementById('newPassword-error').textContent = 'New password is required';
@@ -188,7 +140,6 @@ const validatePasswordForm = () => {
         isValid = false;
     }
 
-    // Confirm New Password validation
     const confirmNewPassword = document.getElementById('confirmNewPassword').value;
     if (!confirmNewPassword) {
         document.getElementById('confirmNewPassword-error').textContent = 'Confirm password is required';
@@ -201,29 +152,33 @@ const validatePasswordForm = () => {
     return isValid;
 };
 
-// Function to edit user (open change password drawer)
 window.editUser = (id) => {
     const user = usersData.find(u => u.id === id);
     if (!user) return;
-    changePassword(id, user.userName);
+
+    document.getElementById('userTitle').textContent = 'Edit User';
+    document.getElementById('id').value = user.id;
+    document.getElementById('username').value = user.userName || '';
+    document.getElementById('email').value = user.email || '';
+    document.getElementById('phoneNo').value = user.phoneNumber || '';
+    document.getElementById('role').value = '';
+    document.getElementById('passwordSection').style.display = 'none';
+
+    document.getElementById('user-drawer').checked = true;
 };
 
-// Function to view user (alias for change password)
-window.viewUser = (id) => {
+window.changePasswordUser = (id) => {
     const user = usersData.find(u => u.id === id);
     if (!user) return;
-    changePassword(id, user.userName);
-};
 
-const changePassword = (userId, username) => {
-    document.getElementById('userId').value = userId;
-    document.getElementById('changePwdUserName').value = username;
+    document.getElementById('userId').value = user.id;
+    document.getElementById('changePwdUserName').value = user.userName;
     document.getElementById('newPassword').value = '';
     document.getElementById('confirmNewPassword').value = '';
+    document.getElementById('newPassword-error').textContent = '';
+    document.getElementById('confirmNewPassword-error').textContent = '';
 
-    document.querySelectorAll('.label-text-alt.text-error').forEach(el => el.textContent = '');
-
-    document.getElementById('password-drawer').checked = true;
+    document.getElementById('pwd-drawer').checked = true;
 };
 
 window.deleteUser = (id) => {
@@ -238,15 +193,21 @@ window.deleteUser = (id) => {
     });
 };
 
-// Function to save user
 const saveUser = () => {
-    if (!validateForm()) {
-        return;
-    }
+    const id = document.getElementById('id').value;
+    const isEdit = !!id;
 
-    const record = {
-        Id: document.getElementById('id').value,
+    if (!validateForm(isEdit)) return;
+
+    const url = isEdit ? 'Users/Update' : 'Users/Save';
+    const data = isEdit ? {
+        id,
+        username: document.getElementById('username').value,
+        email: document.getElementById('email').value,
+        phoneNumber: document.getElementById('phoneNo').value
+    } : {
         Username: document.getElementById('username').value,
+        Email: document.getElementById('email').value,
         Password: document.getElementById('password').value,
         ConfirmPassword: document.getElementById('confirmPassword').value,
         PhoneNumber: document.getElementById('phoneNo').value,
@@ -254,71 +215,53 @@ const saveUser = () => {
     };
 
     $.ajax({
-        url: 'Users/Save',
-        method: 'POST',
-        data: { newUser: record },
-        success: (data) => {
-            showToast(data.type, data.message);
+        url, method: 'POST', data,
+        success: (res) => {
+            showToast(res.type, res.message);
             document.getElementById('user-drawer').checked = false;
             loadUsers();
             clearForm();
         },
-        error: () => {
-            showToast('error', 'Failed to save user');
-        }
+        error: () => showToast('error', 'Failed to save user')
     });
 };
 
-// Function to save new password
 const saveNewPassword = () => {
-    if (!validatePasswordForm()) {
-        return;
-    }
-
-    const record = {
-        UserId: document.getElementById('userId').value,
-        NewPassword: document.getElementById('newPassword').value,
-        ConfirmNewPassword: document.getElementById('confirmNewPassword').value
-    };
+    if (!validatePasswordForm()) return;
 
     $.ajax({
         url: 'Users/ChangePassword',
         method: 'POST',
-        data: { newPassword: record },
+        data: {
+            UserId: document.getElementById('userId').value,
+            NewPassword: document.getElementById('newPassword').value,
+            ConfirmNewPassword: document.getElementById('confirmNewPassword').value
+        },
         success: (data) => {
             showToast(data.type, data.message);
-            document.getElementById('password-drawer').checked = false;
-            clearPasswordForm();
+            document.getElementById('pwd-drawer').checked = false;
         },
-        error: () => {
-            showToast('error', 'Failed to change password');
-        }
+        error: () => showToast('error', 'Failed to change password')
     });
 };
 
-// Document ready
 $(document).ready(function () {
-    // Load users on page load
     loadUsers();
 
-    // Add user button click
-    document.querySelector('.drawer-button').addEventListener('click', function() {
+    document.querySelector('.drawer-button').addEventListener('click', () => {
         document.getElementById('userTitle').textContent = 'Add User';
+        document.getElementById('passwordSection').style.display = '';
         clearForm();
     });
 
-    // User form submit
-    document.getElementById('usersForm').addEventListener('submit', function(e) {
-        e.preventDefault();
-        saveUser();
+    document.getElementById('user-drawer').addEventListener('change', function () {
+        if (!this.checked) {
+            document.getElementById('passwordSection').style.display = '';
+            clearForm();
+        }
     });
 
-    // Password form submit
-    document.getElementById('changePasswordForm').addEventListener('submit', function(e) {
-        e.preventDefault();
-        saveNewPassword();
-    });
-
-    // Search filter
+    document.getElementById('usersForm').addEventListener('submit', (e) => { e.preventDefault(); saveUser(); });
+    document.getElementById('changePasswordForm').addEventListener('submit', (e) => { e.preventDefault(); saveNewPassword(); });
     document.getElementById('searchField').addEventListener('input', filterTable);
 });

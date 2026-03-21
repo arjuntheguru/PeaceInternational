@@ -50,6 +50,39 @@ namespace PeaceInternational.Web.Controllers
             }
         }
 
+        //Update User
+        [HttpPost]
+        public async Task<IActionResult> Update(string id, string username, string email, string phoneNumber)
+        {
+            try
+            {
+                notification = new Notification();
+                var user = await _userManager.FindByIdAsync(id);
+                if (user == null)
+                {
+                    notification.Type = "error";
+                    notification.Message = "User not found.";
+                    return Json(notification);
+                }
+
+                user.UserName = username;
+                user.Email = email;
+                user.PhoneNumber = phoneNumber;
+                await _userManager.UpdateAsync(user);
+
+                notification.Type = "success";
+                notification.Message = "User updated successfully.";
+                return Json(notification);
+            }
+            catch (Exception exception)
+            {
+                notification = new Notification();
+                notification.Type = "error";
+                notification.Message = "User update failed.";
+                return Json(notification);
+            }
+        }
+
         //Save User
         [HttpPost]
         public async Task<IActionResult> Save(CreateUserDTO newUser)
@@ -106,7 +139,7 @@ namespace PeaceInternational.Web.Controllers
 
         //Change Password
         [HttpPost]
-        public async Task<IActionResult> ChangePassword (ChangePasswordDTO changePassword)
+        public async Task<IActionResult> ChangePassword(ChangePasswordDTO changePassword)
         {
             try
             {

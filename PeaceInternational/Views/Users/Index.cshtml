@@ -4,10 +4,9 @@
 
 <div class="drawer drawer-end">
     <input id="user-drawer" type="checkbox" class="drawer-toggle" />
-    <input id="password-drawer" type="checkbox" class="drawer-toggle" />
     <div class="drawer-content animate-fade-in">
 
-        <!-- Modern Page Header -->
+        <!-- Page Header -->
         <div class="page-header">
             <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
                 <div class="flex items-center gap-3">
@@ -42,13 +41,12 @@
                         <tr class="bg-base-200/50 border-b border-base-300">
                             <th class="text-xs font-semibold uppercase tracking-wider text-base-content/50">Username</th>
                             <th class="text-xs font-semibold uppercase tracking-wider text-base-content/50">Phone Number</th>
-                            <th class="text-xs font-semibold uppercase tracking-wider text-base-content/50">Role</th>
                             <th class="text-xs font-semibold uppercase tracking-wider text-base-content/50 text-center">Actions</th>
                         </tr>
                     </thead>
                     <tbody id="tableBody">
                         <tr>
-                            <td colspan="4" class="text-center py-12">
+                            <td colspan="3" class="text-center py-12">
                                 <div class="loading loading-spinner loading-lg text-primary"></div>
                                 <p class="mt-4">Loading users...</p>
                             </td>
@@ -60,7 +58,7 @@
 
     </div><!-- end drawer-content -->
 
-    <!-- Add User Drawer Panel -->
+    <!-- Add / Edit User Drawer Panel -->
     <div class="drawer-side z-50">
         <label for="user-drawer" class="drawer-overlay"></label>
         <div class="bg-base-100 w-full md:w-[600px] min-h-full shadow-2xl">
@@ -72,41 +70,30 @@
                     </label>
                 </div>
             </div>
-
             <form id="usersForm" class="p-6">
                 <input type="hidden" id="id" />
-
                 <div class="space-y-4">
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div class="form-control">
-                            <label class="label">
-                                <span class="label-text font-medium text-base-content/70">Username <span class="text-error">*</span></span>
-                            </label>
-                            <input type="text" class="input input-bordered" name="username" id="username" placeholder="Enter username" />
+                            <label class="label"><span class="label-text font-medium text-base-content/70">Username <span class="text-error">*</span></span></label>
+                            <input type="text" class="input input-bordered" id="username" placeholder="Enter username" />
                             <label class="label"><span class="label-text-alt text-error" id="username-error"></span></label>
                         </div>
                         <div class="form-control">
-                            <label class="label">
-                                <span class="label-text font-medium text-base-content/70">Email <span class="text-error">*</span></span>
-                            </label>
-                            <input type="email" class="input input-bordered" name="email" id="email" placeholder="user@example.com" />
+                            <label class="label"><span class="label-text font-medium text-base-content/70">Email <span class="text-error">*</span></span></label>
+                            <input type="email" class="input input-bordered" id="email" placeholder="user@example.com" />
                             <label class="label"><span class="label-text-alt text-error" id="email-error"></span></label>
                         </div>
                     </div>
-
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div class="form-control">
-                            <label class="label">
-                                <span class="label-text font-medium text-base-content/70">Phone Number <span class="text-error">*</span></span>
-                            </label>
-                            <input type="text" class="input input-bordered" name="phoneNo" id="phoneNo" placeholder="Phone number" />
+                            <label class="label"><span class="label-text font-medium text-base-content/70">Phone Number <span class="text-error">*</span></span></label>
+                            <input type="text" class="input input-bordered" id="phoneNo" placeholder="Phone number" />
                             <label class="label"><span class="label-text-alt text-error" id="phoneNo-error"></span></label>
                         </div>
                         <div class="form-control">
-                            <label class="label">
-                                <span class="label-text font-medium text-base-content/70">Role <span class="text-error">*</span></span>
-                            </label>
-                            <select class="select select-bordered" name="role" id="role">
+                            <label class="label"><span class="label-text font-medium text-base-content/70">Role <span class="text-error">*</span></span></label>
+                            <select class="select select-bordered" id="role">
                                 <option disabled selected value="">Select Role</option>
                                 <option value="Admin">Admin</option>
                                 <option value="User">User</option>
@@ -114,29 +101,24 @@
                             <label class="label"><span class="label-text-alt text-error" id="role-error"></span></label>
                         </div>
                     </div>
-
-                    <div class="px-3 py-2 bg-base-200/50 rounded-lg text-xs font-semibold uppercase tracking-wider text-base-content/50">Password</div>
-
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div class="form-control">
-                            <label class="label">
-                                <span class="label-text font-medium text-base-content/70">Password <span class="text-error">*</span></span>
-                            </label>
-                            <input type="password" class="input input-bordered" name="password" id="password" placeholder="Enter password" />
-                            <label class="label"><span class="label-text-alt text-error" id="password-error"></span></label>
-                        </div>
-                        <div class="form-control">
-                            <label class="label">
-                                <span class="label-text font-medium text-base-content/70">Confirm Password <span class="text-error">*</span></span>
-                            </label>
-                            <input type="password" class="input input-bordered" name="confirmPassword" id="confirmPassword" placeholder="Confirm password" />
-                            <label class="label"><span class="label-text-alt text-error" id="confirmPassword-error"></span></label>
+                    <div id="passwordSection">
+                        <div class="px-3 py-2 bg-base-200/50 rounded-lg text-xs font-semibold uppercase tracking-wider text-base-content/50 mb-4">Password</div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div class="form-control">
+                                <label class="label"><span class="label-text font-medium text-base-content/70">Password <span class="text-error">*</span></span></label>
+                                <input type="password" class="input input-bordered" id="password" placeholder="Enter password" />
+                                <label class="label"><span class="label-text-alt text-error" id="password-error"></span></label>
+                            </div>
+                            <div class="form-control">
+                                <label class="label"><span class="label-text font-medium text-base-content/70">Confirm Password <span class="text-error">*</span></span></label>
+                                <input type="password" class="input input-bordered" id="confirmPassword" placeholder="Confirm password" />
+                                <label class="label"><span class="label-text-alt text-error" id="confirmPassword-error"></span></label>
+                            </div>
                         </div>
                     </div>
                 </div>
-
                 <div class="flex gap-3 mt-8 sticky bottom-0 bg-base-100 pt-4 border-t border-base-300">
-                    <button type="submit" class="btn btn-primary flex-1" id="btnSave">
+                    <button type="submit" class="btn btn-primary flex-1">
                         <i data-lucide="save" class="w-4 h-4 mr-2"></i>
                         Save User
                     </button>
@@ -147,57 +129,48 @@
                 </div>
             </form>
         </div>
-    </div><!-- end drawer-side (user) -->
-</div><!-- end drawer (user) -->
+    </div><!-- end drawer-side -->
+</div><!-- end drawer -->
 
-<!-- Change Password Drawer (separate drawer root) -->
+<!-- Change Password Drawer (entirely separate drawer root) -->
 <div class="drawer drawer-end">
-    <input id="password-drawer" type="checkbox" class="drawer-toggle" />
+    <input id="pwd-drawer" type="checkbox" class="drawer-toggle" />
     <div class="drawer-content"></div>
     <div class="drawer-side z-50">
-        <label for="password-drawer" class="drawer-overlay"></label>
+        <label for="pwd-drawer" class="drawer-overlay"></label>
         <div class="bg-base-100 w-full md:w-[500px] min-h-full shadow-2xl">
             <div class="sticky top-0 bg-base-100 border-b border-base-300 px-6 py-4 z-10">
                 <div class="flex justify-between items-center">
                     <h2 class="text-lg font-semibold">Change Password</h2>
-                    <label for="password-drawer" class="btn btn-ghost btn-sm btn-circle">
+                    <label for="pwd-drawer" class="btn btn-ghost btn-sm btn-circle">
                         <i data-lucide="x" class="w-4 h-4"></i>
                     </label>
                 </div>
             </div>
-
             <form id="changePasswordForm" class="p-6">
                 <input type="hidden" id="userId" />
-
                 <div class="space-y-4">
                     <div class="form-control">
-                        <label class="label">
-                            <span class="label-text font-medium text-base-content/70">Username</span>
-                        </label>
+                        <label class="label"><span class="label-text font-medium text-base-content/70">Username</span></label>
                         <input type="text" class="input input-bordered" id="changePwdUserName" disabled />
                     </div>
                     <div class="form-control">
-                        <label class="label">
-                            <span class="label-text font-medium text-base-content/70">New Password <span class="text-error">*</span></span>
-                        </label>
-                        <input type="password" class="input input-bordered" name="newPassword" id="newPassword" placeholder="Enter new password" />
+                        <label class="label"><span class="label-text font-medium text-base-content/70">New Password <span class="text-error">*</span></span></label>
+                        <input type="password" class="input input-bordered" id="newPassword" placeholder="Enter new password" />
                         <label class="label"><span class="label-text-alt text-error" id="newPassword-error"></span></label>
                     </div>
                     <div class="form-control">
-                        <label class="label">
-                            <span class="label-text font-medium text-base-content/70">Confirm New Password <span class="text-error">*</span></span>
-                        </label>
-                        <input type="password" class="input input-bordered" name="confirmNewPassword" id="confirmNewPassword" placeholder="Confirm new password" />
+                        <label class="label"><span class="label-text font-medium text-base-content/70">Confirm New Password <span class="text-error">*</span></span></label>
+                        <input type="password" class="input input-bordered" id="confirmNewPassword" placeholder="Confirm new password" />
                         <label class="label"><span class="label-text-alt text-error" id="confirmNewPassword-error"></span></label>
                     </div>
                 </div>
-
                 <div class="flex gap-3 mt-8 sticky bottom-0 bg-base-100 pt-4 border-t border-base-300">
-                    <button type="submit" class="btn btn-primary flex-1" id="btnSaveNewPassword">
+                    <button type="submit" class="btn btn-primary flex-1">
                         <i data-lucide="save" class="w-4 h-4 mr-2"></i>
                         Save Password
                     </button>
-                    <label for="password-drawer" class="btn btn-ghost flex-1">
+                    <label for="pwd-drawer" class="btn btn-ghost flex-1">
                         <i data-lucide="x" class="w-4 h-4 mr-2"></i>
                         Cancel
                     </label>
@@ -205,7 +178,7 @@
             </form>
         </div>
     </div>
-</div>
+</div><!-- end pwd-drawer -->
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />

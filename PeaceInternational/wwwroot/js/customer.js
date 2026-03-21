@@ -65,6 +65,9 @@ const renderTable = (data) => {
                     <button onclick="viewCustomer(${customer.id})" class="btn btn-ghost btn-xs text-info" title="View">
                         <i data-lucide="eye" class="w-3.5 h-3.5"></i>
                     </button>
+                    <button onclick="deleteCustomer(${customer.id})" class="btn btn-ghost btn-xs text-error" title="Delete">
+                        <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
+                    </button>
                 </div>
             </td>
         </tr>
@@ -160,6 +163,18 @@ window.editCustomer = (id) => {
 
     // Open drawer
     document.getElementById('customer-drawer').checked = true;
+};
+
+window.deleteCustomer = (id) => {
+    confirmAction('Are you sure you want to delete this customer?', () => {
+        $.ajax({
+            url: 'Customer/Delete',
+            method: 'POST',
+            data: { id },
+            success: (data) => { showToast(data.type, data.message); loadCustomers(); },
+            error: () => showToast('error', 'Failed to delete customer')
+        });
+    });
 };
 
 // Function to save customer

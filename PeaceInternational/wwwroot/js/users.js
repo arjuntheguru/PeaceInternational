@@ -19,7 +19,7 @@ const renderTable = (data) => {
     if (!data || data.length === 0) {
         tableBody.innerHTML = `
             <tr>
-                <td colspan="3" class="text-center py-12">
+                <td colspan="5" class="text-center py-12">
                     <div class="flex flex-col items-center gap-4">
                         <i data-lucide="shield-check" class="w-16 h-16 text-base-300"></i>
                         <div>
@@ -37,10 +37,14 @@ const renderTable = (data) => {
         return;
     }
 
+    console.log(data);
+
     tableBody.innerHTML = data.map(user => `
         <tr class="hover transition-colors duration-200" data-username="${escapeHtml(user.userName).toLowerCase()}">
             <td class="font-semibold">${escapeHtml(user.userName) || '-'}</td>
+            <td>${escapeHtml(user.email) || '-'}</td>
             <td>${escapeHtml(user.phoneNumber) || '-'}</td>
+            <td><div class="badge ${user.role === 'Admin' ? 'badge-primary' : 'badge-secondary'}">${escapeHtml(user.role) || '-'}</div></td>
             <td>
                 <div class="flex gap-1 justify-center">
                     <button onclick="editUser('${user.id}')" class="btn btn-ghost btn-xs" title="Edit">
@@ -161,7 +165,7 @@ window.editUser = (id) => {
     document.getElementById('username').value = user.userName || '';
     document.getElementById('email').value = user.email || '';
     document.getElementById('phoneNo').value = user.phoneNumber || '';
-    document.getElementById('role').value = '';
+    document.getElementById('role').value = user.role || '';
     document.getElementById('passwordSection').style.display = 'none';
 
     document.getElementById('user-drawer').checked = true;

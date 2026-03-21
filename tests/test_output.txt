@@ -1,0 +1,145 @@
+
+Running 6 tests using 1 worker
+
+  ✓  1 [setup] › specs\auth.setup.js:7:1 › authenticate (1.1s)
+  ✓  2 [chromium] › specs\crud.spec.js:364:3 › Users CRUD › Create (1.4s)
+  ✓  3 [chromium] › specs\crud.spec.js:377:3 › Users CRUD › Read – user appears in table (765ms)
+  ✘  4 [chromium] › specs\crud.spec.js:383:3 › Users CRUD › Change password (Update) via API (987ms)
+  ✘  5 [chromium] › specs\crud.spec.js:407:3 › Users CRUD › Delete via API (921ms)
+  ✘  6 [chromium] › specs\crud.spec.js:424:3 › Users CRUD › Read – deleted user is gone (8.8s)
+
+
+  1) [chromium] › specs\crud.spec.js:383:3 › Users CRUD › Change password (Update) via API ─────────
+
+    Error: [2mexpect([22m[31mreceived[39m[2m).[22mtoBe[2m([22m[32mexpected[39m[2m) // Object.is equality[22m
+
+    Expected: [32m"success"[39m
+    Received: [31m"error"[39m
+
+      402 |     expect(res.status()).toBe(200);
+      403 |     const body = await res.json();
+    > 404 |     expect(body.type).toBe('success');
+          |                       ^
+      405 |   });
+      406 |
+      407 |   test('Delete via API', async ({ request, page }) => {
+        at d:\Projects\PeaceInternational\tests\specs\crud.spec.js:404:23
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results\crud-Users-CRUD-Change-password-Update-via-API-chromium\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    test-results\crud-Users-CRUD-Change-password-Update-via-API-chromium\video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results\crud-Users-CRUD-Change-password-Update-via-API-chromium\error-context.md
+
+  2) [chromium] › specs\crud.spec.js:407:3 › Users CRUD › Delete via API ───────────────────────────
+
+    Error: [2mexpect([22m[31mreceived[39m[2m).[22mtoBe[2m([22m[32mexpected[39m[2m) // Object.is equality[22m
+
+    Expected: [32m"success"[39m
+    Received: [31m"error"[39m
+
+      419 |     expect(res.status()).toBe(200);
+      420 |     const body = await res.json();
+    > 421 |     expect(body.type).toBe('success');
+          |                       ^
+      422 |   });
+      423 |
+      424 |   test('Read – deleted user is gone', async ({ page }) => {
+        at d:\Projects\PeaceInternational\tests\specs\crud.spec.js:421:23
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results\crud-Users-CRUD-Delete-via-API-chromium\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    test-results\crud-Users-CRUD-Delete-via-API-chromium\video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results\crud-Users-CRUD-Delete-via-API-chromium\error-context.md
+
+  3) [chromium] › specs\crud.spec.js:424:3 › Users CRUD › Read – deleted user is gone ──────────────
+
+    Error: [2mexpect([22m[31mlocator[39m[2m).not.[22mtoContainText[2m([22m[32mexpected[39m[2m)[22m failed
+
+    Locator: locator('#tableBody')
+    Expected substring: not [32m"crudtestuser"[39m
+    Received string: [31m"[39m
+    [31m        [39m
+    [31m            [7mcrudtestuser[27m[39m
+    [31m            9800000001[39m
+    [31m            [39m
+    [31m                -[39m
+    [31m            [39m
+    [31m            [39m
+    [31m                [39m
+    [31m                    [39m
+    [31m                        [39m
+    [31m                    [39m
+    [31m                    [39m
+    [31m                        [39m
+    [31m                    [39m
+    [31m                    [39m
+    [31m                        [39m
+    [31m                    [39m
+    [31m                [39m
+    [31m            [39m
+    [31m        [39m
+    [31m    "[39m
+    Timeout: 8000ms
+
+    Call log:
+    [2m  - Expect "not toContainText" with timeout 8000ms[22m
+    [2m  - waiting for locator('#tableBody')[22m
+    [2m    12 × locator resolved to <tbody id="tableBody">…</tbody>[22m
+    [2m       - unexpected value "[22m
+    [2m        [22m
+    [2m            crudtestuser[22m
+    [2m            9800000001[22m
+    [2m            [22m
+    [2m                -[22m
+    [2m            [22m
+    [2m            [22m
+    [2m                [22m
+    [2m                    [22m
+    [2m                        [22m
+    [2m                    [22m
+    [2m                    [22m
+    [2m                        [22m
+    [2m                    [22m
+    [2m                    [22m
+    [2m                        [22m
+    [2m                    [22m
+    [2m                [22m
+    [2m            [22m
+    [2m        [22m
+    [2m    "[22m
+
+
+      425 |     await page.goto('/Users');
+      426 |     await page.fill('#searchField', USERNAME);
+    > 427 |     await expect(page.locator('#tableBody')).not.toContainText(USERNAME, { timeout: 8000 });
+          |                                                  ^
+      428 |   });
+      429 | });
+      430 |
+        at d:\Projects\PeaceInternational\tests\specs\crud.spec.js:427:50
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results\crud-Users-CRUD-Read-–-deleted-user-is-gone-chromium\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    test-results\crud-Users-CRUD-Read-–-deleted-user-is-gone-chromium\video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results\crud-Users-CRUD-Read-–-deleted-user-is-gone-chromium\error-context.md
+
+  3 failed
+    [chromium] › specs\crud.spec.js:383:3 › Users CRUD › Change password (Update) via API ──────────
+    [chromium] › specs\crud.spec.js:407:3 › Users CRUD › Delete via API ────────────────────────────
+    [chromium] › specs\crud.spec.js:424:3 › Users CRUD › Read – deleted user is gone ───────────────
+  3 passed (19.5s)

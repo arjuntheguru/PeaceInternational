@@ -248,6 +248,26 @@ namespace PeaceInternational.Web.Controllers
             }
         }
 
+        [HttpPost]
+        public IActionResult Delete(int id)
+        {
+            try
+            {
+                var details = _invoiceDetailCrudService.GetAll(p => p.InvoiceId == id).ToList();
+                foreach (var detail in details)
+                    _invoiceDetailCrudService.Delete(detail);
+
+                var record = _invoiceCrudService.Get(id);
+                _invoiceCrudService.Delete(record);
+                return Json(new Notification("success", "Invoice deleted successfully."));
+            }
+            catch (Exception exception)
+            {
+                Console.WriteLine(exception.Message);
+                return Json(new Notification("error", "Failed to delete invoice."));
+            }
+        }
+
         private string GetInvoiceNo(FiscalYear currentFiscalYear)
         {
             var count = _invoiceCrudService.GetAll(p => p.FiscalYearId == currentFiscalYear.Id).Count();

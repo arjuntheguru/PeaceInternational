@@ -40,13 +40,15 @@
                     <thead>
                         <tr class="bg-base-200/50 border-b border-base-300">
                             <th class="text-xs font-semibold uppercase tracking-wider text-base-content/50">Username</th>
+                            <th class="text-xs font-semibold uppercase tracking-wider text-base-content/50">Email</th>
                             <th class="text-xs font-semibold uppercase tracking-wider text-base-content/50">Phone Number</th>
+                            <th class="text-xs font-semibold uppercase tracking-wider text-base-content/50">Role</th>
                             <th class="text-xs font-semibold uppercase tracking-wider text-base-content/50 text-center">Actions</th>
                         </tr>
                     </thead>
                     <tbody id="tableBody">
                         <tr>
-                            <td colspan="3" class="text-center py-12">
+                            <td colspan="5" class="text-center py-12">
                                 <div class="loading loading-spinner loading-lg text-primary"></div>
                                 <p class="mt-4">Loading users...</p>
                             </td>
@@ -95,8 +97,8 @@
                             <label class="label"><span class="label-text font-medium text-base-content/70">Role <span class="text-error">*</span></span></label>
                             <select class="select select-bordered" id="role">
                                 <option disabled selected value="">Select Role</option>
-                                <option value="Admin">Admin</option>
-                                <option value="User">User</option>
+                                <option value="ADMIN">Admin</option>
+                                <option value="USER">User</option>
                             </select>
                             <label class="label"><span class="label-text-alt text-error" id="role-error"></span></label>
                         </div>

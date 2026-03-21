@@ -262,3 +262,7 @@ __pycache__/
 
 #User folders
 PeaceInternational.Infrastructure/Migrations/
+
+# IDE and tooling
+.claude/
+npm.zip

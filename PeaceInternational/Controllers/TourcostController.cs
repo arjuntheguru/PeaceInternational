@@ -178,6 +178,26 @@ namespace PeaceInternational.Web.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        [HttpPost]
+        public IActionResult Delete(int id)
+        {
+            try
+            {
+                var details = _tourcostDetailCrudService.GetAll(p => p.TourcostId == id).ToList();
+                foreach (var detail in details)
+                    _tourcostDetailCrudService.Delete(detail);
+
+                var record = _tourcostCrudService.Get(id);
+                _tourcostCrudService.Delete(record);
+                return Json(new Notification("success", "Tour cost deleted successfully."));
+            }
+            catch (Exception exception)
+            {
+                Console.WriteLine(exception.Message);
+                return Json(new Notification("error", "Failed to delete tour cost."));
+            }
+        }
+
         private async Task EditTourcost(TourcostDTO tourcostDTO, IdentityUser user)
         {
             var tourcost = await _tourcostCrudService.GetAsync(tourcostDTO.Tourcost.Id);

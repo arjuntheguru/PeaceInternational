@@ -67,6 +67,9 @@ const renderTable = (data) => {
                     <button onclick="generateReceipt(${voucher.id})" class="btn btn-ghost btn-xs text-info" title="View">
                         <i data-lucide="eye" class="w-3.5 h-3.5"></i>
                     </button>
+                    <button onclick="deleteVoucher(${voucher.id})" class="btn btn-ghost btn-xs text-error" title="Delete">
+                        <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
+                    </button>
                 </div>
             </td>
         </tr>
@@ -224,6 +227,18 @@ window.editVoucher = (id) => {
 
     // Open drawer
     document.getElementById('voucher-drawer').checked = true;
+};
+
+window.deleteVoucher = (id) => {
+    confirmAction('Are you sure you want to delete this service voucher?', () => {
+        $.ajax({
+            url: 'ServiceVoucher/Delete',
+            method: 'POST',
+            data: { id },
+            success: (data) => { showToast(data.type, data.message); loadVouchers(); },
+            error: () => showToast('error', 'Failed to delete service voucher')
+        });
+    });
 };
 
 // Function to generate receipt

@@ -177,6 +177,22 @@ namespace PeaceInternational.Web.Controllers
             }
         }
 
+        [HttpPost]
+        public IActionResult Delete(int id)
+        {
+            try
+            {
+                var record = _serviceVoucherCrudService.Get(id);
+                _serviceVoucherCrudService.Delete(record);
+                return Json(new Notification("success", "Service Voucher deleted successfully."));
+            }
+            catch (Exception exception)
+            {
+                Console.WriteLine(exception.Message);
+                return Json(new Notification("error", "Failed to delete service voucher."));
+            }
+        }
+
         private string GetExchangeOrderNo(FiscalYear currentFiscalYear)
         {
             var count = _serviceVoucherCrudService.GetAll(p => p.FiscalYearId == currentFiscalYear.Id).Count();

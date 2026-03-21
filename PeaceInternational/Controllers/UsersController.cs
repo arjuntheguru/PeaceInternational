@@ -34,9 +34,16 @@ namespace PeaceInternational.Web.Controllers
             {
                 if (id == null)
                 {
-                    var result = await _userManager.GetUsersInRoleAsync("USER");                  
+                    var result = await _userManager.GetUsersInRoleAsync("USER");
 
-                    return Json(result.Select(p => new { p.Id, p.UserName, p.PhoneNumber }));
+                    var users = new List<object>();
+                    foreach (var u in result)
+                    {
+                        var roles = await _userManager.GetRolesAsync(u);
+                        users.Add(new { u.Id, u.UserName, u.Email, u.PhoneNumber, role = roles.FirstOrDefault() });
+                    }
+
+                    return Json(users);
                 }
                 else
                 {
@@ -91,6 +98,13 @@ namespace PeaceInternational.Web.Controllers
             {
                 notification = new Notification();
 
+                if (!ModelState.IsValid)
+                {
+                    notification.Type = "error";
+                    notification.Message = string.Join(" ", ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage));
+                    return Json(notification);
+                }
+
                 var user = new IdentityUser()
                 {
                     UserName = newUser.Username,
@@ -103,10 +117,14 @@ namespace PeaceInternational.Web.Controllers
                 if (res.Succeeded)
                 {
                     await _userManager.AddToRoleAsync(user, newUser.Role);
+                    notification.Type = "success";
+                    notification.Message = "User successfully created.";
                 }
-
-                notification.Type = "success";
-                notification.Message = "User successfully created.";
+                else
+                {
+                    notification.Type = "error";
+                    notification.Message = string.Join(" ", res.Errors.Select(e => e.Description));
+                }
 
                 return Json(notification);
             }

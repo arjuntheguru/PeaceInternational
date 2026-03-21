@@ -53,10 +53,6 @@ const renderTable = (data) => {
                             <h3 class="font-bold text-lg">No room rates found</h3>
                             <p class="text-base-content/70">Start by adding your first room rate</p>
                         </div>
-                        <label for="roomrate-drawer" class="btn btn-primary gap-2 drawer-button">
-                            <i data-lucide="plus" class="w-4 h-4"></i>
-                            Add Room Rate
-                        </label>
                     </div>
                 </td>
             </tr>

@@ -66,8 +66,8 @@ const renderTable = (data) => {
 
     tableBody.innerHTML = data.map(rate => `
         <tr class="hover transition-colors duration-200"
-            data-hotel-name="${(rate.hotel?.name || '').toLowerCase()}">
-            <td class="font-semibold">${rate.hotel?.name || '-'}</td>
+            data-hotel-name="${escapeHtml(rate.hotel?.name).toLowerCase()}">
+            <td class="font-semibold">${escapeHtml(rate.hotel?.name) || '-'}</td>
             <td class="text-sm tabular-nums">${rate.singleBed ?? '0'}</td>
             <td class="text-sm tabular-nums">${rate.doubleBed ?? '0'}</td>
             <td class="text-sm tabular-nums">${rate.extraBed ?? '0'}</td>

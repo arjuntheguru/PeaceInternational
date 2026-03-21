@@ -10,7 +10,7 @@ const renderTable = (data) => {
     }
     tbody.innerHTML = data.map(t => `
         <tr class="hover:bg-base-200/40 transition-colors">
-            <td class="font-medium">${t.name}</td>
+            <td class="font-medium">${escapeHtml(t.name)}</td>
             <td>${t.minPAX}</td>
             <td>${t.maxPAX}</td>
             <td class="text-center">

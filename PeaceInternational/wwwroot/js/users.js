@@ -49,11 +49,11 @@ const renderTable = (data) => {
 
     tableBody.innerHTML = data.map(user => `
         <tr class="hover transition-colors duration-200"
-            data-username="${(user.userName || '').toLowerCase()}">
-            <td class="font-semibold">${user.userName || '-'}</td>
-            <td>${user.phoneNumber || '-'}</td>
+            data-username="${escapeHtml(user.userName).toLowerCase()}">
+            <td class="font-semibold">${escapeHtml(user.userName) || '-'}</td>
+            <td>${escapeHtml(user.phoneNumber) || '-'}</td>
             <td>
-                <div class="badge ${user.role === 'Admin' ? 'badge-primary' : 'badge-secondary'}">${user.role || '-'}</div>
+                <div class="badge ${user.role === 'Admin' ? 'badge-primary' : 'badge-secondary'}">${escapeHtml(user.role) || '-'}</div>
             </td>
             <td>
                 <div class="flex gap-1 justify-center">

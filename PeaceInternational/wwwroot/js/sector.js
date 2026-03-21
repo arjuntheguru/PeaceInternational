@@ -57,11 +57,9 @@ const renderTable = (data) => {
 
         return `
             <tr class="hover transition-colors duration-200"
-                data-sector-name="${(sector.name || '').toLowerCase()}">
-                <td class="font-semibold">${sector.name || '-'}</td>
-                <td>
-                    <div class="badge badge-outline">${sector.code || '-'}</div>
-                </td>
+                data-sector-name="${escapeHtml(sector.name).toLowerCase()}">
+                <td class="font-semibold">${escapeHtml(sector.name) || '-'}</td>
+                <td><div class="badge badge-outline">${escapeHtml(sector.code) || '-'}</div></td>
                 <td class="text-sm tabular-nums">${t1}</td>
                 <td class="text-sm tabular-nums">${t2}</td>
                 <td class="text-sm tabular-nums">${t3}</td>

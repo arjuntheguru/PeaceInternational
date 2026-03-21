@@ -49,8 +49,8 @@ const renderTable = (data) => {
 
     tableBody.innerHTML = data.map(guide => `
         <tr class="hover transition-colors duration-200"
-            data-guide-name="${(guide.name || '').toLowerCase()}">
-            <td class="font-semibold">${guide.name || '-'}</td>
+            data-guide-name="${escapeHtml(guide.name).toLowerCase()}">
+            <td class="font-semibold">${escapeHtml(guide.name) || '-'}</td>
             <td class="text-sm tabular-nums">${guide.fullDayRate ?? '0'}</td>
             <td class="text-sm tabular-nums">${guide.halfDayRate ?? '0'}</td>
             <td class="text-sm tabular-nums">${guide.overNight ?? '0'}</td>

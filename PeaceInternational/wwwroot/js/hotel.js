@@ -49,21 +49,19 @@ const renderTable = (data) => {
 
     tableBody.innerHTML = data.map(hotel => `
         <tr class="hover transition-colors duration-200"
-            data-hotel-name="${(hotel.name || '').toLowerCase()}">
-            <td class="font-semibold">${hotel.name || '-'}</td>
-            <td>
-                <div class="badge badge-outline">${hotel.code || '-'}</div>
-            </td>
+            data-hotel-name="${escapeHtml(hotel.name).toLowerCase()}">
+            <td class="font-semibold">${escapeHtml(hotel.name) || '-'}</td>
+            <td><div class="badge badge-outline">${escapeHtml(hotel.code) || '-'}</div></td>
             <td>
                 <div class="badge ${hotel.category === 'A' ? 'badge-primary' : hotel.category === 'B' ? 'badge-secondary' : 'badge-accent'}">
-                    Category ${hotel.category || '-'}
+                    Category ${escapeHtml(hotel.category) || '-'}
                 </div>
             </td>
-            <td class="text-sm">${hotel.address || '-'}</td>
+            <td class="text-sm">${escapeHtml(hotel.address) || '-'}</td>
             <td>
                 <div class="flex items-center gap-2">
                     <i data-lucide="phone" class="w-3 h-3 text-primary"></i>
-                    <span class="text-sm">${hotel.phoneNo || '-'}</span>
+                    <span class="text-sm">${escapeHtml(hotel.phoneNo) || '-'}</span>
                 </div>
             </td>
             <td>

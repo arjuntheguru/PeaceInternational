@@ -46,21 +46,17 @@ const renderTable = (data) => {
 
     tableBody.innerHTML = data.map(customer => `
         <tr class="hover transition-colors duration-200"
-            data-file-code="${customer.fileCodeNo || ''}"
-            data-tour-name="${(customer.tourName || '').toLowerCase()}"
-            data-agent="${(customer.agent || '').toLowerCase()}">
-            <td class="font-semibold">${customer.fileCodeNo || '-'}</td>
-            <td>
-                <div class="font-medium">${customer.tourName || '-'}</div>
-            </td>
-            <td>
-                <div class="badge badge-outline">${customer.country || '-'}</div>
-            </td>
+            data-file-code="${escapeHtml(customer.fileCodeNo)}"
+            data-tour-name="${escapeHtml(customer.tourName).toLowerCase()}"
+            data-agent="${escapeHtml(customer.agent).toLowerCase()}">
+            <td class="font-semibold">${escapeHtml(customer.fileCodeNo) || '-'}</td>
+            <td><div class="font-medium">${escapeHtml(customer.tourName) || '-'}</div></td>
+            <td><div class="badge badge-outline">${escapeHtml(customer.country) || '-'}</div></td>
             <td class="text-sm">${customer.arrivalDate ? new Date(customer.arrivalDate).toLocaleDateString() : '-'}</td>
             <td class="text-sm">${customer.departureDate ? new Date(customer.departureDate).toLocaleDateString() : '-'}</td>
-            <td>${customer.agent || '-'}</td>
-            <td>${customer.agentStaff || '-'}</td>
-            <td>${customer.guideName || '-'}</td>
+            <td>${escapeHtml(customer.agent) || '-'}</td>
+            <td>${escapeHtml(customer.agentStaff) || '-'}</td>
+            <td>${escapeHtml(customer.guideName) || '-'}</td>
             <td>
                 <div class="flex gap-1 justify-center">
                     <button onclick="editCustomer(${customer.id})" class="btn btn-ghost btn-xs" title="Edit">

@@ -8,6 +8,12 @@ window.refreshIcons = function() {
     if (typeof lucide !== 'undefined') lucide.createIcons();
 };
 
+// Escape HTML to prevent XSS in innerHTML interpolation
+window.escapeHtml = function(str) {
+    if (str == null) return '';
+    return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+};
+
 // Reusable confirm dialog (replaces native confirm())
 window.confirmAction = function(message, onConfirm, title = 'Confirm Delete') {
     const modal = document.getElementById('confirmModal');

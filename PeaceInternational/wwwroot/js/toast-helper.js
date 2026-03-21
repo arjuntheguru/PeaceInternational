@@ -20,18 +20,10 @@ const Toast = {
             'info': 'bg-info text-info-content'
         }[type] || 'bg-info text-info-content';
 
-        const icon = {
-            'success': 'fa-check-circle',
-            'error': 'fa-exclamation-circle',
-            'warning': 'fa-exclamation-triangle',
-            'info': 'fa-info-circle'
-        }[type] || 'fa-info-circle';
-
         const toast = document.createElement('div');
         toast.className = `alert ${styles} shadow-xl mb-2 animate-slide-in`;
         toast.innerHTML = `
             <div class="flex items-center gap-2">
-                <i class="fas ${icon}"></i>
                 <span class="font-medium">${message}</span>
             </div>
         `;

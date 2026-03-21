@@ -2,26 +2,7 @@
 
 let customersData = [];
 
-// Function to show toast notification
-const showToast = (type, message) => {
-    const toastContainer = document.getElementById('toastContainer');
-    const alertClass = type === 'success' ? 'alert-success' : type === 'error' ? 'alert-error' : 'alert-info';
-
-    const toast = document.createElement('div');
-    toast.className = `alert ${alertClass} shadow-lg`;
-    toast.innerHTML = `
-        <div>
-            <i class="fas ${type === 'success' ? 'fa-check-circle' : 'fa-exclamation-circle'} mr-2"></i>
-            <span>${message}</span>
-        </div>
-    `;
-
-    toastContainer.appendChild(toast);
-
-    setTimeout(() => {
-        toast.remove();
-    }, 3000);
-};
+const showToast = (type, message) => Toast.show(type, message, 3000);
 
 // Function to load customer data
 const loadCustomers = () => {
@@ -47,13 +28,13 @@ const renderTable = (data) => {
             <tr>
                 <td colspan="9" class="text-center py-12">
                     <div class="flex flex-col items-center gap-4">
-                        <i class="fas fa-users fa-4x text-base-300"></i>
+                        <i data-lucide="users" class="w-16 h-16 text-base-300"></i>
                         <div>
                             <h3 class="font-bold text-lg">No customers found</h3>
                             <p class="text-base-content/70">Start by adding your first customer</p>
                         </div>
                         <label for="customer-drawer" class="btn btn-primary gap-2 drawer-button">
-                            <i class="fas fa-plus"></i>
+                            <i data-lucide="plus" class="w-4 h-4"></i>
                             Add Customer
                         </label>
                     </div>
@@ -75,33 +56,25 @@ const renderTable = (data) => {
             <td>
                 <div class="badge badge-outline">${customer.country || '-'}</div>
             </td>
-            <td>
-                <div class="flex items-center gap-2">
-                    <i class="fas fa-plane-arrival text-primary text-xs"></i>
-                    <span class="text-sm">${customer.arrivalDate ? new Date(customer.arrivalDate).toLocaleDateString() : '-'}</span>
-                </div>
-            </td>
-            <td>
-                <div class="flex items-center gap-2">
-                    <i class="fas fa-plane-departure text-secondary text-xs"></i>
-                    <span class="text-sm">${customer.departureDate ? new Date(customer.departureDate).toLocaleDateString() : '-'}</span>
-                </div>
-            </td>
+            <td class="text-sm">${customer.arrivalDate ? new Date(customer.arrivalDate).toLocaleDateString() : '-'}</td>
+            <td class="text-sm">${customer.departureDate ? new Date(customer.departureDate).toLocaleDateString() : '-'}</td>
             <td>${customer.agent || '-'}</td>
             <td>${customer.agentStaff || '-'}</td>
             <td>${customer.guideName || '-'}</td>
             <td>
-                <div class="flex gap-2 justify-center">
-                    <button onclick="editCustomer(${customer.id})" class="btn btn-ghost btn-sm text-primary hover:bg-primary/10" title="Edit">
-                        <i class="fas fa-edit"></i>
+                <div class="flex gap-1 justify-center">
+                    <button onclick="editCustomer(${customer.id})" class="btn btn-ghost btn-xs" title="Edit">
+                        <i data-lucide="pencil" class="w-3.5 h-3.5"></i>
                     </button>
-                    <button onclick="viewCustomer(${customer.id})" class="btn btn-ghost btn-sm text-info hover:bg-info/10" title="View">
-                        <i class="fas fa-eye"></i>
+                    <button onclick="viewCustomer(${customer.id})" class="btn btn-ghost btn-xs text-info" title="View">
+                        <i data-lucide="eye" class="w-3.5 h-3.5"></i>
                     </button>
                 </div>
             </td>
         </tr>
     `).join('');
+
+    refreshIcons();
 };
 
 // Function to filter table

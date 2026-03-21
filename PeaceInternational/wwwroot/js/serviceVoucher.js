@@ -31,13 +31,13 @@ const renderTable = (data) => {
             <tr>
                 <td colspan="5" class="text-center py-12">
                     <div class="flex flex-col items-center gap-4">
-                        <i class="fas fa-receipt fa-4x text-base-300"></i>
+                        <i data-lucide="receipt" class="w-16 h-16 text-base-300"></i>
                         <div>
                             <h3 class="font-bold text-lg">No service vouchers found</h3>
                             <p class="text-base-content/70">Start by adding your first service voucher</p>
                         </div>
                         <label for="voucher-drawer" class="btn btn-primary gap-2 drawer-button">
-                            <i class="fas fa-plus"></i>
+                            <i data-lucide="plus" class="w-4 h-4"></i>
                             Add Service Voucher
                         </label>
                     </div>
@@ -60,17 +60,18 @@ const renderTable = (data) => {
             <td>${voucher.hotel?.name || '-'}</td>
             <td>${voucher.clientName || '-'}</td>
             <td>
-                <div class="flex gap-2 justify-center">
-                    <button onclick="editVoucher(${voucher.id})" class="btn btn-ghost btn-sm text-primary hover:bg-primary/10" title="Edit">
-                        <i class="fas fa-edit"></i>
+                <div class="flex gap-1 justify-center">
+                    <button onclick="editVoucher(${voucher.id})" class="btn btn-ghost btn-xs" title="Edit">
+                        <i data-lucide="pencil" class="w-3.5 h-3.5"></i>
                     </button>
-                    <button onclick="generateReceipt(${voucher.id})" class="btn btn-ghost btn-sm text-info hover:bg-info/10" title="View">
-                        <i class="fas fa-eye"></i>
+                    <button onclick="generateReceipt(${voucher.id})" class="btn btn-ghost btn-xs text-info" title="View">
+                        <i data-lucide="eye" class="w-3.5 h-3.5"></i>
                     </button>
                 </div>
             </td>
         </tr>
     `).join('');
+    refreshIcons();
 };
 
 // Function to filter table

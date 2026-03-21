@@ -31,13 +31,13 @@ const renderTable = (data) => {
             <tr>
                 <td colspan="9" class="text-center py-12">
                     <div class="flex flex-col items-center gap-4">
-                        <i class="fas fa-map-marked-alt fa-4x text-base-300"></i>
+                        <i data-lucide="map-pin" class="w-16 h-16 text-base-300"></i>
                         <div>
                             <h3 class="font-bold text-lg">No sectors found</h3>
                             <p class="text-base-content/70">Start by adding your first sector</p>
                         </div>
                         <label for="sector-drawer" class="btn btn-primary gap-2 drawer-button">
-                            <i class="fas fa-plus"></i>
+                            <i data-lucide="plus" class="w-4 h-4"></i>
                             Add Sector
                         </label>
                     </div>
@@ -62,37 +62,27 @@ const renderTable = (data) => {
                 <td>
                     <div class="badge badge-outline">${sector.code || '-'}</div>
                 </td>
+                <td class="text-sm tabular-nums">${t1}</td>
+                <td class="text-sm tabular-nums">${t2}</td>
+                <td class="text-sm tabular-nums">${t3}</td>
+                <td class="text-sm tabular-nums">${t4}</td>
+                <td class="text-sm tabular-nums">${t5}</td>
+                <td class="text-sm tabular-nums">${t6}</td>
                 <td>
-                    <div class="badge badge-ghost">${t1}</div>
-                </td>
-                <td>
-                    <div class="badge badge-ghost">${t2}</div>
-                </td>
-                <td>
-                    <div class="badge badge-ghost">${t3}</div>
-                </td>
-                <td>
-                    <div class="badge badge-ghost">${t4}</div>
-                </td>
-                <td>
-                    <div class="badge badge-ghost">${t5}</div>
-                </td>
-                <td>
-                    <div class="badge badge-ghost">${t6}</div>
-                </td>
-                <td>
-                    <div class="flex gap-2 justify-center">
-                        <button onclick="editSector(${sector.id})" class="btn btn-ghost btn-sm text-primary hover:bg-primary/10" title="Edit">
-                            <i class="fas fa-edit"></i>
+                    <div class="flex gap-1 justify-center">
+                        <button onclick="editSector(${sector.id})" class="btn btn-ghost btn-xs" title="Edit">
+                            <i data-lucide="pencil" class="w-3.5 h-3.5"></i>
                         </button>
-                        <button onclick="deleteSector(${sector.id})" class="btn btn-ghost btn-sm text-error hover:bg-error/10" title="Delete">
-                            <i class="fas fa-trash"></i>
+                        <button onclick="deleteSector(${sector.id})" class="btn btn-ghost btn-xs text-error" title="Delete">
+                            <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
                         </button>
                     </div>
                 </td>
             </tr>
         `;
     }).join('');
+
+    refreshIcons();
 };
 
 // Function to filter table
@@ -212,23 +202,15 @@ window.editSector = (id) => {
     document.getElementById('sector-drawer').checked = true;
 };
 
-// Function to delete sector
 window.deleteSector = (id) => {
-    if (!confirm('Are you sure you want to delete this sector?')) {
-        return;
-    }
-
-    $.ajax({
-        url: 'Sector/Delete',
-        method: 'POST',
-        data: { id: id },
-        success: (data) => {
-            showToast(data.type, data.message);
-            loadSectors();
-        },
-        error: () => {
-            showToast('error', 'Failed to delete sector');
-        }
+    confirmAction('Are you sure you want to delete this sector?', () => {
+        $.ajax({
+            url: 'Sector/Delete',
+            method: 'POST',
+            data: { id },
+            success: (data) => { showToast(data.type, data.message); loadSectors(); },
+            error: () => showToast('error', 'Failed to delete sector')
+        });
     });
 };
 

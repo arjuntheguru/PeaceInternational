@@ -49,7 +49,7 @@ const renderItemsTable = () => {
         tbody.innerHTML = `
             <tr>
                 <td colspan="3" class="text-center py-8 text-base-content/50">
-                    <i class="fas fa-inbox fa-2x mb-2"></i>
+                    <i data-lucide="inbox" class="w-8 h-8 mb-2"></i>
                     <p>No items added yet</p>
                 </td>
             </tr>
@@ -63,11 +63,14 @@ const renderItemsTable = () => {
             <td class="text-right font-mono">${parseFloat(item.amount).toFixed(2)}</td>
             <td class="text-center">
                 <button type="button" onclick="removeItem(${index})" class="btn btn-xs btn-error btn-circle">
-                    <i class="fas fa-times"></i>
+                    <i data-lucide="x" class="w-4 h-4"></i>
                 </button>
             </td>
         </tr>
     `).join('');
+
+    // Initialize Lucide icons after rendering
+    if (typeof lucide !== 'undefined') lucide.createIcons();
 
     calcTotal();
 };

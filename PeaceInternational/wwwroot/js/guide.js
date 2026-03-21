@@ -31,13 +31,13 @@ const renderTable = (data) => {
             <tr>
                 <td colspan="5" class="text-center py-12">
                     <div class="flex flex-col items-center gap-4">
-                        <i class="fas fa-user-tie fa-4x text-base-300"></i>
+                        <i data-lucide="user" class="w-16 h-16 text-base-300"></i>
                         <div>
                             <h3 class="font-bold text-lg">No guides found</h3>
                             <p class="text-base-content/70">Start by adding your first guide</p>
                         </div>
                         <label for="guide-drawer" class="btn btn-primary gap-2 drawer-button">
-                            <i class="fas fa-plus"></i>
+                            <i data-lucide="plus" class="w-4 h-4"></i>
                             Add Guide
                         </label>
                     </div>
@@ -51,27 +51,23 @@ const renderTable = (data) => {
         <tr class="hover transition-colors duration-200"
             data-guide-name="${(guide.name || '').toLowerCase()}">
             <td class="font-semibold">${guide.name || '-'}</td>
+            <td class="text-sm tabular-nums">${guide.fullDayRate ?? '0'}</td>
+            <td class="text-sm tabular-nums">${guide.halfDayRate ?? '0'}</td>
+            <td class="text-sm tabular-nums">${guide.overNight ?? '0'}</td>
             <td>
-                <div class="badge badge-primary">${guide.fullDayRate || '0'}</div>
-            </td>
-            <td>
-                <div class="badge badge-secondary">${guide.halfDayRate || '0'}</div>
-            </td>
-            <td>
-                <div class="badge badge-accent">${guide.overNight || '0'}</div>
-            </td>
-            <td>
-                <div class="flex gap-2 justify-center">
-                    <button onclick="editGuide(${guide.id})" class="btn btn-ghost btn-sm text-primary hover:bg-primary/10" title="Edit">
-                        <i class="fas fa-edit"></i>
+                <div class="flex gap-1 justify-center">
+                    <button onclick="editGuide(${guide.id})" class="btn btn-ghost btn-xs" title="Edit">
+                        <i data-lucide="pencil" class="w-3.5 h-3.5"></i>
                     </button>
-                    <button onclick="deleteGuide(${guide.id})" class="btn btn-ghost btn-sm text-error hover:bg-error/10" title="Delete">
-                        <i class="fas fa-trash"></i>
+                    <button onclick="deleteGuide(${guide.id})" class="btn btn-ghost btn-xs text-error" title="Delete">
+                        <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
                     </button>
                 </div>
             </td>
         </tr>
     `).join('');
+
+    refreshIcons();
 };
 
 // Function to filter table
@@ -151,23 +147,15 @@ window.editGuide = (id) => {
     document.getElementById('guide-drawer').checked = true;
 };
 
-// Function to delete guide
 window.deleteGuide = (id) => {
-    if (!confirm('Are you sure you want to delete this guide?')) {
-        return;
-    }
-
-    $.ajax({
-        url: 'Guide/Delete',
-        method: 'POST',
-        data: { id: id },
-        success: (data) => {
-            showToast(data.type, data.message);
-            loadGuides();
-        },
-        error: () => {
-            showToast('error', 'Failed to delete guide');
-        }
+    confirmAction('Are you sure you want to delete this guide?', () => {
+        $.ajax({
+            url: 'Guide/Delete',
+            method: 'POST',
+            data: { id },
+            success: (data) => { showToast(data.type, data.message); loadGuides(); },
+            error: () => showToast('error', 'Failed to delete guide')
+        });
     });
 };
 

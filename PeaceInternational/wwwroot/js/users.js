@@ -31,13 +31,13 @@ const renderTable = (data) => {
             <tr>
                 <td colspan="4" class="text-center py-12">
                     <div class="flex flex-col items-center gap-4">
-                        <i class="fas fa-user-shield fa-4x text-base-300"></i>
+                        <i data-lucide="shield-check" class="w-16 h-16 text-base-300"></i>
                         <div>
                             <h3 class="font-bold text-lg">No users found</h3>
                             <p class="text-base-content/70">Start by adding your first user</p>
                         </div>
                         <label for="user-drawer" class="btn btn-primary gap-2 drawer-button">
-                            <i class="fas fa-plus"></i>
+                            <i data-lucide="plus" class="w-4 h-4"></i>
                             Add User
                         </label>
                     </div>
@@ -56,17 +56,22 @@ const renderTable = (data) => {
                 <div class="badge ${user.role === 'Admin' ? 'badge-primary' : 'badge-secondary'}">${user.role || '-'}</div>
             </td>
             <td>
-                <div class="flex gap-2 justify-center">
-                    <button onclick="editUser(${user.id})" class="btn btn-ghost btn-sm text-primary hover:bg-primary/10" title="Edit">
-                        <i class="fas fa-edit"></i>
+                <div class="flex gap-1 justify-center">
+                    <button onclick="editUser(${user.id})" class="btn btn-ghost btn-xs" title="Edit">
+                        <i data-lucide="pencil" class="w-3.5 h-3.5"></i>
                     </button>
-                    <button onclick="viewUser(${user.id})" class="btn btn-ghost btn-sm text-info hover:bg-info/10" title="View">
-                        <i class="fas fa-eye"></i>
+                    <button onclick="viewUser(${user.id})" class="btn btn-ghost btn-xs text-info" title="Change Password">
+                        <i data-lucide="key" class="w-3.5 h-3.5"></i>
+                    </button>
+                    <button onclick="deleteUser(${user.id})" class="btn btn-ghost btn-xs text-error" title="Delete">
+                        <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
                     </button>
                 </div>
             </td>
         </tr>
     `).join('');
+
+    refreshIcons();
 };
 
 // Function to filter table
@@ -196,37 +201,40 @@ const validatePasswordForm = () => {
     return isValid;
 };
 
-// Function to change password
-window.changePassword = (userId, username) => {
+// Function to edit user (open change password drawer)
+window.editUser = (id) => {
+    const user = usersData.find(u => u.id === id);
+    if (!user) return;
+    changePassword(id, user.userName);
+};
+
+// Function to view user (alias for change password)
+window.viewUser = (id) => {
+    const user = usersData.find(u => u.id === id);
+    if (!user) return;
+    changePassword(id, user.userName);
+};
+
+const changePassword = (userId, username) => {
     document.getElementById('userId').value = userId;
     document.getElementById('changePwdUserName').value = username;
     document.getElementById('newPassword').value = '';
     document.getElementById('confirmNewPassword').value = '';
 
-    // Clear error messages
     document.querySelectorAll('.label-text-alt.text-error').forEach(el => el.textContent = '');
 
-    // Open drawer
     document.getElementById('password-drawer').checked = true;
 };
 
-// Function to delete user
 window.deleteUser = (id) => {
-    if (!confirm('Are you sure you want to delete this user?')) {
-        return;
-    }
-
-    $.ajax({
-        url: 'Users/Delete',
-        method: 'POST',
-        data: { id: id },
-        success: (data) => {
-            showToast(data.type, data.message);
-            loadUsers();
-        },
-        error: () => {
-            showToast('error', 'Failed to delete user');
-        }
+    confirmAction('Are you sure you want to delete this user?', () => {
+        $.ajax({
+            url: 'Users/Delete',
+            method: 'POST',
+            data: { id },
+            success: (data) => { showToast(data.type, data.message); loadUsers(); },
+            error: () => showToast('error', 'Failed to delete user')
+        });
     });
 };
 

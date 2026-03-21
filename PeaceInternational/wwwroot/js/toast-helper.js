@@ -22,11 +22,13 @@ const Toast = {
 
         const toast = document.createElement('div');
         toast.className = `alert ${styles} shadow-xl mb-2 animate-slide-in`;
-        toast.innerHTML = `
-            <div class="flex items-center gap-2">
-                <span class="font-medium">${message}</span>
-            </div>
-        `;
+        const inner = document.createElement('div');
+        inner.className = 'flex items-center gap-2';
+        const span = document.createElement('span');
+        span.className = 'font-medium';
+        span.textContent = message;
+        inner.appendChild(span);
+        toast.appendChild(inner);
 
         toastContainer.appendChild(toast);
 

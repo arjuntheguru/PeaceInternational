@@ -60,10 +60,10 @@ const openEdit = (id) => {
     if (!t) return;
     clearForm();
     document.getElementById('transportTitle').textContent = 'Edit Transport';
-    $('#id').val(t.id);
-    $('#name').val(t.name);
-    $('#minPAX').val(t.minPAX);
-    $('#maxPAX').val(t.maxPAX);
+    document.getElementById('id').value = t.id;
+    document.getElementById('name').value = t.name || '';
+    document.getElementById('minPAX').value = t.minPAX ?? '';
+    document.getElementById('maxPAX').value = t.maxPAX ?? '';
     document.getElementById('transport-drawer').checked = true;
     refreshIcons();
 };

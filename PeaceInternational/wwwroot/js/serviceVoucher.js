@@ -50,15 +50,15 @@ const renderTable = (data) => {
     tableBody.innerHTML = data.map(voucher => `
         <tr class="hover transition-colors duration-200"
             data-receipt="${voucher.id}"
-            data-filecode="${(voucher.fileCodeNo || '').toLowerCase()}"
-            data-hotel="${(voucher.hotel?.name || '').toLowerCase()}"
-            data-client="${(voucher.clientName || '').toLowerCase()}">
+            data-filecode="${escapeHtml(voucher.fileCodeNo).toLowerCase()}"
+            data-hotel="${escapeHtml(voucher.hotel?.name).toLowerCase()}"
+            data-client="${escapeHtml(voucher.clientName).toLowerCase()}">
             <td>
                 <div class="badge badge-primary">${voucher.id}</div>
             </td>
-            <td class="font-semibold">${voucher.fileCodeNo || '-'}</td>
-            <td>${voucher.hotel?.name || '-'}</td>
-            <td>${voucher.clientName || '-'}</td>
+            <td class="font-semibold">${escapeHtml(voucher.fileCodeNo) || '-'}</td>
+            <td>${escapeHtml(voucher.hotel?.name) || '-'}</td>
+            <td>${escapeHtml(voucher.clientName) || '-'}</td>
             <td>
                 <div class="flex gap-1 justify-center">
                     <button onclick="editVoucher(${voucher.id})" class="btn btn-ghost btn-xs" title="Edit">
@@ -352,9 +352,10 @@ $(document).ready(function () {
             method: 'GET',
             data: { fileCodeNo: $('#fileCodeNo').val() },
             success: function (data) {
-                $('#clientName').val(data.tourName);
-                $('#arrivalOn').val(data.arrivalDate.split('T')[0]);
-                $('#departureOn').val(data.departureDate.split('T')[0]);
+                if (!data) return;
+                document.getElementById('clientName').value = data.tourName || '';
+                document.getElementById('arrivalOn').value = data.arrivalDate ? data.arrivalDate.split('T')[0] : '';
+                document.getElementById('departureOn').value = data.departureDate ? data.departureDate.split('T')[0] : '';
             }
         });
     });

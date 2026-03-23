@@ -44,8 +44,6 @@
         controller.Equals(ctrl, StringComparison.OrdinalIgnoreCase) &&
         (string.IsNullOrEmpty(act) || action.Equals(act, StringComparison.OrdinalIgnoreCase));
 
-    bool IsRateSheet() => new[] { "Hotel", "Guide", "Sector" }.Contains(controller, StringComparer.OrdinalIgnoreCase);
-
     string NavLink(string ctrl, string act = "Index") =>
         IsActive(ctrl, act) ? "sidebar-link sidebar-link-active" : "sidebar-link";
 }

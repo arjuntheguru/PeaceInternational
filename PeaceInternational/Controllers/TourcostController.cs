@@ -113,9 +113,9 @@ namespace PeaceInternational.Web.Controllers
 
                 return View(tourcost);
             }
-            catch (Exception exception)
+            catch
             {
-                throw exception;
+                throw;
             }
         }
 
@@ -169,10 +169,10 @@ namespace PeaceInternational.Web.Controllers
 
                 _unitOfWork.Commit();
             }
-            catch (Exception exception)
+            catch
             {
                 _unitOfWork.Rollback();
-                throw exception;
+                throw;
             }
 
             return RedirectToAction(nameof(Index));

@@ -13,7 +13,6 @@ namespace PeaceInternational.Web.Controllers
     public class UsersController : Controller
     {
         private readonly UserManager<IdentityUser> _userManager;
-        private Notification notification;
 
         public UsersController(
             UserManager<IdentityUser> userManager)
@@ -51,9 +50,9 @@ namespace PeaceInternational.Web.Controllers
                     return Json(result);
                 }
             }
-            catch (Exception exception)
+            catch
             {
-                throw exception;
+                throw;
             }
         }
 
@@ -63,7 +62,7 @@ namespace PeaceInternational.Web.Controllers
         {
             try
             {
-                notification = new Notification();
+                var notification = new Notification();
                 var user = await _userManager.FindByIdAsync(id);
                 if (user == null)
                 {
@@ -81,12 +80,9 @@ namespace PeaceInternational.Web.Controllers
                 notification.Message = "User updated successfully.";
                 return Json(notification);
             }
-            catch (Exception exception)
+            catch
             {
-                notification = new Notification();
-                notification.Type = "error";
-                notification.Message = "User update failed.";
-                return Json(notification);
+                return Json(new Notification("error", "User update failed."));
             }
         }
 
@@ -96,7 +92,7 @@ namespace PeaceInternational.Web.Controllers
         {
             try
             {
-                notification = new Notification();
+                var notification = new Notification();
 
                 if (!ModelState.IsValid)
                 {
@@ -128,11 +124,9 @@ namespace PeaceInternational.Web.Controllers
 
                 return Json(notification);
             }
-            catch (Exception exception)
+            catch
             {
-                notification.Type = "error";
-                notification.Message = "User creation failed";
-                return Json(notification);
+                return Json(new Notification("error", "User creation failed"));
             }
         }
 
@@ -142,16 +136,14 @@ namespace PeaceInternational.Web.Controllers
         {
             try
             {
-                notification = new Notification();
+                var notification = new Notification();
                 notification = await DeleteHotel(id);
 
                 return Json(notification);
             }
-            catch (Exception exception)
+            catch
             {
-                notification.Type = "error";
-                notification.Message = "User deletion failed.";
-                return Json(notification);
+                return Json(new Notification("error", "User deletion failed."));
             }
         }
 
@@ -161,7 +153,7 @@ namespace PeaceInternational.Web.Controllers
         {
             try
             {
-                notification = new Notification();
+                var notification = new Notification();
                 var user = await _userManager.FindByIdAsync(changePassword.UserId);
 
                 var newPasswordHash = _userManager.PasswordHasher.HashPassword(user, changePassword.NewPassword);
@@ -173,11 +165,9 @@ namespace PeaceInternational.Web.Controllers
 
                 return Json(notification);
             }
-            catch (Exception exception)
+            catch
             {
-                notification.Type = "error";
-                notification.Message = $"Failed to change password. ";
-                return Json(notification);
+                return Json(new Notification("error", "Failed to change password."));
             }
         }
 

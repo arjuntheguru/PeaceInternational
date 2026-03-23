@@ -64,9 +64,9 @@ namespace PeaceInternational.Web.Controllers
                     return Json(result);
                 }
             }
-            catch (Exception exception)
+            catch
             {
-                throw exception;
+                throw;
             }
         }
 
@@ -137,7 +137,7 @@ namespace PeaceInternational.Web.Controllers
 
                 return Json(notification);
             }
-            catch (Exception exception)
+            catch
             {
                 notification.Type = "error";
                 notification.Message = "Service Voucher creation failed.";

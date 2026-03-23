@@ -66,9 +66,9 @@ namespace PeaceInternational.Web.Controllers
                     return Json(result);
                 }
             }
-            catch (Exception exception)
+            catch
             {
-                throw exception;
+                throw;
             }
         }
 
@@ -110,9 +110,9 @@ namespace PeaceInternational.Web.Controllers
                 var result = await _invoiceDetailCrudService.GetAllAsync(p => p.InvoiceId == invoiceId);
                 return Json(result);
             }
-            catch (Exception exception)
+            catch
             {
-                throw exception;
+                throw;
             }
         }
 
@@ -175,7 +175,7 @@ namespace PeaceInternational.Web.Controllers
 
                 return Json(notification);
             }
-            catch (Exception exception)
+            catch
             {
                 _unitOfWork.Rollback();
 

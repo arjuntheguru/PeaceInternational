@@ -18,7 +18,6 @@ namespace PeaceInternational.Web.Controllers
         private readonly ICrudService<Hotel> _hotelCrudService;
         private readonly ICrudService<HotelRoomRate> _hotelRoomRateCrudService;
         private readonly UserManager<IdentityUser> _userManager;
-        private  Notification notification;
 
         public HotelController(
             ICrudService<Hotel> hotelCrudService,
@@ -125,11 +124,9 @@ namespace PeaceInternational.Web.Controllers
 
                 return Json(notification);
             }
-            catch (Exception exception)
+            catch
             {
-                notification.Type = "error";
-                notification.Message = "Hotel creation failed.";
-                return Json(notification);
+                return Json(new Notification("error", "Hotel creation failed."));
             }
         }
 
@@ -166,11 +163,9 @@ namespace PeaceInternational.Web.Controllers
 
                 return Json(notification);
             }
-            catch (Exception exception)
+            catch
             {
-                notification.Type = "error";
-                notification.Message = "Hotel Room Rate creation failed.";
-                return Json(notification);
+                return Json(new Notification("error", "Hotel Room Rate creation failed."));
             }
         }
 

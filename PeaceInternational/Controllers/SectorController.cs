@@ -17,7 +17,6 @@ namespace PeaceInternational.Web.Controllers
         private readonly ICrudService<SectorTransport> _sectorTransportCrudService;
         private readonly UserManager<IdentityUser> _userManager;
         private readonly IUnitOfWork _unitOfWork;
-        private Notification notification;
 
         public SectorController(
             ICrudService<Sector> sectorCrudService,
@@ -58,9 +57,9 @@ namespace PeaceInternational.Web.Controllers
                     return Json(result);
                 }
             }
-            catch (Exception exception)
+            catch
             {
-                throw exception;
+                throw;
             }
         }
         //Save Sector
@@ -70,7 +69,7 @@ namespace PeaceInternational.Web.Controllers
             try
             {
                 var user = _userManager.GetUserAsync(HttpContext.User).Result;
-                notification = new Notification();
+                var notification = new Notification();
 
                 _unitOfWork.BeginTransaction();
 
@@ -108,12 +107,10 @@ namespace PeaceInternational.Web.Controllers
 
                 return Json(notification);
             }
-            catch (Exception exception)
+            catch
             {
                 _unitOfWork.Rollback();
-                notification.Type = "error";
-                notification.Message = "Sector creation failed.";
-                return Json(notification);
+                return Json(new Notification("error", "Sector creation failed."));
             }
         }
 
@@ -122,16 +119,14 @@ namespace PeaceInternational.Web.Controllers
         {
             try
             {
-                notification = new Notification();
+                var notification = new Notification();
                 notification = DeleteSector(id);
 
                 return Json(notification);
             }
-            catch (Exception exception)
+            catch
             {
-                notification.Type = "error";
-                notification.Message = "Sector deletion failed.";
-                return Json(notification);
+                return Json(new Notification("error", "Sector deletion failed."));
             }
         }
 

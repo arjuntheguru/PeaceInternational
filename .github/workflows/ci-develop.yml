@@ -49,28 +49,19 @@ jobs:
       - name: Build
         run: dotnet build --no-restore --configuration Release
 
-      - name: Install dotnet-ef tool
-        run: dotnet tool install --global dotnet-ef
-
-      - name: Run EF Migrations
-        run: dotnet ef database update --project PeaceInternational.Infrastructure --startup-project PeaceInternational
-        env:
-          ConnectionStrings__DefaultConnection: Server=127.0.0.1;Database=PeaceInternational;User=root;Password=rootpassword;Port=3306;
-
-      - name: Seed database
-        run: |
-          mysql -h 127.0.0.1 -u root -prootpassword PeaceInternational < database_setup.sql
-
       - name: Trust dev certificate
         run: dotnet dev-certs https --trust
 
-      - name: Start app
+      - name: Start app (runs migrations + seed on startup)
         run: |
           dotnet run --project PeaceInternational --configuration Release &
           npx wait-on https://localhost:5001 --timeout 60000
         env:
           ConnectionStrings__DefaultConnection: Server=127.0.0.1;Database=PeaceInternational;User=root;Password=rootpassword;Port=3306;
           ASPNETCORE_URLS: https://localhost:5001
+
+      - name: Seed database
+        run: mysql -h 127.0.0.1 -u root -prootpassword PeaceInternational < database_setup.sql
 
       - name: Install Playwright browsers
         run: npx playwright install --with-deps chromium

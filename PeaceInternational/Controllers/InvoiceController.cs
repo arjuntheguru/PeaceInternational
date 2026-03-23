@@ -66,9 +66,9 @@ namespace PeaceInternational.Web.Controllers
                     return Json(result);
                 }
             }
-            catch (Exception exception)
+            catch
             {
-                throw exception;
+                throw;
             }
         }
 
@@ -110,9 +110,9 @@ namespace PeaceInternational.Web.Controllers
                 var result = await _invoiceDetailCrudService.GetAllAsync(p => p.InvoiceId == invoiceId);
                 return Json(result);
             }
-            catch (Exception exception)
+            catch
             {
-                throw exception;
+                throw;
             }
         }
 
@@ -175,7 +175,7 @@ namespace PeaceInternational.Web.Controllers
 
                 return Json(notification);
             }
-            catch (Exception exception)
+            catch
             {
                 _unitOfWork.Rollback();
 
@@ -245,6 +245,26 @@ namespace PeaceInternational.Web.Controllers
                 Console.WriteLine(exception.Message);
                 _unitOfWork.Rollback();
                 return new Notification("error", "Invoice update failed.");
+            }
+        }
+
+        [HttpPost]
+        public IActionResult Delete(int id)
+        {
+            try
+            {
+                var details = _invoiceDetailCrudService.GetAll(p => p.InvoiceId == id).ToList();
+                foreach (var detail in details)
+                    _invoiceDetailCrudService.Delete(detail);
+
+                var record = _invoiceCrudService.Get(id);
+                _invoiceCrudService.Delete(record);
+                return Json(new Notification("success", "Invoice deleted successfully."));
+            }
+            catch (Exception exception)
+            {
+                Console.WriteLine(exception.Message);
+                return Json(new Notification("error", "Failed to delete invoice."));
             }
         }
 

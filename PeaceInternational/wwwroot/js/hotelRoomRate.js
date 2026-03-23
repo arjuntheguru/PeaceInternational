@@ -48,15 +48,11 @@ const renderTable = (data) => {
             <tr>
                 <td colspan="7" class="text-center py-12">
                     <div class="flex flex-col items-center gap-4">
-                        <i class="fas fa-bed fa-4x text-base-300"></i>
+                        <i data-lucide="bed-double" class="w-16 h-16 text-base-300"></i>
                         <div>
                             <h3 class="font-bold text-lg">No room rates found</h3>
                             <p class="text-base-content/70">Start by adding your first room rate</p>
                         </div>
-                        <label for="roomrate-drawer" class="btn btn-primary gap-2 drawer-button">
-                            <i class="fas fa-plus"></i>
-                            Add Room Rate
-                        </label>
                     </div>
                 </td>
             </tr>
@@ -66,35 +62,27 @@ const renderTable = (data) => {
 
     tableBody.innerHTML = data.map(rate => `
         <tr class="hover transition-colors duration-200"
-            data-hotel-name="${(rate.hotel?.name || '').toLowerCase()}">
-            <td class="font-semibold">${rate.hotel?.name || '-'}</td>
+            data-hotel-name="${escapeHtml(rate.hotel?.name).toLowerCase()}">
+            <td class="font-semibold">${escapeHtml(rate.hotel?.name) || '-'}</td>
+            <td class="text-sm tabular-nums">${rate.singleBed ?? '0'}</td>
+            <td class="text-sm tabular-nums">${rate.doubleBed ?? '0'}</td>
+            <td class="text-sm tabular-nums">${rate.extraBed ?? '0'}</td>
+            <td class="text-sm tabular-nums">${rate.ap ?? '0'}</td>
+            <td class="text-sm tabular-nums">${rate.map ?? '0'}</td>
             <td>
-                <div class="badge badge-outline">${rate.singleBed || '0'}</div>
-            </td>
-            <td>
-                <div class="badge badge-outline">${rate.doubleBed || '0'}</div>
-            </td>
-            <td>
-                <div class="badge badge-outline">${rate.extraBed || '0'}</div>
-            </td>
-            <td>
-                <div class="badge badge-primary">${rate.ap || '0'}</div>
-            </td>
-            <td>
-                <div class="badge badge-secondary">${rate.map || '0'}</div>
-            </td>
-            <td>
-                <div class="flex gap-2 justify-center">
-                    <button onclick="editRoomRate(${rate.id})" class="btn btn-ghost btn-sm text-primary hover:bg-primary/10" title="Edit">
-                        <i class="fas fa-edit"></i>
+                <div class="flex gap-1 justify-center">
+                    <button onclick="editRoomRate(${rate.id})" class="btn btn-ghost btn-xs" title="Edit">
+                        <i data-lucide="pencil" class="w-3.5 h-3.5"></i>
                     </button>
-                    <button onclick="deleteRoomRate(${rate.id})" class="btn btn-ghost btn-sm text-error hover:bg-error/10" title="Delete">
-                        <i class="fas fa-trash"></i>
+                    <button onclick="deleteRoomRate(${rate.id})" class="btn btn-ghost btn-xs text-error" title="Delete">
+                        <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
                     </button>
                 </div>
             </td>
         </tr>
     `).join('');
+
+    refreshIcons();
 };
 
 // Function to filter table
@@ -195,23 +183,15 @@ window.editRoomRate = (id) => {
     document.getElementById('roomrate-drawer').checked = true;
 };
 
-// Function to delete room rate
 window.deleteRoomRate = (id) => {
-    if (!confirm('Are you sure you want to delete this room rate?')) {
-        return;
-    }
-
-    $.ajax({
-        url: 'HotelRoomRate/Delete',
-        method: 'POST',
-        data: { id: id },
-        success: (data) => {
-            showToast(data.type, data.message);
-            loadRoomRates();
-        },
-        error: () => {
-            showToast('error', 'Failed to delete room rate');
-        }
+    confirmAction('Are you sure you want to delete this room rate?', () => {
+        $.ajax({
+            url: 'HotelRoomRate/Delete',
+            method: 'POST',
+            data: { id },
+            success: (data) => { showToast(data.type, data.message); loadRoomRates(); },
+            error: () => showToast('error', 'Failed to delete room rate')
+        });
     });
 };
 

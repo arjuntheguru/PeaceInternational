@@ -18,7 +18,6 @@ namespace PeaceInternational.Web.Controllers
         private readonly ICrudService<Hotel> _hotelCrudService;
         private readonly ICrudService<HotelRoomRate> _hotelRoomRateCrudService;
         private readonly UserManager<IdentityUser> _userManager;
-        private  Notification notification;
 
         public HotelController(
             ICrudService<Hotel> hotelCrudService,
@@ -61,7 +60,8 @@ namespace PeaceInternational.Web.Controllers
             }
             catch(Exception exception)
             {
-                throw exception;
+                Console.WriteLine(exception);
+                return StatusCode(500);
             }
         }
 
@@ -87,7 +87,8 @@ namespace PeaceInternational.Web.Controllers
             }
             catch (Exception exception)
             {
-                throw exception;
+                Console.WriteLine(exception);
+                return StatusCode(500);
             }
         }
 
@@ -97,8 +98,8 @@ namespace PeaceInternational.Web.Controllers
         {
             try
             {
-                var user = _userManager.GetUserAsync(HttpContext.User).Result;
-                notification = new Notification();
+                var user = await _userManager.GetUserAsync(HttpContext.User);
+                var notification = new Notification();
 
                 if (hotel.Id > 0)
                 {
@@ -123,11 +124,9 @@ namespace PeaceInternational.Web.Controllers
 
                 return Json(notification);
             }
-            catch (Exception exception)
+            catch
             {
-                notification.Type = "error";
-                notification.Message = "Hotel creation failed.";
-                return Json(notification);
+                return Json(new Notification("error", "Hotel creation failed."));
             }
         }
 
@@ -137,8 +136,8 @@ namespace PeaceInternational.Web.Controllers
         {
             try
             {
-                var user = _userManager.GetUserAsync(HttpContext.User).Result;
-                notification = new Notification();
+                var user = await _userManager.GetUserAsync(HttpContext.User);
+                var notification = new Notification();
 
                 if (hotelRoomRate.Id > 0)
                 {
@@ -164,11 +163,9 @@ namespace PeaceInternational.Web.Controllers
 
                 return Json(notification);
             }
-            catch (Exception exception)
+            catch
             {
-                notification.Type = "error";
-                notification.Message = "Hotel Room Rate creation failed.";
-                return Json(notification);
+                return Json(new Notification("error", "Hotel Room Rate creation failed."));
             }
         }
 
@@ -176,17 +173,15 @@ namespace PeaceInternational.Web.Controllers
         public IActionResult Delete(int id)
         {
             try
-            {               
-                notification = new Notification();
+            {
+                var notification = new Notification();
                 notification = DeleteHotel(id);
-
                 return Json(notification);
             }
             catch (Exception exception)
             {
-                notification.Type = "error";
-                notification.Message = "Hotel deletion failed.";
-                return Json(notification);
+                Console.WriteLine(exception);
+                return Json(new Notification("error", "Hotel deletion failed."));
             }
         }
 
@@ -195,16 +190,14 @@ namespace PeaceInternational.Web.Controllers
         {
             try
             {
-                notification = new Notification();
+                var notification = new Notification();
                 notification = DeleteRoomRate(id);
-
                 return Json(notification);
             }
             catch (Exception exception)
             {
-                notification.Type = "error";
-                notification.Message = "Hotel Room Rate deletion failed.";
-                return Json(notification);
+                Console.WriteLine(exception);
+                return Json(new Notification("error", "Hotel Room Rate deletion failed."));
             }
         }
 

@@ -4,11 +4,11 @@
 {
     var isError = Model.StartsWith("Error");
     var alertClass = isError ? "alert-error" : "alert-success";
-    var icon = isError ? "fa-exclamation-circle" : "fa-check-circle";
+    var lucideIcon = isError ? "alert-circle" : "check-circle-2";
 
     <div class="alert @alertClass shadow-lg mb-6" role="alert">
         <div>
-            <i class="fas @icon text-lg"></i>
+            <i data-lucide="@lucideIcon" class="w-5 h-5"></i>
             <span>@Model</span>
         </div>
     </div>

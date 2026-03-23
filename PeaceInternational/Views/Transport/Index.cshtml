@@ -1,72 +1,124 @@
-﻿
 @{
     ViewData["Title"] = "Transport";
 }
 
-<div class="row">
-    <div class="col-md-10">
-        <h1 class="display-4">Transport</h1>
-    </div>
-    <div class="col-md-2">
-        <input type="button" class="btn btn-info mt-4 w-100" data-toggle="modal" data-target="#createTransport" id="addTransportBtn" value="Add Transport" />
-    </div>
-</div>
-<hr />
-<div class="row">
-    <div class="col-md-6">
-        <input type="text" class="form-control" id="searchField" placeholder="Name" />
-    </div>
-</div>
-<div style="height: 100%; box-sizing: border-box; padding-top:20px;">
-    <div id="transportGrid" style="width:100%; height:450px" class="ag-theme-balham"></div>
-</div>
-<div class="modal fade" id="createTransport" tabindex="-1" role="dialog" aria-labelledby="transportTitle" aria-hidden="true">
-    <div class="modal-dialog modal-lg" role="document">
-        <form id="transportForm">
-            <div class="modal-content" style="background: linear-gradient(225deg, rgba(255,255,255,1) 0%, rgba(232,227,227,1) 100%);">
-                <div class="modal-header bg-info">
-                    <h5 class="modal-title text-light" id="transportTitle"></h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span class="text-light" aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <input type="hidden" id="id" />
-                    <div class="form-group">
-                        <label for="name"> Name <span class="text-danger">*</span></label>
-                        <input type="text" class="form-control" name="name" id="name" oninput="this.value = this.value.toUpperCase()" />
-                    </div>
-                    <div class="form-row">
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="minPAX"> Minimum PAX <span class="text-danger">*</span></label>
-                                <input type="number" class="form-control" name="minPAX" id="minPAX" />
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="maxPAX"> Maximum PAX <span class="text-danger">*</span></label>
-                                <input type="number" class="form-control" name="maxPAX" id="maxPAX" />
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="submit" class="btn btn-primary" id="btnSave">Save</button>
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                </div>
+<div class="drawer drawer-end">
+    <input id="transport-drawer" type="checkbox" class="drawer-toggle" />
+    <div class="drawer-content animate-fade-in">
 
+        <!-- Page Header -->
+        <div class="page-header">
+            <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center">
+                        <i data-lucide="bus" class="w-5 h-5 text-primary"></i>
+                    </div>
+                    <div>
+                        <h1 class="text-2xl font-bold text-base-content">Transport</h1>
+                        <p class="text-sm text-base-content/60">Manage transport vehicles and PAX capacity</p>
+                    </div>
+                </div>
+                <label for="transport-drawer" class="btn btn-accent gap-2 drawer-button">
+                    <i data-lucide="plus" class="w-4 h-4"></i>
+                    Add Transport
+                </label>
             </div>
-        </form>
-    </div>
-</div>
+        </div>
 
-@section Scripts{
+        <!-- Search -->
+        <div class="flex flex-wrap gap-3 mb-4">
+            <label class="input input-bordered flex items-center gap-2 flex-1 min-w-[200px]">
+                <i data-lucide="bus" class="w-4 h-4 text-base-content/40 shrink-0"></i>
+                <input type="text" id="searchField" placeholder="Transport name..." class="grow" />
+            </label>
+        </div>
 
+        <!-- Transport Table -->
+        <div class="surface-raised overflow-hidden">
+            <div class="overflow-x-auto">
+                <table class="table w-full" id="transportTable">
+                    <thead>
+                        <tr class="bg-base-200/50 border-b border-base-300">
+                            <th class="text-xs font-semibold uppercase tracking-wider text-base-content/50">Name</th>
+                            <th class="text-xs font-semibold uppercase tracking-wider text-base-content/50">Min PAX</th>
+                            <th class="text-xs font-semibold uppercase tracking-wider text-base-content/50">Max PAX</th>
+                            <th class="text-xs font-semibold uppercase tracking-wider text-base-content/50 text-center">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tableBody">
+                        <tr>
+                            <td colspan="4" class="text-center py-12">
+                                <div class="loading loading-spinner loading-lg text-primary"></div>
+                                <p class="mt-4">Loading transport...</p>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </div><!-- end drawer-content -->
+
+    <!-- Drawer Panel -->
+    <div class="drawer-side z-50">
+        <label for="transport-drawer" class="drawer-overlay"></label>
+        <div class="bg-base-100 w-full md:w-[480px] min-h-full shadow-2xl">
+            <div class="sticky top-0 bg-base-100 border-b border-base-300 px-6 py-4 z-10">
+                <div class="flex justify-between items-center">
+                    <h2 class="text-lg font-semibold" id="transportTitle">Add Transport</h2>
+                    <label for="transport-drawer" class="btn btn-ghost btn-sm btn-circle">
+                        <i data-lucide="x" class="w-4 h-4"></i>
+                    </label>
+                </div>
+            </div>
+
+            <form id="transportForm" class="p-6">
+                <input type="hidden" id="id" />
+
+                <div class="space-y-4">
+                    <div class="form-control">
+                        <label class="label">
+                            <span class="label-text font-medium text-base-content/70">Name <span class="text-error">*</span></span>
+                        </label>
+                        <input type="text" class="input input-bordered" name="name" id="name"
+                               placeholder="Enter transport name" oninput="this.value = this.value.toUpperCase()" />
+                        <label class="label"><span class="label-text-alt text-error" id="name-error"></span></label>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="form-control">
+                            <label class="label">
+                                <span class="label-text font-medium text-base-content/70">Min PAX <span class="text-error">*</span></span>
+                            </label>
+                            <input type="number" class="input input-bordered" name="minPAX" id="minPAX" placeholder="0" />
+                            <label class="label"><span class="label-text-alt text-error" id="minPAX-error"></span></label>
+                        </div>
+                        <div class="form-control">
+                            <label class="label">
+                                <span class="label-text font-medium text-base-content/70">Max PAX <span class="text-error">*</span></span>
+                            </label>
+                            <input type="number" class="input input-bordered" name="maxPAX" id="maxPAX" placeholder="0" />
+                            <label class="label"><span class="label-text-alt text-error" id="maxPAX-error"></span></label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex gap-3 mt-8 sticky bottom-0 bg-base-100 pt-4 border-t border-base-300">
+                    <button type="submit" class="btn btn-primary flex-1" id="btnSave">
+                        <i data-lucide="save" class="w-4 h-4 mr-2"></i>
+                        Save Transport
+                    </button>
+                    <label for="transport-drawer" class="btn btn-ghost flex-1">
+                        <i data-lucide="x" class="w-4 h-4 mr-2"></i>
+                        Cancel
+                    </label>
+                </div>
+            </form>
+        </div>
+    </div><!-- end drawer-side -->
+</div><!-- end drawer -->
+
+@section Scripts {
     <partial name="_ValidationScriptsPartial" />
     <script src="~/js/transport.js"></script>
 }
-
-
-
-

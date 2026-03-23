@@ -5,17 +5,17 @@
 <div class="animate-fade-in">
     <!-- Modern Page Header -->
     <div class="page-header mb-6">
-        <div class="relative z-10 flex items-center gap-4">
-            <a asp-action="Index" class="btn btn-circle btn-ghost">
-                <i class="fas fa-arrow-left text-xl"></i>
+        <div class="flex items-center gap-4">
+            <a asp-action="Index" class="btn btn-circle btn-ghost btn-sm">
+                <i data-lucide="arrow-left" class="w-4 h-4"></i>
             </a>
             <div class="flex items-center gap-3">
-                <div class="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center">
-                    <i class="fas fa-file-invoice text-2xl text-primary"></i>
+                <div class="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center">
+                    <i data-lucide="file-text" class="w-5 h-5 text-primary"></i>
                 </div>
                 <div>
-                    <h1 class="text-4xl font-bold text-base-content"><span id="pageTitle"></span></h1>
-                    <p class="text-base-content/70 mt-1">Create and manage invoices for tours</p>
+                    <h1 class="text-2xl font-bold text-base-content"><span id="pageTitle"></span></h1>
+                    <p class="text-sm text-base-content/60">Create and manage invoices for tours</p>
                 </div>
             </div>
         </div>
@@ -28,7 +28,7 @@
         <div class="section-modern mb-6">
             <div class="flex items-center gap-2 mb-6">
                 <div class="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center">
-                    <i class="fas fa-info-circle text-lg text-primary"></i>
+                    <i data-lucide="info" class="w-5 h-5 text-primary"></i>
                 </div>
                 <h2 class="font-bold text-lg">Basic Information</h2>
             </div>
@@ -36,14 +36,14 @@
                 <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
                     <div class="form-control">
                         <label class="label">
-                            <span class="label-text font-semibold">Date</span>
+                        <span class="label-text font-medium text-base-content/70">Date</span>
                         </label>
                         <input type="text" class="input input-bordered bg-base-200" id="date" disabled />
                     </div>
 
                     <div class="form-control md:col-span-2">
                         <label class="label">
-                            <span class="label-text font-semibold">Dr. <span class="text-error">*</span></span>
+                            <span class="label-text font-medium text-base-content/70">Dr. <span class="text-error">*</span></span>
                         </label>
                         <input type="text" class="input input-bordered" name="dr" id="dr" placeholder="Recipient" />
                         <label class="label">
@@ -53,7 +53,7 @@
 
                     <div class="form-control">
                         <label class="label">
-                            <span class="label-text font-semibold">Currency <span class="text-error">*</span></span>
+                            <span class="label-text font-medium text-base-content/70">Currency <span class="text-error">*</span></span>
                         </label>
                         <input type="text" class="input input-bordered" name="currency" id="currency"
                                placeholder="USD" oninput="this.value = this.value.toUpperCase()" maxlength="3" />
@@ -66,14 +66,14 @@
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
                     <div class="form-control">
                         <label class="label">
-                            <span class="label-text font-semibold">Reference No.</span>
+                            <span class="label-text font-medium text-base-content/70">Reference No.</span>
                         </label>
                         <input type="text" class="input input-bordered" name="referenceNo" id="referenceNo" />
                     </div>
 
                     <div class="form-control">
                         <label class="label">
-                            <span class="label-text font-semibold">File Code No.</span>
+                            <span class="label-text font-medium text-base-content/70">File Code No.</span>
                         </label>
                         <input type="text" class="input input-bordered" name="fileCodeNo" id="fileCodeNo" />
                     </div>
@@ -81,24 +81,23 @@
                     <div class="form-control">
                         <label class="label cursor-pointer justify-start gap-3 border border-base-300 rounded-lg px-4 py-3">
                             <input type="checkbox" name="isTicket" id="isTicket" class="checkbox checkbox-primary" />
-                            <span class="label-text font-semibold">Is Ticket?</span>
+                            <span class="label-text font-medium text-base-content/70">Is Ticket?</span>
                         </label>
                     </div>
                 </div>
         </div>
 
         <!-- Client Information Card -->
-        <div class="card bg-base-100 shadow-lg mb-6">
-            <div class="card-body">
-                <h2 class="card-title text-lg mb-4">
-                    <i class="fas fa-user text-primary"></i>
-                    Client Information
-                </h2>
+        <div class="section-modern mb-6">
+            <div class="flex items-center gap-2 mb-4">
+                <i data-lucide="user" class="w-4 h-4 text-primary"></i>
+                <h2 class="font-semibold text-base">Client Information</h2>
+            </div>
 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div class="form-control">
                         <label class="label">
-                            <span class="label-text font-semibold">Client Name <span class="text-error">*</span></span>
+                            <span class="label-text font-medium text-base-content/70">Client Name <span class="text-error">*</span></span>
                         </label>
                         <input type="text" class="input input-bordered" name="clientName" id="clientName" />
                         <label class="label">
@@ -108,7 +107,7 @@
 
                     <div class="form-control">
                         <label class="label">
-                            <span class="label-text font-semibold">Address</span>
+                            <span class="label-text font-medium text-base-content/70">Address</span>
                         </label>
                         <input type="text" class="input input-bordered" name="address" id="address" />
                     </div>
@@ -117,35 +116,33 @@
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
                     <div class="form-control">
                         <label class="label">
-                            <span class="label-text font-semibold">PAX</span>
+                            <span class="label-text font-medium text-base-content/70">PAX</span>
                         </label>
                         <input type="number" class="input input-bordered" name="pax" id="pax" min="0" />
                     </div>
 
                     <div class="form-control">
                         <label class="label">
-                            <span class="label-text font-semibold">Guide</span>
+                            <span class="label-text font-medium text-base-content/70">Guide</span>
                         </label>
                         <input type="text" class="input input-bordered" name="guide" id="guide" />
                     </div>
 
                     <div class="form-control">
                         <label class="label">
-                            <span class="label-text font-semibold">Vehicle</span>
+                            <span class="label-text font-medium text-base-content/70">Vehicle</span>
                         </label>
                         <input type="text" class="input input-bordered" name="vehicle" id="vehicle" />
                     </div>
                 </div>
-            </div>
         </div>
 
-        <!-- Invoice Items Card -->
-        <div class="card bg-base-100 shadow-lg mb-6">
-            <div class="card-body">
-                <h2 class="card-title text-lg mb-4">
-                    <i class="fas fa-list text-primary"></i>
-                    Invoice Items
-                </h2>
+        <!-- Invoice Items -->
+        <div class="section-modern mb-6">
+            <div class="flex items-center gap-2 mb-4">
+                <i data-lucide="list" class="w-4 h-4 text-primary"></i>
+                <h2 class="font-semibold text-base">Invoice Items</h2>
+            </div>
 
                 <!-- Add Item Section -->
                 <div class="bg-base-200 rounded-lg p-4 mb-4">
@@ -160,7 +157,7 @@
                                 <input type="number" class="input input-bordered join-item flex-1"
                                        id="particularAmount" placeholder="0.00" step="0.01" min="0" />
                                 <button type="button" class="btn btn-primary join-item" id="addProduct">
-                                    <i class="fas fa-plus"></i>
+                                    <i data-lucide="plus" class="w-4 h-4"></i>
                                     Add
                                 </button>
                             </div>
@@ -181,35 +178,33 @@
                         <tbody id="itemsTableBody">
                             <tr>
                                 <td colspan="3" class="text-center py-8 text-base-content/50">
-                                    <i class="fas fa-inbox fa-2x mb-2"></i>
+                                    <i data-lucide="inbox" class="w-10 h-10 mb-2"></i>
                                     <p>No items added yet</p>
                                 </td>
                             </tr>
                         </tbody>
                     </table>
                 </div>
-            </div>
         </div>
 
-        <!-- Totals Card -->
-        <div class="card bg-base-100 shadow-lg mb-6">
-            <div class="card-body">
-                <h2 class="card-title text-lg mb-4">
-                    <i class="fas fa-calculator text-primary"></i>
-                    Totals
-                </h2>
+        <!-- Totals -->
+        <div class="section-modern mb-6">
+            <div class="flex items-center gap-2 mb-4">
+                <i data-lucide="calculator" class="w-4 h-4 text-primary"></i>
+                <h2 class="font-semibold text-base">Totals</h2>
+            </div>
 
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                     <div class="form-control">
                         <label class="label">
-                            <span class="label-text font-semibold">Total Due</span>
+                            <span class="label-text font-medium text-base-content/70">Total Due</span>
                         </label>
                         <input type="text" class="input input-bordered input-lg bg-base-200 font-bold text-xl" id="totalDue" disabled />
                     </div>
 
                     <div class="form-control">
                         <label class="label">
-                            <span class="label-text font-semibold">Discount</span>
+                            <span class="label-text font-medium text-base-content/70">Discount</span>
                         </label>
                         <input type="number" class="input input-bordered input-lg" name="discount" id="discount"
                                placeholder="0.00" step="0.01" min="0" />
@@ -217,23 +212,22 @@
 
                     <div class="form-control">
                         <label class="label">
-                            <span class="label-text font-semibold">Net Amount</span>
+                            <span class="label-text font-medium text-base-content/70">Net Amount</span>
                         </label>
                         <input type="text" class="input input-bordered input-lg bg-success text-success-content font-bold text-xl"
                                id="netAmount" disabled />
                     </div>
                 </div>
-            </div>
         </div>
 
         <!-- Action Buttons -->
         <div class="flex gap-4 justify-end">
             <a asp-action="Index" class="btn btn-ghost btn-lg">
-                <i class="fas fa-times"></i>
+                <i data-lucide="x" class="w-5 h-5"></i>
                 Cancel
             </a>
-            <button type="submit" class="btn btn-primary btn-lg" id="btnSave">
-                <i class="fas fa-save"></i>
+            <button type="submit" class="btn btn-primary" id="btnSave">
+                <i data-lucide="save" class="w-5 h-5"></i>
                 Save Invoice
             </button>
         </div>
@@ -254,7 +248,7 @@
 
         <div class="modal-action">
             <button type="button" class="btn btn-error" id="printInvoice">
-                <i class="fas fa-print mr-2"></i>
+                <i data-lucide="printer" class="w-4 h-4 mr-2"></i>
                 Print
             </button>
             <form method="dialog">

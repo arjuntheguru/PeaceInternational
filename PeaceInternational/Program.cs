@@ -82,6 +82,8 @@ app.MapRazorPages();
 using (var scope = app.Services.CreateScope())
 {
     var serviceProvider = scope.ServiceProvider;
+    var db = serviceProvider.GetRequiredService<ApplicationDbContext>();
+    db.Database.MigrateAsync().Wait();
     SeedIntialData.Initialize(serviceProvider).Wait();
 }
 

@@ -64,9 +64,9 @@ namespace PeaceInternational.Web.Controllers
                     return Json(result);
                 }
             }
-            catch (Exception exception)
+            catch
             {
-                throw exception;
+                throw;
             }
         }
 
@@ -137,7 +137,7 @@ namespace PeaceInternational.Web.Controllers
 
                 return Json(notification);
             }
-            catch (Exception exception)
+            catch
             {
                 notification.Type = "error";
                 notification.Message = "Service Voucher creation failed.";
@@ -174,6 +174,22 @@ namespace PeaceInternational.Web.Controllers
             {
                 Console.WriteLine(exception.Message);
                 return new Notification("error", "Service Voucher update failed.");
+            }
+        }
+
+        [HttpPost]
+        public IActionResult Delete(int id)
+        {
+            try
+            {
+                var record = _serviceVoucherCrudService.Get(id);
+                _serviceVoucherCrudService.Delete(record);
+                return Json(new Notification("success", "Service Voucher deleted successfully."));
+            }
+            catch (Exception exception)
+            {
+                Console.WriteLine(exception.Message);
+                return Json(new Notification("error", "Failed to delete service voucher."));
             }
         }
 

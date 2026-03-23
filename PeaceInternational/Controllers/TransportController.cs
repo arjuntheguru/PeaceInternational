@@ -14,7 +14,6 @@ namespace PeaceInternational.Web.Controllers
     {
         private readonly ICrudService<Transport> _transportCrudService;
         private readonly UserManager<IdentityUser> _userManager;
-        private Notification notification;
 
         public TransportController(
             ICrudService<Transport> transportCrudService,
@@ -47,9 +46,9 @@ namespace PeaceInternational.Web.Controllers
                     return Json(result);
                 }
             }
-            catch (Exception exception)
+            catch
             {
-                throw exception;
+                throw;
             }
         }
         //Save Transport
@@ -59,7 +58,7 @@ namespace PeaceInternational.Web.Controllers
             try
             {
                 var user = _userManager.GetUserAsync(HttpContext.User).Result;
-                notification = new Notification();
+                var notification = new Notification();
 
                 if (transport.Id > 0)
                 {
@@ -82,11 +81,9 @@ namespace PeaceInternational.Web.Controllers
 
                 return Json(notification);
             }
-            catch (Exception exception)
+            catch
             {
-                notification.Type = "error";
-                notification.Message = "Transport creation failed.";
-                return Json(notification);
+                return Json(new Notification("error", "Transport creation failed."));
             }
         }
 
@@ -95,16 +92,14 @@ namespace PeaceInternational.Web.Controllers
         {
             try
             {
-                notification = new Notification();
+                var notification = new Notification();
                 notification = DeleteTransport(id);
 
                 return Json(notification);
             }
-            catch (Exception exception)
+            catch
             {
-                notification.Type = "error";
-                notification.Message = "Transport deletion failed.";
-                return Json(notification);
+                return Json(new Notification("error", "Transport deletion failed."));
             }
         }
 

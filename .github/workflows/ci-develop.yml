@@ -1,0 +1,86 @@
+name: CI - Develop
+
+on:
+  push:
+    branches: [develop]
+  pull_request:
+    branches: [develop]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    services:
+      mysql:
+        image: mysql:8.4
+        env:
+          MYSQL_ROOT_PASSWORD: rootpassword
+          MYSQL_DATABASE: PeaceInternational
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd="mysqladmin ping"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=5
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 9.0.x
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+          cache-dependency-path: PeaceInternational/package-lock.json
+
+      - name: Install npm dependencies
+        run: npm ci
+        working-directory: PeaceInternational
+
+      - name: Restore .NET dependencies
+        run: dotnet restore
+
+      - name: Build
+        run: dotnet build --no-restore --configuration Release
+
+      - name: Trust dev certificate
+        run: dotnet dev-certs https --trust
+
+      - name: Start app (runs migrations + seed on startup)
+        run: |
+          dotnet run --project PeaceInternational --configuration Release &
+          npx wait-on https://localhost:5001 --timeout 60000
+        env:
+          ConnectionStrings__DefaultConnection: Server=127.0.0.1;Database=PeaceInternational;User=root;Password=rootpassword;Port=3306;
+          ASPNETCORE_URLS: https://localhost:5001
+
+      - name: Seed database
+        run: mysql -h 127.0.0.1 -u root -prootpassword PeaceInternational < database_setup.sql
+
+      - name: Install Playwright browsers
+        run: npx playwright install --with-deps chromium
+        working-directory: tests
+
+      - name: Install test dependencies
+        run: npm ci
+        working-directory: tests
+
+      - name: Run Playwright tests
+        run: npx playwright test
+        working-directory: tests
+        env:
+          TEST_USERNAME: ${{ secrets.TEST_USERNAME }}
+          TEST_PASSWORD: ${{ secrets.TEST_PASSWORD }}
+
+      - name: Upload Playwright report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report
+          path: tests/playwright-report/

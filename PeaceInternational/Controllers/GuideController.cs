@@ -14,7 +14,6 @@ namespace PeaceInternational.Web.Controllers
     {
         private readonly ICrudService<Guide> _guideCrudService;
         private readonly UserManager<IdentityUser> _userManager;
-        private Notification notification;
 
         public GuideController(
             ICrudService<Guide> guideCrudService,
@@ -49,17 +48,18 @@ namespace PeaceInternational.Web.Controllers
             }
             catch (Exception exception)
             {
-                throw exception;
+                Console.WriteLine(exception);
+                return StatusCode(500);
             }
         }
         //Save Guide
         [HttpPost]
         public async Task<IActionResult> Save(Guide guide)
         {
+            var notification = new Notification();
             try
             {
-                var user = _userManager.GetUserAsync(HttpContext.User).Result;
-                notification = new Notification();
+                var user = await _userManager.GetUserAsync(HttpContext.User);
 
                 if (guide.Id > 0)
                 {
@@ -83,11 +83,9 @@ namespace PeaceInternational.Web.Controllers
 
                 return Json(notification);
             }
-            catch (Exception exception)
+            catch
             {
-                notification.Type = "error";
-                notification.Message = "Guide creation failed.";
-                return Json(notification);
+                return Json(new Notification("error", "Guide creation failed."));
             }
         }
 
@@ -96,16 +94,14 @@ namespace PeaceInternational.Web.Controllers
         {
             try
             {
-                notification = new Notification();
+                var notification = new Notification();
                 notification = DeleteGuide(id);
-
                 return Json(notification);
             }
             catch (Exception exception)
             {
-                notification.Type = "error";
-                notification.Message = "Guide deletion failed.";
-                return Json(notification);
+                Console.WriteLine(exception);
+                return Json(new Notification("error", "Guide deletion failed."));
             }
         }
 

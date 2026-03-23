@@ -31,13 +31,13 @@ const renderTable = (data) => {
             <tr>
                 <td colspan="5" class="text-center py-12">
                     <div class="flex flex-col items-center gap-4">
-                        <i class="fas fa-receipt fa-4x text-base-300"></i>
+                        <i data-lucide="receipt" class="w-16 h-16 text-base-300"></i>
                         <div>
                             <h3 class="font-bold text-lg">No service vouchers found</h3>
                             <p class="text-base-content/70">Start by adding your first service voucher</p>
                         </div>
                         <label for="voucher-drawer" class="btn btn-primary gap-2 drawer-button">
-                            <i class="fas fa-plus"></i>
+                            <i data-lucide="plus" class="w-4 h-4"></i>
                             Add Service Voucher
                         </label>
                     </div>
@@ -50,27 +50,31 @@ const renderTable = (data) => {
     tableBody.innerHTML = data.map(voucher => `
         <tr class="hover transition-colors duration-200"
             data-receipt="${voucher.id}"
-            data-filecode="${(voucher.fileCodeNo || '').toLowerCase()}"
-            data-hotel="${(voucher.hotel?.name || '').toLowerCase()}"
-            data-client="${(voucher.clientName || '').toLowerCase()}">
+            data-filecode="${escapeHtml(voucher.fileCodeNo).toLowerCase()}"
+            data-hotel="${escapeHtml(voucher.hotel?.name).toLowerCase()}"
+            data-client="${escapeHtml(voucher.clientName).toLowerCase()}">
             <td>
                 <div class="badge badge-primary">${voucher.id}</div>
             </td>
-            <td class="font-semibold">${voucher.fileCodeNo || '-'}</td>
-            <td>${voucher.hotel?.name || '-'}</td>
-            <td>${voucher.clientName || '-'}</td>
+            <td class="font-semibold">${escapeHtml(voucher.fileCodeNo) || '-'}</td>
+            <td>${escapeHtml(voucher.hotel?.name) || '-'}</td>
+            <td>${escapeHtml(voucher.clientName) || '-'}</td>
             <td>
-                <div class="flex gap-2 justify-center">
-                    <button onclick="editVoucher(${voucher.id})" class="btn btn-ghost btn-sm text-primary hover:bg-primary/10" title="Edit">
-                        <i class="fas fa-edit"></i>
+                <div class="flex gap-1 justify-center">
+                    <button onclick="editVoucher(${voucher.id})" class="btn btn-ghost btn-xs" title="Edit">
+                        <i data-lucide="pencil" class="w-3.5 h-3.5"></i>
                     </button>
-                    <button onclick="generateReceipt(${voucher.id})" class="btn btn-ghost btn-sm text-info hover:bg-info/10" title="View">
-                        <i class="fas fa-eye"></i>
+                    <button onclick="generateReceipt(${voucher.id})" class="btn btn-ghost btn-xs text-info" title="View">
+                        <i data-lucide="eye" class="w-3.5 h-3.5"></i>
+                    </button>
+                    <button onclick="deleteVoucher(${voucher.id})" class="btn btn-ghost btn-xs text-error" title="Delete">
+                        <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
                     </button>
                 </div>
             </td>
         </tr>
     `).join('');
+    refreshIcons();
 };
 
 // Function to filter table
@@ -225,6 +229,18 @@ window.editVoucher = (id) => {
     document.getElementById('voucher-drawer').checked = true;
 };
 
+window.deleteVoucher = (id) => {
+    confirmAction('Are you sure you want to delete this service voucher?', () => {
+        $.ajax({
+            url: 'ServiceVoucher/Delete',
+            method: 'POST',
+            data: { id },
+            success: (data) => { showToast(data.type, data.message); loadVouchers(); },
+            error: () => showToast('error', 'Failed to delete service voucher')
+        });
+    });
+};
+
 // Function to generate receipt
 window.generateReceipt = (id) => {
     $.ajax({
@@ -351,9 +367,10 @@ $(document).ready(function () {
             method: 'GET',
             data: { fileCodeNo: $('#fileCodeNo').val() },
             success: function (data) {
-                $('#clientName').val(data.tourName);
-                $('#arrivalOn').val(data.arrivalDate.split('T')[0]);
-                $('#departureOn').val(data.departureDate.split('T')[0]);
+                if (!data) return;
+                document.getElementById('clientName').value = data.tourName || '';
+                document.getElementById('arrivalOn').value = data.arrivalDate ? data.arrivalDate.split('T')[0] : '';
+                document.getElementById('departureOn').value = data.departureDate ? data.departureDate.split('T')[0] : '';
             }
         });
     });

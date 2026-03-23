@@ -18,7 +18,6 @@ namespace PeaceInternational.Web.Controllers
         private readonly ICrudService<Customer> _customerCrudService;
         private readonly ICrudService<FiscalYear> _fiscalYearCrudService;
         private readonly UserManager<IdentityUser> _userManager;
-        private Notification notification;
 
         public CustomerController(
             ICrudService<Customer> customerCrudService,
@@ -54,7 +53,8 @@ namespace PeaceInternational.Web.Controllers
             }
             catch (Exception exception)
             {
-                throw exception;
+                Console.WriteLine(exception);
+                return StatusCode(500);
             }
         }
 
@@ -62,11 +62,11 @@ namespace PeaceInternational.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> Save(Customer customer)
         {
+            var notification = new Notification();
             try
             {
-                var user = _userManager.GetUserAsync(HttpContext.User).Result;
+                var user = await _userManager.GetUserAsync(HttpContext.User);
                 var currentFiscalYear = _fiscalYearCrudService.Get(p => DateTime.Now.Date >= p.StartDateAD && DateTime.Now.Date <= p.EndDateAD);
-                notification = new Notification();
 
                 if (customer.Id > 0)
                 {
@@ -95,11 +95,9 @@ namespace PeaceInternational.Web.Controllers
 
                 return Json(notification);
             }
-            catch (Exception exception)
+            catch
             {
-                notification.Type = "error";
-                notification.Message = "Customer creation failed.";
-                return Json(notification);
+                return Json(new Notification("error", "Customer creation failed."));
             }
         }
 
@@ -108,16 +106,14 @@ namespace PeaceInternational.Web.Controllers
         {
             try
             {
-                notification = new Notification();
+                var notification = new Notification();
                 notification = DeleteCustomer(id);
-
                 return Json(notification);
             }
             catch (Exception exception)
             {
-                notification.Type = "error";
-                notification.Message = "Customer deletion failed.";
-                return Json(notification);
+                Console.WriteLine(exception);
+                return Json(new Notification("error", "Customer deletion failed."));
             }
         }
 

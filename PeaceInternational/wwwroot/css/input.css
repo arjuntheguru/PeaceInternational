@@ -4,24 +4,24 @@
 
 /* Custom Components */
 @layer components {
-  /* Card hover effects */
+  /* Card hover effects - subtle */
   .card-hover {
-    @apply transition-all duration-300 hover:shadow-xl hover:-translate-y-1;
+    @apply transition-all duration-200 hover:shadow-md hover:-translate-y-0.5;
   }
 
-  /* Page header */
+  /* Page header - clean, flat, minimal */
   .page-header {
-    @apply rounded-lg bg-base-100 border-l-4 border-primary p-8 mb-8;
+    @apply py-6 mb-6;
   }
 
   /* Tour card styling */
   .tour-card {
-    @apply card bg-base-100 border border-base-300 hover:border-base-400 transition-colors duration-200;
+    @apply bg-base-100 rounded-xl border border-base-300/50 hover:border-base-300 transition-colors duration-200;
   }
 
   /* Custom table row hover */
   .table-row-hover {
-    @apply hover:bg-base-200 transition-colors duration-200;
+    @apply hover:bg-base-200/50 transition-colors duration-150;
   }
 
   /* Loading spinner */
@@ -34,40 +34,81 @@
     @apply backdrop-blur-md bg-white/80 dark:bg-slate-900/80 border border-white/20;
   }
 
-  /* Smooth section */
+  /* Smooth section - lighter, cleaner */
   .section-modern {
-    @apply py-8 px-6 rounded-lg bg-base-100 border border-base-300;
+    @apply py-6 px-6 rounded-xl bg-base-100 shadow-sm border border-base-300/30;
+  }
+
+  /* Surface utilities - Linear/Notion style */
+  .surface {
+    @apply bg-base-100 rounded-xl border border-base-300/50;
+  }
+
+  .surface-raised {
+    @apply bg-base-100 rounded-xl shadow-sm border border-base-300/30;
+  }
+
+  /* Sidebar nav links */
+  .sidebar-link {
+    @apply flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm font-medium text-base-content/70
+           hover:bg-base-200 hover:text-base-content transition-colors duration-150;
+  }
+
+  .sidebar-link-active {
+    @apply bg-primary/10 text-primary hover:bg-primary/10 hover:text-primary;
   }
 }
 
 /* Custom animations */
 @layer utilities {
   .animate-fade-in {
-    animation: fadeIn 0.5s ease-in;
+    animation: fadeIn 0.3s ease-out;
   }
 
   @keyframes fadeIn {
     from {
       opacity: 0;
-      transform: translateY(10px);
     }
     to {
       opacity: 1;
-      transform: translateY(0);
     }
   }
 
   .animate-slide-in {
-    animation: slideIn 0.3s ease-out;
+    animation: slideIn 0.25s ease-out;
   }
 
   @keyframes slideIn {
     from {
-      transform: translateX(-100%);
+      transform: translateX(100%);
     }
     to {
       transform: translateX(0);
     }
+  }
+
+  .animate-scale-in {
+    animation: scaleIn 0.2s ease-out;
+  }
+
+  @keyframes scaleIn {
+    from {
+      opacity: 0;
+      transform: scale(0.95);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+
+  /* Text helpers */
+  .text-muted {
+    @apply text-base-content/60;
+  }
+
+  .text-subtle {
+    @apply text-base-content/40;
   }
 }
 
@@ -93,7 +134,7 @@ label.input select:focus {
   box-shadow: none;
 }
 
-/* Custom date input styling - modern calendar icon */
+/* Custom date input styling */
 input[type="date"]::-webkit-calendar-picker-indicator {
   cursor: pointer;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%23334155' viewBox='0 0 24 24'%3E%3Cpath d='M19 3h-1V1h-2v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11zM7 10h5v5H7z'/%3E%3C/svg%3E");
@@ -111,7 +152,7 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%23e5e7eb' viewBox='0 0 24 24'%3E%3Cpath d='M19 3h-1V1h-2v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11zM7 10h5v5H7z'/%3E%3C/svg%3E");
 }
 
-/* Disabled input styling - better visibility in light theme */
+/* Disabled input styling */
 input:disabled,
 textarea:disabled,
 select:disabled {
@@ -122,9 +163,9 @@ select:disabled {
 [data-theme="light"] input:disabled,
 [data-theme="light"] textarea:disabled,
 [data-theme="light"] select:disabled {
-  background-color: #f1f5f9;
-  color: #475569;
-  border-color: #cbd5e1;
+  background-color: #f8fafc;
+  color: #64748b;
+  border-color: #e2e8f0;
 }
 
 [data-theme="dark"] input:disabled,
@@ -135,9 +176,9 @@ select:disabled {
   border-color: #334155;
 }
 
-/* Custom select dropdown styling */
+/* Custom select dropdown styling - neutral chevron */
 select {
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3E%3Cpath stroke='%234A7C59' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3E%3C/svg%3E");
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3E%3Cpath stroke='%2364748b' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3E%3C/svg%3E");
   background-position: right 0.5rem center;
   background-repeat: no-repeat;
   background-size: 1.5em 1.5em;
@@ -145,23 +186,23 @@ select {
 }
 
 [data-theme="dark"] select {
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3E%3Cpath stroke='%236B8E7F' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3E%3C/svg%3E");
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3E%3Cpath stroke='%2394a3b8' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3E%3C/svg%3E");
 }
 
-/* Custom scrollbar */
+/* Custom scrollbar - neutral colors */
 ::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
+  width: 6px;
+  height: 6px;
 }
 
 ::-webkit-scrollbar-track {
-  @apply bg-base-200;
+  @apply bg-transparent;
 }
 
 ::-webkit-scrollbar-thumb {
-  @apply bg-primary rounded-full;
+  @apply bg-base-300 rounded-full;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  @apply bg-secondary;
+  @apply bg-base-content/30;
 }

@@ -67,16 +67,16 @@
     <!-- Page Header -->
     <div class="page-header mb-6">
         <div class="flex items-center gap-4">
-            <a href="@Url.Action("Index")" class="btn btn-circle btn-ghost">
-                <i class="fas fa-arrow-left text-xl"></i>
+            <a href="@Url.Action("Index")" class="btn btn-circle btn-ghost btn-sm">
+                <i data-lucide="arrow-left" class="w-4 h-4"></i>
             </a>
             <div class="flex items-center gap-3">
-                <div class="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center">
-                    <i class="fas fa-file-invoice-dollar text-2xl text-primary"></i>
+                <div class="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center">
+                    <i data-lucide="file-text" class="w-5 h-5 text-primary"></i>
                 </div>
                 <div>
-                    <h1 class="text-4xl font-bold text-base-content">Tour Cost Details</h1>
-                    <p class="text-base-content/70 mt-1">View and print tour cost breakdown</p>
+                    <h1 class="text-2xl font-bold text-base-content">Tour Cost Details</h1>
+                    <p class="text-sm text-base-content/60">View and print tour cost breakdown</p>
                 </div>
             </div>
         </div>
@@ -87,7 +87,7 @@
         <div class="card-body">
             <div class="flex items-center gap-3 mb-6 pb-4 border-b-2 border-primary/20">
                 <div class="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center">
-                    <i class="fas fa-table text-xl text-primary"></i>
+                    <i data-lucide="table" class="w-5 h-5 text-primary"></i>
                 </div>
                 <h2 class="text-2xl font-bold text-base-content tracking-tight">Tour Cost Breakdown</h2>
             </div>
@@ -100,7 +100,7 @@
         <div class="card-body">
             <div class="flex items-center gap-3 mb-6 pb-4 border-b-2 border-primary/20">
                 <div class="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center">
-                    <i class="fas fa-calculator text-xl text-primary"></i>
+                    <i data-lucide="calculator" class="w-5 h-5 text-primary"></i>
                 </div>
                 <h2 class="text-2xl font-bold text-base-content tracking-tight">Per Person Pricing</h2>
             </div>
@@ -118,12 +118,12 @@
 <div class="fixed bottom-6 right-6 flex flex-col gap-3 z-50">
     <div class="tooltip tooltip-left" data-tip="Print Tour Cost">
         <button class="btn btn-circle btn-primary btn-lg shadow-lg" id="printTourcost">
-            <i class="fas fa-print text-xl"></i>
+            <i data-lucide="printer" class="w-5 h-5"></i>
         </button>
     </div>
     <div class="tooltip tooltip-left" data-tip="Print PPP Cost">
         <button class="btn btn-circle btn-accent btn-lg shadow-lg" id="printPPPcost">
-            <i class="fas fa-print text-xl"></i>
+            <i data-lucide="printer" class="w-5 h-5"></i>
         </button>
     </div>
 </div>

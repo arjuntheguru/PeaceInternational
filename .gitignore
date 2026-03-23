@@ -260,5 +260,7 @@ paket-files/
 __pycache__/
 *.pyc
 
-#User folders
-PeaceInternational.Infrastructure/Migrations/
+
+# IDE and tooling
+.claude/
+mise.toml

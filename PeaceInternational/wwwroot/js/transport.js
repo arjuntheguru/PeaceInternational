@@ -1,211 +1,130 @@
-﻿"use strict";
+"use strict";
 
-//Column Defination for the grid
-const columnDefs = [
-    { headerName: 'Name', field: 'name' },
-    { headerName: 'Min PAX', field: 'minPAX' },
-    { headerName: 'Max PAX', field: 'maxPAX' },
-    //{ headerName: 'Full Day Rate', field: 'fullDayRate' },
-    //{ headerName: 'Half Day Rate', field: 'halfDayRate', sortable: false, filter: false },
-    {
-        headerName: 'Edit', maxWidth: 200, sortable: false, filter: false,
-        cellRenderer: function () {
-            return '<i class="btn fas fa-edit" id="editButton"></i>';
-        },
-        onCellClicked(params) {
-            console.log(params.data);
-            Edit(params.data);
+let allTransports = [];
 
-        }
-    },
-    {
-        headerName: 'Delete', maxWidth: 200, sortable: false, filter: false,
-        cellRenderer: function () {
-            return '<i class="btn fas fa-trash" id="trashButton"></i>';
-        },
-        onCellClicked(params) {
-            console.log(params.data);
-            Delete(params.data);
-
-        }
+const renderTable = (data) => {
+    const tbody = document.getElementById('tableBody');
+    if (!data.length) {
+        tbody.innerHTML = `<tr><td colspan="4" class="text-center py-12 text-base-content/50">No transport records found.</td></tr>`;
+        return;
     }
-];
+    tbody.innerHTML = data.map(t => `
+        <tr class="hover:bg-base-200/40 transition-colors">
+            <td class="font-medium">${escapeHtml(t.name)}</td>
+            <td>${t.minPAX}</td>
+            <td>${t.maxPAX}</td>
+            <td class="text-center">
+                <div class="flex justify-center gap-1">
+                    <button class="btn btn-ghost btn-xs" onclick="openEdit(${t.id})">
+                        <i data-lucide="pencil" class="w-3.5 h-3.5"></i>
+                    </button>
+                    <button class="btn btn-ghost btn-xs text-error" onclick="confirmDelete(${t.id})">
+                        <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
+                    </button>
+                </div>
+            </td>
+        </tr>`).join('');
+    refreshIcons();
+};
 
-//Function to set the data for the grid
-const setGridData = () => {
+const filterTable = () => {
+    const q = document.getElementById('searchField').value.toLowerCase();
+    renderTable(allTransports.filter(t => t.name.toLowerCase().includes(q)));
+};
 
+const loadTransports = () => {
     $.ajax({
         url: 'Transport/Get',
         method: 'GET',
         success: (data) => {
-            gridOptions.api.setRowData(data);
-            console.log(data);
+            allTransports = data;
+            filterTable();
         }
     });
 };
 
-
-//Settings for the Transport grid
-let gridOptions = {
-    columnDefs: columnDefs,
-    rowHeight: 40,
-    defaultColDef: {
-        sortable: true,
-        filter: true
-    },
-    paginationAutoPageSize: true,
-    pagination: true,
-    accentedSort: true,
-    onGridSizeChanged: (params) => {
-        params.api.sizeColumnsToFit();
-    }
+const clearForm = () => {
+    ['id', 'name', 'minPAX', 'maxPAX'].forEach(f => $(`#${f}`).val(''));
+    ['name-error', 'minPAX-error', 'maxPAX-error'].forEach(f => document.getElementById(f).textContent = '');
 };
 
-//Function to clear form
-const Clear = () => {
-    removeBorderClass();
-    $("#id").val('');
-    $('#name').val('');
-    $('#minPAX').val('');
-    $('#maxPAX').val('');
-    //$('#fullDayRate').val('');
-    //$('#halfDayRate').val('');
+const openAdd = () => {
+    clearForm();
+    document.getElementById('transportTitle').textContent = 'Add Transport';
+    document.getElementById('transport-drawer').checked = true;
+    refreshIcons();
 };
 
-//Function specifying rules for validating the form
-const transportValidation = () => {
-
-    $('#transportForm').validate({
-        rules: {
-            name: {
-                required: true,
-                maxlength: 100,
-                isOnlyWhiteSpace: true
-            },
-            minPAX: {
-                required: true,
-                digits: true
-            },
-            maxPAX: {
-                required: true,
-                digits: true
-            }          
-            //fullDayRate: {
-            //    required: true,
-            //    digits: true
-            //},
-            //halfDayRate: {
-            //    required: true,
-            //    digits: true
-            //}
-        }
-    });
+const openEdit = (id) => {
+    const t = allTransports.find(x => x.id === id);
+    if (!t) return;
+    clearForm();
+    document.getElementById('transportTitle').textContent = 'Edit Transport';
+    document.getElementById('id').value = t.id;
+    document.getElementById('name').value = t.name || '';
+    document.getElementById('minPAX').value = t.minPAX ?? '';
+    document.getElementById('maxPAX').value = t.maxPAX ?? '';
+    document.getElementById('transport-drawer').checked = true;
+    refreshIcons();
 };
 
-const Edit = (data) => {
-
-    Clear();
-    $('#transportTitle').html("Edit Transport");
-    $('#id').val(data.id);
-    $('#name').val(data.name);
-    $('#minPAX').val(data.minPAX);
-    $('#maxPAX').val(data.maxPAX);
-    //$('#fullDayRate').val(data.fullDayRate);
-    //$('#halfDayRate').val(data.halfDayRate);
-    $('#transportForm').validate().destroy();
-    transportValidation();
-    $('#transportForm').validate().resetForm();
-    $('#createTransport').modal('toggle');
-};
-
-const Delete = (data) => {
-
-    var confirm = window.confirm("Are you sure you want to delete?");
-
-    if (confirm) {
+const confirmDelete = (id) => {
+    confirmAction('Are you sure you want to delete this transport?', () => {
         $.ajax({
             url: 'Transport/Delete',
             method: 'POST',
-            data: { id: data.id },
-            success: function (data) {
-                console.log(data);
-                noty({
-                    type: data.type,
-                    text: data.message,
-                    layout: 'topCenter',
-                    timeout: 2000
-                });
-
-                setGridData();
+            data: { id },
+            success: (data) => {
+                Toast.show(data.message, data.type === 'success' ? 'success' : 'error');
+                loadTransports();
             }
         });
-    }
+    });
 };
 
+const validate = () => {
+    let valid = true;
+    const name = $('#name').val().trim();
+    const minPAX = $('#minPAX').val().trim();
+    const maxPAX = $('#maxPAX').val().trim();
 
-const Save = () => {
+    document.getElementById('name-error').textContent = !name ? 'Name is required.' : '';
+    document.getElementById('minPAX-error').textContent = !minPAX ? 'Min PAX is required.' : '';
+    document.getElementById('maxPAX-error').textContent = !maxPAX ? 'Max PAX is required.' : '';
 
-    $('#transportForm').off('submit').on('submit', function (e) {
+    if (!name || !minPAX || !maxPAX) valid = false;
+    return valid;
+};
 
+$(document).ready(() => {
+    loadTransports();
+
+    document.querySelector('label[for="transport-drawer"].drawer-button')?.addEventListener('click', openAdd);
+
+    document.getElementById('searchField').addEventListener('input', filterTable);
+
+    $('#transportForm').on('submit', function (e) {
         e.preventDefault();
+        if (!validate()) return;
 
-        var record = {
+        const record = {
             Id: $('#id').val(),
             Name: $('#name').val(),
             MinPAX: $('#minPAX').val(),
-            MaxPAX: $('#maxPAX').val(),
-            //FullDayRate: $('#fullDayRate').val(),
-            //HalfDayRate: $('#halfDayRate').val()
+            MaxPAX: $('#maxPAX').val()
         };
 
         $.ajax({
             url: 'Transport/Save',
             method: 'POST',
             data: { transport: record },
-            success: function (data) {
-                console.log(data);
-                noty({
-                    type: data.type,
-                    text: data.message,
-                    layout: 'topCenter',
-                    timeout: 2000
-                });
-                $('#createTransport').modal('toggle');
-                setGridData();
+            success: (data) => {
+                Toast.show(data.message, data.type === 'success' ? 'success' : 'error');
+                if (data.type === 'success') {
+                    document.getElementById('transport-drawer').checked = false;
+                    loadTransports();
+                }
             }
         });
-
-    });
-};
-
-$(document).ready(function () {
-    var transportGrid = document.querySelector('#transportGrid');
-
-    new agGrid.Grid(transportGrid, gridOptions);
-
-    setGridData();
-
-    $('#addTransportBtn').click(function () {
-        console.log('Button Pressed');
-        $('#transportTitle').html("Add Transport");
-        Clear();
-        $('#transportForm').validate().destroy();
-        transportValidation();
-        $('#transportForm').validate().resetForm();
-    });
-
-    $('#btnSave').off('click').on('click', function () {
-        if ($('#transportForm').valid()) {
-            Save();
-        }
-    });
-
-    $('#searchField').on('keyup', function () {
-        var filter;
-        filter = {
-            name: { type: 'contains', filter: $('#searchField').val() }
-        };
-        gridOptions.api.setFilterModel(filter);
-        gridOptions.api.onFilterChanged();
     });
 });

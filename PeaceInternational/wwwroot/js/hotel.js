@@ -31,13 +31,13 @@ const renderTable = (data) => {
             <tr>
                 <td colspan="6" class="text-center py-12">
                     <div class="flex flex-col items-center gap-4">
-                        <i class="fas fa-hotel fa-4x text-base-300"></i>
+                        <i data-lucide="building-2" class="w-16 h-16 text-base-300"></i>
                         <div>
                             <h3 class="font-bold text-lg">No hotels found</h3>
                             <p class="text-base-content/70">Start by adding your first hotel</p>
                         </div>
                         <label for="hotel-drawer" class="btn btn-primary gap-2 drawer-button">
-                            <i class="fas fa-plus"></i>
+                            <i data-lucide="plus" class="w-4 h-4"></i>
                             Add Hotel
                         </label>
                     </div>
@@ -49,35 +49,35 @@ const renderTable = (data) => {
 
     tableBody.innerHTML = data.map(hotel => `
         <tr class="hover transition-colors duration-200"
-            data-hotel-name="${(hotel.name || '').toLowerCase()}">
-            <td class="font-semibold">${hotel.name || '-'}</td>
-            <td>
-                <div class="badge badge-outline">${hotel.code || '-'}</div>
-            </td>
+            data-hotel-name="${escapeHtml(hotel.name).toLowerCase()}">
+            <td class="font-semibold">${escapeHtml(hotel.name) || '-'}</td>
+            <td><div class="badge badge-outline">${escapeHtml(hotel.code) || '-'}</div></td>
             <td>
                 <div class="badge ${hotel.category === 'A' ? 'badge-primary' : hotel.category === 'B' ? 'badge-secondary' : 'badge-accent'}">
-                    Category ${hotel.category || '-'}
+                    Category ${escapeHtml(hotel.category) || '-'}
                 </div>
             </td>
-            <td class="text-sm">${hotel.address || '-'}</td>
+            <td class="text-sm">${escapeHtml(hotel.address) || '-'}</td>
             <td>
                 <div class="flex items-center gap-2">
-                    <i class="fas fa-phone text-primary text-xs"></i>
-                    <span class="text-sm">${hotel.phoneNo || '-'}</span>
+                    <i data-lucide="phone" class="w-3 h-3 text-primary"></i>
+                    <span class="text-sm">${escapeHtml(hotel.phoneNo) || '-'}</span>
                 </div>
             </td>
             <td>
-                <div class="flex gap-2 justify-center">
-                    <button onclick="editHotel(${hotel.id})" class="btn btn-ghost btn-sm text-primary hover:bg-primary/10" title="Edit">
-                        <i class="fas fa-edit"></i>
+                <div class="flex gap-1 justify-center">
+                    <button onclick="editHotel(${hotel.id})" class="btn btn-ghost btn-xs" title="Edit">
+                        <i data-lucide="pencil" class="w-3.5 h-3.5"></i>
                     </button>
-                    <button onclick="deleteHotel(${hotel.id})" class="btn btn-ghost btn-sm text-error hover:bg-error/10" title="Delete">
-                        <i class="fas fa-trash"></i>
+                    <button onclick="deleteHotel(${hotel.id})" class="btn btn-ghost btn-xs text-error" title="Delete">
+                        <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
                     </button>
                 </div>
             </td>
         </tr>
     `).join('');
+
+    refreshIcons();
 };
 
 // Function to filter table
@@ -169,23 +169,15 @@ window.editHotel = (id) => {
     document.getElementById('hotel-drawer').checked = true;
 };
 
-// Function to delete hotel
 window.deleteHotel = (id) => {
-    if (!confirm('Are you sure you want to delete this hotel?')) {
-        return;
-    }
-
-    $.ajax({
-        url: 'Hotel/Delete',
-        method: 'POST',
-        data: { id: id },
-        success: (data) => {
-            showToast(data.type, data.message);
-            loadHotels();
-        },
-        error: () => {
-            showToast('error', 'Failed to delete hotel');
-        }
+    confirmAction('Are you sure you want to delete this hotel?', () => {
+        $.ajax({
+            url: 'Hotel/Delete',
+            method: 'POST',
+            data: { id },
+            success: (data) => { showToast(data.type, data.message); loadHotels(); },
+            error: () => showToast('error', 'Failed to delete hotel')
+        });
     });
 };
 

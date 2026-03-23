@@ -16,6 +16,7 @@ jobs:
         env:
           MYSQL_ROOT_PASSWORD: rootpassword
           MYSQL_DATABASE: PeaceInternational
+          MYSQL_ROOT_HOST: "%"
         ports:
           - 3306:3306
         options: >-
@@ -49,6 +50,10 @@ jobs:
       - name: Build
         run: dotnet build --no-restore --configuration Release
 
+      - name: Reset database
+        run: |
+          mysql -h 127.0.0.1 -u root -prootpassword -e "DROP DATABASE IF EXISTS PeaceInternational; CREATE DATABASE PeaceInternational;"
+
       - name: Trust dev certificate
         run: dotnet dev-certs https --trust
 
@@ -62,6 +67,11 @@ jobs:
 
       - name: Seed database
         run: mysql -h 127.0.0.1 -u root -prootpassword PeaceInternational < database_setup.sql
+
+      - name: Seed admin user
+        run: dotnet run --project PeaceInternational --configuration Release -- seed-only || true
+        env:
+          ConnectionStrings__DefaultConnection: Server=127.0.0.1;Database=PeaceInternational;User=root;Password=rootpassword;Port=3306;
 
       - name: Install Playwright browsers
         run: npx playwright install --with-deps chromium

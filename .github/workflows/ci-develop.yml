@@ -49,6 +49,9 @@ jobs:
       - name: Build
         run: dotnet build --no-restore --configuration Release
 
+      - name: Install dotnet-ef tool
+        run: dotnet tool install --global dotnet-ef
+
       - name: Run EF Migrations
         run: dotnet ef database update --project PeaceInternational.Infrastructure --startup-project PeaceInternational
         env:

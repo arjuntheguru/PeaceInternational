@@ -17,7 +17,7 @@
     <ProjectReference Include="..\PeaceInternational.Core\PeaceInternational.Core.csproj" />
     <ProjectReference Include="..\PeaceInternational.Infrastructure\PeaceInternational.Infrastructure.csproj" />
   </ItemGroup>
-  <Target Name="BuildTailwind" BeforeTargets="Build">
+  <Target Name="BuildTailwind" BeforeTargets="Build" Condition="'$(SkipTailwind)' != 'true'">
     <Exec Command="npm run build:css" WorkingDirectory="$(ProjectDir)" />
   </Target>
 </Project>

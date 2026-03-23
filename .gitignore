@@ -265,4 +265,4 @@ PeaceInternational.Infrastructure/Migrations/
 
 # IDE and tooling
 .claude/
-npm.zip
+mise.toml

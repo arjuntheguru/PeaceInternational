@@ -36,10 +36,6 @@ const renderTable = (data) => {
                             <h3 class="font-bold text-lg">No service vouchers found</h3>
                             <p class="text-base-content/70">Start by adding your first service voucher</p>
                         </div>
-                        <label for="voucher-drawer" class="btn btn-primary gap-2 drawer-button">
-                            <i data-lucide="plus" class="w-4 h-4"></i>
-                            Add Service Voucher
-                        </label>
                     </div>
                 </td>
             </tr>

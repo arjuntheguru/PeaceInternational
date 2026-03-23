@@ -1,0 +1,43 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: peace-international-db-setup
+  namespace: mysql
+spec:
+  ttlSecondsAfterFinished: 120
+  template:
+    spec:
+      restartPolicy: OnFailure
+      containers:
+      - name: db-setup
+        image: mysql:8.0
+        command:
+        - sh
+        - -c
+        - |
+          mysql -h mysql -u root -p"$MYSQL_ROOT_PASSWORD" <<EOF
+          CREATE DATABASE IF NOT EXISTS peace_international;
+          CREATE USER IF NOT EXISTS 'peace_user'@'%' IDENTIFIED BY '$PEACE_DB_PASSWORD';
+          GRANT ALL PRIVILEGES ON peace_international.* TO 'peace_user'@'%';
+          FLUSH PRIVILEGES;
+          EOF
+        env:
+        - name: MYSQL_ROOT_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: mysql-secret
+              key: MYSQL_ROOT_PASSWORD
+        - name: PEACE_DB_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: peace-db-credentials
+              key: MYSQL_PASSWORD
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: peace-db-credentials
+  namespace: mysql
+type: Opaque
+stringData:
+  MYSQL_PASSWORD: "Peace@123"

@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
+    "postinstall": "npx playwright install",
     "test": "npx playwright test --config=playwright.config.js",
     "test:report": "npx playwright show-report"
   },

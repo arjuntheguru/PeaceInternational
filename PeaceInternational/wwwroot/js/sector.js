@@ -36,10 +36,6 @@ const renderTable = (data) => {
                             <h3 class="font-bold text-lg">No sectors found</h3>
                             <p class="text-base-content/70">Start by adding your first sector</p>
                         </div>
-                        <label for="sector-drawer" class="btn btn-primary gap-2 drawer-button">
-                            <i data-lucide="plus" class="w-4 h-4"></i>
-                            Add Sector
-                        </label>
                     </div>
                 </td>
             </tr>

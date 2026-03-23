@@ -36,10 +36,6 @@ const renderTable = (data) => {
                             <h3 class="font-bold text-lg">No hotels found</h3>
                             <p class="text-base-content/70">Start by adding your first hotel</p>
                         </div>
-                        <label for="hotel-drawer" class="btn btn-primary gap-2 drawer-button">
-                            <i data-lucide="plus" class="w-4 h-4"></i>
-                            Add Hotel
-                        </label>
                     </div>
                 </td>
             </tr>

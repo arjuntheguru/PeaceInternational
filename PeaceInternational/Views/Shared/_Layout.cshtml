@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - Peace International Tours</title>
 
+    <link rel="icon" type="image/svg+xml" href="~/img/favicon-dove.svg" />
+
     <!-- Tailwind CSS + Daisy UI -->
     <link rel="stylesheet" href="~/css/output.css" asp-append-version="true" />
 
@@ -92,7 +94,7 @@
 
         <!-- Footer -->
         <footer class="px-6 py-3 text-xs text-base-content/40 border-t border-base-300/40">
-            &copy; 2025 Peace International Tours &mdash; Powered by Voberry Technologies
+            <partial name="_CopyrightPartial" /> &mdash; Powered by Voberry Technologies
         </footer>
     </div>
 

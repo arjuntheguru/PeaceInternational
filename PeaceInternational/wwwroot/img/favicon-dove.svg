@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <!-- Body -->
+  <ellipse cx="52" cy="58" rx="22" ry="13" fill="#4a90d9" transform="rotate(-15 52 58)"/>
+  <!-- Left wing (spread up-left) -->
+  <path d="M42 52 Q15 25 8 18 Q22 28 38 45 Z" fill="#5ba3e8"/>
+  <!-- Right wing (spread up-right) -->
+  <path d="M62 50 Q85 22 94 16 Q80 28 64 46 Z" fill="#5ba3e8"/>
+  <!-- Tail -->
+  <path d="M34 64 Q28 78 22 82 Q30 74 36 70 Q32 80 30 86 Q38 76 42 68 Z" fill="#4a90d9"/>
+  <!-- Head -->
+  <circle cx="70" cy="50" r="10" fill="#4a90d9"/>
+  <!-- Beak -->
+  <path d="M79 49 L88 47 L79 52 Z" fill="#f0a500"/>
+  <!-- Eye -->
+  <circle cx="73" cy="48" r="2" fill="white"/>
+  <circle cx="73.5" cy="48" r="1" fill="#1a1a2e"/>
+</svg>

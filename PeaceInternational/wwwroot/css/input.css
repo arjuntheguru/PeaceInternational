@@ -31,7 +31,7 @@
 
   /* Glass effect */
   .glass-effect {
-    @apply backdrop-blur-md bg-white/80 dark:bg-slate-900/80 border border-white/20;
+    @apply backdrop-blur-md bg-base-100/80 border border-base-300/60;
   }
 
   /* Smooth section - lighter, cleaner */
@@ -117,6 +117,17 @@ body {
   @apply antialiased;
 }
 
+/* Keep multi-word labels inside pill borders when table columns become narrow. */
+.badge {
+  height: auto;
+  min-height: 1.25rem;
+  white-space: normal;
+  text-align: center;
+  line-height: 1.15;
+  padding-top: 0.2rem;
+  padding-bottom: 0.2rem;
+}
+
 /* Remove border from inputs inside label wrapper */
 label.input input,
 label.input textarea,
@@ -171,9 +182,9 @@ select:disabled {
 [data-theme="dark"] input:disabled,
 [data-theme="dark"] textarea:disabled,
 [data-theme="dark"] select:disabled {
-  background-color: #1e293b;
-  color: #94a3b8;
-  border-color: #334155;
+  background-color: #202020;
+  color: #a3a3a3;
+  border-color: #383838;
 }
 
 /* Custom select dropdown styling - neutral chevron */
@@ -186,7 +197,125 @@ select {
 }
 
 [data-theme="dark"] select {
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3E%3Cpath stroke='%2394a3b8' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3E%3C/svg%3E");
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3E%3Cpath stroke='%23a3a3a3' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3E%3C/svg%3E");
+}
+
+/* Dark mode buttons: neutral surfaces, clear hierarchy, and quieter hover states. */
+[data-theme="dark"] .btn {
+  border-color: #383838;
+  background-color: #262626;
+  color: #f5f5f5;
+  box-shadow: none;
+}
+
+[data-theme="dark"] .btn:hover {
+  border-color: #4a4a4a;
+  background-color: #303030;
+}
+
+[data-theme="dark"] .btn-primary {
+  border-color: #62b982;
+  background-color: #62b982;
+  color: #07130b;
+}
+
+[data-theme="dark"] .btn-primary:hover {
+  border-color: #75c791;
+  background-color: #75c791;
+}
+
+[data-theme="dark"] .btn-accent {
+  border-color: #c9a66b;
+  background-color: #c9a66b;
+  color: #120d05;
+}
+
+[data-theme="dark"] .btn-accent:hover {
+  border-color: #d5b77f;
+  background-color: #d5b77f;
+}
+
+[data-theme="dark"] .btn-secondary {
+  border-color: #a3a3a3;
+  background-color: #a3a3a3;
+  color: #0a0a0a;
+}
+
+[data-theme="dark"] .btn-success {
+  border-color: #62b982;
+  background-color: #62b982;
+  color: #07130b;
+}
+
+[data-theme="dark"] .btn-info {
+  border-color: #477da9;
+  background-color: #477da9;
+  color: #ffffff;
+}
+
+[data-theme="dark"] .btn-warning {
+  border-color: #c18731;
+  background-color: #c18731;
+  color: #160e03;
+}
+
+[data-theme="dark"] .btn-error,
+[data-theme="dark"] .btn-danger {
+  border-color: #a83e3e;
+  background-color: #a83e3e;
+  color: #ffffff;
+}
+
+[data-theme="dark"] .btn-error:hover,
+[data-theme="dark"] .btn-danger:hover {
+  border-color: #bd4b4b;
+  background-color: #bd4b4b;
+}
+
+[data-theme="dark"] .btn-ghost {
+  border-color: transparent;
+  background-color: transparent;
+  color: inherit;
+}
+
+[data-theme="dark"] .btn-ghost:hover {
+  border-color: transparent;
+  background-color: #292929;
+}
+
+[data-theme="dark"] .btn-outline {
+  border-color: #5a5a5a;
+  background-color: transparent;
+  color: #ededed;
+}
+
+[data-theme="dark"] .btn-outline:hover {
+  border-color: #ededed;
+  background-color: #ededed;
+  color: #111111;
+}
+
+[data-theme="dark"] .btn-link,
+[data-theme="dark"] .btn-link:hover {
+  border-color: transparent;
+  background-color: transparent;
+  color: #75c791;
+}
+
+[data-theme="dark"] .btn-link:hover {
+  text-decoration: underline;
+}
+
+[data-theme="dark"] .btn-disabled,
+[data-theme="dark"] .btn:disabled {
+  border-color: #303030;
+  background-color: #202020;
+  color: #737373;
+}
+
+[data-theme="dark"] .btn:focus-visible {
+  outline: 2px solid #62b982;
+  outline-offset: 2px;
 }
 
 /* Custom scrollbar - neutral colors */

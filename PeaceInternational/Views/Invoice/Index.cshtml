@@ -2,6 +2,32 @@
     ViewData["Title"] = "Invoice";
 }
 
+<style>
+    @@media print {
+        body * {
+            visibility: hidden;
+        }
+
+        #receiptTemplate,
+        #receiptTemplate * {
+            visibility: visible;
+        }
+
+        #viewInvoice,
+        #viewInvoice .modal-box,
+        #invoiceBody {
+            max-height: none;
+            overflow: visible;
+        }
+
+        #receiptTemplate {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+        }
+    }
+</style>
+
 <div class="animate-fade-in">
     <!-- Modern Page Header -->
     <div class="page-header">
@@ -260,13 +286,7 @@
 
             // Print invoice button
             document.getElementById('printInvoice').addEventListener('click', function() {
-                var printContent = document.getElementById('receiptTemplate').innerHTML;
-                var printWindow = window.open('', '', 'height=600,width=800');
-                printWindow.document.write(printContent);
-                printWindow.document.close();
-                printWindow.focus();
-                printWindow.print();
-                printWindow.close();
+                window.print();
             });
         });
     </script>

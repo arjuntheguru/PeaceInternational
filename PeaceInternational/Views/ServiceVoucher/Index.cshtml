@@ -2,6 +2,85 @@
     ViewData["Title"] = "Service Voucher";
 }
 
+<style>
+    @@page {
+        margin: 12mm;
+    }
+
+    @@media print {
+        html,
+        body {
+            margin: 0;
+            padding: 0;
+        }
+
+        body * {
+            visibility: hidden;
+        }
+
+        body *:not(:has(#receiptTemplate1)):not(#receiptTemplate1):not(#receiptTemplate1 *) {
+            display: none !important;
+        }
+
+        #receiptTemplate1,
+        #receiptTemplate1 * {
+            visibility: visible;
+        }
+
+        #viewReceipt {
+            position: absolute;
+            inset: 0;
+            display: block;
+            width: 100%;
+            height: auto;
+            margin: 0;
+            padding: 0;
+            max-height: none;
+            overflow: visible;
+            transition: none;
+        }
+
+        #viewReceipt::backdrop {
+            display: none;
+        }
+
+        #viewReceipt .modal-box {
+            position: static;
+            width: 100%;
+            max-width: none;
+            max-height: none;
+            margin: 0;
+            padding: 0;
+            overflow: visible;
+            border-radius: 0;
+            box-shadow: none;
+            transform: none;
+            transition: none;
+        }
+
+        #viewReceipt .modal-box > :not(#invoiceBody) {
+            display: none;
+        }
+
+        #invoiceBody {
+            max-height: none;
+            margin: 0;
+            padding: 0;
+            overflow: visible;
+        }
+
+        #receiptTemplate1 {
+            position: static;
+            width: 100%;
+        }
+
+        #receiptTemplate1 .voucher-container {
+            page-break-after: auto;
+            break-after: auto;
+        }
+    }
+</style>
+
 <div class="animate-fade-in">
     <!-- Modern Page Header -->
     <div class="page-header">
@@ -317,7 +396,6 @@
                 .h8 { font-size: 24px; }
             </style>
             <div id="receiptTemplate1"></div>
-            <div id="receiptTemplate2"></div>
         </div>
 
         <div class="modal-action">
@@ -340,10 +418,6 @@
     <script src="~/js/serviceVoucher.js"></script>
     <script id="entry-template" type="text/x-handlebars-template">
         <style>
-            @@media print { 
-                body { margin: 0; padding: 20px; } 
-                .voucher-container { page-break-after: always; }
-            }
             .voucher-container { font-family: Arial, sans-serif; max-width: 900px; margin: 0 auto 30px auto; padding: 20px; color: #000; border: 2px solid #000; }
             .voucher-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 20px; padding-bottom: 15px; border-bottom: 2px solid #000; }
             .logo-section img { max-width: 250px; height: auto; }

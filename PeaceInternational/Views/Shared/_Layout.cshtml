@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="light" class="h-full">
+<html lang="en" data-theme="light" class="min-h-full bg-base-200">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -21,11 +21,13 @@
     <!-- Custom CSS -->
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
 </head>
-<body class="bg-base-200 h-full min-h-screen">
+<body class="bg-base-200 min-h-screen">
 
 @{
     var controller = ViewContext.RouteData.Values["controller"]?.ToString() ?? "";
     var action = ViewContext.RouteData.Values["action"]?.ToString() ?? "";
+    var isAuthenticated = User.Identity?.IsAuthenticated == true;
+    var isAdmin = User.IsInRole("ADMIN");
 
     // Breadcrumb label map
     var breadcrumbLabel = controller switch {
@@ -51,18 +53,24 @@
 }
 
 <!-- Mobile Drawer (DaisyUI) -->
-<div class="drawer lg:drawer-open">
-    <input id="sidebar-drawer" type="checkbox" class="drawer-toggle" />
+<div class="@(isAuthenticated ? "drawer lg:drawer-open min-h-screen" : "min-h-screen")">
+    @if (isAuthenticated)
+    {
+        <input id="sidebar-drawer" type="checkbox" class="drawer-toggle" />
+    }
 
     <!-- Page Content -->
-    <div class="drawer-content flex flex-col min-h-screen">
+    <div class="drawer-content bg-base-200 flex flex-col min-h-screen">
 
         <!-- Top Bar -->
         <header class="sticky top-0 z-30 bg-base-100 h-14 flex items-center px-4 gap-3 shadow-sm">
             <!-- Mobile hamburger -->
-            <label for="sidebar-drawer" class="btn btn-ghost btn-sm btn-square lg:hidden">
-                <i data-lucide="menu" class="w-5 h-5"></i>
-            </label>
+            @if (isAuthenticated)
+            {
+                <label for="sidebar-drawer" class="btn btn-ghost btn-sm btn-square lg:hidden" aria-label="Open navigation">
+                    <i data-lucide="menu" class="w-5 h-5"></i>
+                </label>
+            }
 
             <!-- Breadcrumb -->
             <div class="flex items-center gap-2 text-sm flex-1">
@@ -98,10 +106,12 @@
         </footer>
     </div>
 
-    <!-- Sidebar -->
-    <div class="drawer-side z-40">
-        <label for="sidebar-drawer" class="drawer-overlay"></label>
-        <aside class="w-60 min-h-full bg-base-100 flex flex-col">
+    @if (isAuthenticated)
+    {
+        <!-- Sidebar -->
+        <div class="drawer-side z-40">
+            <label for="sidebar-drawer" class="drawer-overlay" aria-label="Close navigation"></label>
+            <aside class="w-60 min-h-full bg-base-100 flex flex-col">
 
             <!-- Logo -->
             <div class="h-14 flex items-center justify-center px-4 shrink-0">
@@ -166,18 +176,22 @@
                     Sector
                 </a>
 
-                <div class="pt-3 pb-1 px-2">
-                    <span class="text-[10px] font-semibold uppercase tracking-widest text-base-content/40">Admin</span>
-                </div>
+                @if (isAdmin)
+                {
+                    <div class="pt-3 pb-1 px-2">
+                        <span class="text-[10px] font-semibold uppercase tracking-widest text-base-content/40">Admin</span>
+                    </div>
 
-                <a asp-area="" asp-controller="Users" asp-action="Index" class="@NavLink("Users")">
-                    <i data-lucide="shield-check" class="w-4 h-4 shrink-0"></i>
-                    Users
-                </a>
+                    <a asp-area="" asp-controller="Users" asp-action="Index" class="@NavLink("Users")">
+                        <i data-lucide="shield-check" class="w-4 h-4 shrink-0"></i>
+                        Users
+                    </a>
+                }
 
             </nav>
-        </aside>
-    </div>
+            </aside>
+        </div>
+    }
 </div>
 
 <!-- Confirm Dialog -->

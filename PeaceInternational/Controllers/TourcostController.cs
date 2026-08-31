@@ -70,8 +70,8 @@ namespace PeaceInternational.Web.Controllers
                 tourcost.TourcostDetail = _tourcostDetailCrudService.GetAll(p => p.TourcostId == id).ToList();
                 tourcost.Guide = _guideCrudService.Get(p => p.Id == tourcost.GuideId);
 
-                tourcost.LowerTransport = _transportCrudService.Get(p => p.MinPAX <= tourcost.MinPAX && p.MaxPAX >= tourcost.MinPAX).Name;
-                tourcost.UpperTransport = _transportCrudService.Get(p => p.MinPAX <= tourcost.MaxPAX && p.MaxPAX >= tourcost.MaxPAX).Name;
+                tourcost.LowerTransport = GetBestTransportForPax(tourcost.MinPAX)?.Name ?? string.Empty;
+                tourcost.UpperTransport = GetBestTransportForPax(tourcost.MaxPAX)?.Name ?? string.Empty;
 
                 foreach (var tourdetail in tourcost.TourcostDetail)
                 {
@@ -265,6 +265,15 @@ namespace PeaceInternational.Web.Controllers
                     await _tourcostDetailCrudService.InsertAsync(tourcostDetail);
                 }
             }
+        }
+
+        private Transport GetBestTransportForPax(int pax)
+        {
+            return _transportCrudService
+                .GetAll(transport => transport.MinPAX <= pax && transport.MaxPAX >= pax)
+                .OrderBy(transport => transport.MaxPAX - transport.MinPAX)
+                .ThenBy(transport => transport.MinPAX)
+                .FirstOrDefault();
         }
     }
 }

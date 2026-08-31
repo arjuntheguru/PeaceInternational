@@ -90,6 +90,17 @@
                 <input type="hidden" id="id" />
 
                 <div class="space-y-4">
+                    <!-- File Code (available after a customer has been created) -->
+                    <div class="form-control hidden" id="fileCodeGroup">
+                        <label class="label">
+                            <span class="label-text font-medium text-base-content/70">File Code</span>
+                        </label>
+                        <input type="text"
+                               class="input input-bordered bg-base-200 font-semibold"
+                               id="fileCodeNo"
+                               readonly />
+                    </div>
+
                     <!-- Tour Name -->
                     <div class="form-control">
                         <label class="label">
@@ -195,7 +206,7 @@
                     </button>
                     <label for="customer-drawer" class="btn btn-ghost flex-1">
                         <i data-lucide="x" class="w-4 h-4 mr-2"></i>
-                        Cancel
+                        <span id="customerCloseLabel">Cancel</span>
                     </label>
                 </div>
             </form>

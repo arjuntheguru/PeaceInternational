@@ -64,6 +64,23 @@ test('development demo seed populates every application area', async ({ page, re
   });
   expect(countryTextFitsPill).toBeTruthy();
 
+  const firstCustomerRow = page.locator('#tableBody tr').first();
+  const firstCustomerFileCode = (await firstCustomerRow.locator('td').first().textContent()).trim();
+  await firstCustomerRow.locator('button[title="View"]').click();
+  await expect(page.locator('#customer-drawer')).toBeChecked();
+  await expect(page.locator('#customerTitle')).toHaveText('View Customer');
+  await expect(page.locator('#fileCodeNo')).toHaveValue(firstCustomerFileCode);
+  await expect(page.locator('#tourName')).toHaveAttribute('readonly', '');
+  await expect(page.locator('#btnSave')).toBeHidden();
+  await page.locator('#customerCloseLabel').click();
+  await expect(page.locator('#customer-drawer')).not.toBeChecked();
+
+  await firstCustomerRow.locator('button[title="Edit"]').click();
+  await expect(page.locator('#customerTitle')).toHaveText('Edit Customer');
+  await expect(page.locator('#tourName')).not.toHaveAttribute('readonly', '');
+  await expect(page.locator('#btnSave')).toBeVisible();
+  await page.locator('#customerCloseLabel').click();
+
   const assertBackgroundCoversLongPage = async () => {
     const layout = await page.evaluate(() => ({
       viewportHeight: window.innerHeight,
@@ -86,6 +103,7 @@ test('development demo seed populates every application area', async ({ page, re
   await page.evaluate(() => localStorage.setItem('theme', 'dark'));
   await page.reload();
   await expect(page.locator('html')).toHaveAttribute('data-theme', 'dark');
+  await expect(page.locator('#tableBody tr')).toHaveCount(24);
   await assertBackgroundCoversLongPage();
 
   await page.goto('/Tourcost');

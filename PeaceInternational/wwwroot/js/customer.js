@@ -4,6 +4,46 @@ let customersData = [];
 
 const showToast = (type, message) => Toast.show(type, message, 3000);
 
+const customerFieldIds = [
+    'tourName',
+    'country',
+    'arrivalDate',
+    'departureDate',
+    'agent',
+    'agentStaff',
+    'guideName'
+];
+
+const populateCustomerForm = (customer) => {
+    document.getElementById('id').value = customer.id;
+    document.getElementById('fileCodeNo').value = customer.fileCodeNo || '';
+    document.getElementById('tourName').value = customer.tourName || '';
+    document.getElementById('country').value = customer.country || '';
+    document.getElementById('arrivalDate').value = customer.arrivalDate ? customer.arrivalDate.split('T')[0] : '';
+    document.getElementById('departureDate').value = customer.departureDate ? customer.departureDate.split('T')[0] : '';
+    document.getElementById('agent').value = customer.agent || '';
+    document.getElementById('agentStaff').value = customer.agentStaff || '';
+    document.getElementById('guideName').value = customer.guideName || '';
+};
+
+const setCustomerFormMode = (mode) => {
+    const isView = mode === 'view';
+    const isAdd = mode === 'add';
+
+    document.getElementById('customerTitle').textContent = isView
+        ? 'View Customer'
+        : isAdd ? 'Add Customer' : 'Edit Customer';
+    document.getElementById('fileCodeGroup').classList.toggle('hidden', isAdd);
+    document.getElementById('btnSave').classList.toggle('hidden', isView);
+    document.getElementById('customerCloseLabel').textContent = isView ? 'Close' : 'Cancel';
+
+    customerFieldIds.forEach(fieldId => {
+        const field = document.getElementById(fieldId);
+        field.readOnly = isView;
+        field.classList.toggle('bg-base-200', isView);
+    });
+};
+
 // Function to load customer data
 const loadCustomers = () => {
     $.ajax({
@@ -92,6 +132,7 @@ const filterTable = () => {
 // Function to clear form
 const clearForm = () => {
     document.getElementById('id').value = '';
+    document.getElementById('fileCodeNo').value = '';
     document.getElementById('tourName').value = '';
     document.getElementById('country').value = '';
     document.getElementById('arrivalDate').value = '';
@@ -147,17 +188,19 @@ window.editCustomer = (id) => {
     const customer = customersData.find(c => c.id === id);
     if (!customer) return;
 
-    document.getElementById('customerTitle').textContent = 'Edit Customer';
-    document.getElementById('id').value = customer.id;
-    document.getElementById('tourName').value = customer.tourName || '';
-    document.getElementById('country').value = customer.country || '';
-    document.getElementById('arrivalDate').value = customer.arrivalDate ? customer.arrivalDate.split('T')[0] : '';
-    document.getElementById('departureDate').value = customer.departureDate ? customer.departureDate.split('T')[0] : '';
-    document.getElementById('agent').value = customer.agent || '';
-    document.getElementById('agentStaff').value = customer.agentStaff || '';
-    document.getElementById('guideName').value = customer.guideName || '';
+    setCustomerFormMode('edit');
+    populateCustomerForm(customer);
 
     // Open drawer
+    document.getElementById('customer-drawer').checked = true;
+};
+
+window.viewCustomer = (id) => {
+    const customer = customersData.find(c => c.id === id);
+    if (!customer) return;
+
+    setCustomerFormMode('view');
+    populateCustomerForm(customer);
     document.getElementById('customer-drawer').checked = true;
 };
 
@@ -213,7 +256,7 @@ $(document).ready(function () {
 
     // Add customer button click
     document.querySelector('.drawer-button').addEventListener('click', function() {
-        document.getElementById('customerTitle').textContent = 'Add Customer';
+        setCustomerFormMode('add');
         clearForm();
     });
 

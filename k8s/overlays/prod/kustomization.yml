@@ -14,5 +14,5 @@ patches:
       name: peace-international
 
 images:
-  - name: arjuntheguru/peace-international
-    newTag: "0.10"
+  - name: ghcr.io/arjuntheguru/peace-international
+    newTag: latest

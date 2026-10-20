@@ -17,5 +17,5 @@ patches:
       name: peace-international
 
 images:
-  - name: arjuntheguru/peace-international
+  - name: ghcr.io/arjuntheguru/peace-international
     newTag: dev

@@ -13,6 +13,9 @@ spec:
       labels:
         app: peace-international
     spec:
+      # Private ghcr.io package; ghcr-pull secret is created from ~/.ghcr-pull-token on the server.
+      imagePullSecrets:
+      - name: ghcr-pull
       initContainers:
       - name: wait-for-db-setup
         image: mysql:8.0
@@ -33,7 +36,7 @@ spec:
               key: ConnectionStrings__DefaultConnection
       containers:
       - name: peace-international
-        image: arjuntheguru/peace-international:latest
+        image: ghcr.io/arjuntheguru/peace-international:latest
         ports:
         - containerPort: 8080
         envFrom:

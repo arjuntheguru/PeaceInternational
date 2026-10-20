@@ -32,12 +32,3 @@ spec:
             secretKeyRef:
               name: peace-db-credentials
               key: MYSQL_PASSWORD
----
-apiVersion: v1
-kind: Secret
-metadata:
-  name: peace-db-credentials
-  namespace: mysql
-type: Opaque
-stringData:
-  MYSQL_PASSWORD: "Peace@123"

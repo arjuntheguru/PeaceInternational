@@ -1,8 +1,23 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="light" class="min-h-full bg-base-200">
+<html lang="en" class="min-h-full bg-base-200">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script>
+        // Restore the saved theme before stylesheets load to prevent a light-theme flash.
+        (() => {
+            let theme = 'light';
+            try {
+                const savedTheme = localStorage.getItem('theme');
+                if (savedTheme === 'dark' || savedTheme === 'light') theme = savedTheme;
+            } catch {
+                // localStorage can be unavailable in privacy-restricted browsing contexts.
+            }
+
+            document.documentElement.setAttribute('data-theme', theme);
+            document.documentElement.style.colorScheme = theme;
+        })();
+    </script>
     <title>@ViewData["Title"] - Peace International Tours</title>
 
     <link rel="icon" type="image/svg+xml" href="~/img/favicon-dove.svg" />
@@ -232,8 +247,7 @@
     // Theme toggle
     const themeToggle = document.getElementById('theme-toggle');
     const htmlEl = document.documentElement;
-    const savedTheme = localStorage.getItem('theme') || 'light';
-    htmlEl.setAttribute('data-theme', savedTheme);
+    const savedTheme = htmlEl.getAttribute('data-theme') || 'light';
     if (savedTheme === 'dark') themeToggle.checked = true;
 
     const siteLogoEl = document.querySelector('[data-light-logo]');
@@ -246,6 +260,7 @@
     themeToggle.addEventListener('change', function () {
         const theme = this.checked ? 'dark' : 'light';
         htmlEl.setAttribute('data-theme', theme);
+        htmlEl.style.colorScheme = theme;
         localStorage.setItem('theme', theme);
         updateLogo(theme);
     });

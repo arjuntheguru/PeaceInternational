@@ -2,6 +2,76 @@
     ViewData["Title"] = "Invoice";
 }
 
+<style>
+    @@page {
+        margin: 12mm;
+    }
+
+    @@media print {
+        html,
+        body {
+            margin: 0;
+            padding: 0;
+        }
+
+        body * {
+            visibility: hidden;
+        }
+
+        #receiptTemplate,
+        #receiptTemplate * {
+            visibility: visible;
+        }
+
+        #viewInvoice {
+            position: fixed;
+            inset: 0;
+            display: block;
+            width: 100%;
+            height: auto;
+            margin: 0;
+            padding: 0;
+            max-height: none;
+            overflow: visible;
+            transition: none;
+        }
+
+        #viewInvoice::backdrop {
+            display: none;
+        }
+
+        #viewInvoice .modal-box {
+            position: static;
+            width: 100%;
+            max-width: none;
+            max-height: none;
+            margin: 0;
+            padding: 0;
+            overflow: visible;
+            border-radius: 0;
+            box-shadow: none;
+            transform: none;
+            transition: none;
+        }
+
+        #viewInvoice .modal-box > :not(#invoiceBody) {
+            display: none;
+        }
+
+        #invoiceBody {
+            max-height: none;
+            margin: 0;
+            padding: 0;
+            overflow: visible;
+        }
+
+        #receiptTemplate {
+            position: static;
+            width: 100%;
+        }
+    }
+</style>
+
 <div class="animate-fade-in">
     <!-- Modern Page Header -->
     <div class="page-header">
@@ -260,13 +330,7 @@
 
             // Print invoice button
             document.getElementById('printInvoice').addEventListener('click', function() {
-                var printContent = document.getElementById('receiptTemplate').innerHTML;
-                var printWindow = window.open('', '', 'height=600,width=800');
-                printWindow.document.write(printContent);
-                printWindow.document.close();
-                printWindow.focus();
-                printWindow.print();
-                printWindow.close();
+                window.print();
             });
         });
     </script>

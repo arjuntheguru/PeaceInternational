@@ -85,4 +85,19 @@ test.describe('Admin navigation and dark theme', () => {
       buttonText: [7, 19, 11],
     });
   });
+
+  test('restores dark mode before the stylesheet finishes loading', async ({ page }) => {
+    await page.goto('/Customer');
+    await page.evaluate(() => localStorage.setItem('theme', 'dark'));
+
+    await page.route('**/css/output.css*', async route => {
+      const response = await route.fetch();
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      await route.fulfill({ response });
+    });
+
+    const navigation = page.reload();
+    await expect(page.locator('html')).toHaveAttribute('data-theme', 'dark', { timeout: 500 });
+    await navigation;
+  });
 });

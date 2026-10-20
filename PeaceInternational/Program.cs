@@ -12,7 +12,8 @@ using Microsoft.AspNetCore.Http;
 
 var builder = WebApplication.CreateBuilder(args);
 var demoDataEnabled = builder.Configuration.GetValue("DemoData:Enabled", false);
-var demoUserPassword = builder.Configuration["DemoData:UserPassword"] ?? "Demo@123";
+var demoUserPassword = builder.Configuration["DemoData:UserPassword"];
+var adminPassword = builder.Configuration["Seed:AdminPassword"];
 
 // Add services to the container.
 builder.Services.Configure<CookiePolicyOptions>(options =>
@@ -85,7 +86,7 @@ using (var scope = app.Services.CreateScope())
     var serviceProvider = scope.ServiceProvider;
     var db = serviceProvider.GetRequiredService<ApplicationDbContext>();
     await db.Database.MigrateAsync();
-    await SeedIntialData.Initialize(serviceProvider, demoDataEnabled, demoUserPassword);
+    await SeedIntialData.Initialize(serviceProvider, demoDataEnabled, demoUserPassword, adminPassword);
 }
 
 app.Run();

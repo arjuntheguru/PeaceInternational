@@ -252,7 +252,6 @@ window.generateReceipt = (id) => {
             var result = template(data);
 
             $('#receiptTemplate1').html(result);
-            $('#receiptTemplate2').html(result);
 
             // Open Daisy UI modal
             document.getElementById('viewReceipt').showModal();
@@ -347,13 +346,7 @@ $(document).ready(function () {
 
     // Print invoice button
     document.getElementById('printInvoice').addEventListener('click', function() {
-        var printContent = document.getElementById('invoiceBody').innerHTML;
-        var printWindow = window.open('', '', 'height=600,width=800');
-        printWindow.document.write(printContent);
-        printWindow.document.close();
-        printWindow.focus();
-        printWindow.print();
-        printWindow.close();
+        window.print();
     });
 
     // Auto-fill from customer data when file code changes

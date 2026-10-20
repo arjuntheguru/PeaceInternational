@@ -9,10 +9,14 @@ namespace PeaceInternational.Infrastructure
     public class SeedIntialData
     {      
 
+        // Passwords come from configuration only ("Seed:AdminPassword", "DemoData:UserPassword"):
+        // appsettings.Development.json locally, the app-secret Secret in the cluster. They are used only
+        // when an account is first created.
         public static async Task Initialize(
             IServiceProvider serviceProvider,
-            bool seedDemoData = false,
-            string demoUserPassword = "Demo@123")
+            bool seedDemoData,
+            string demoUserPassword,
+            string adminPassword)
         {
             var roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
             var userManager = serviceProvider.GetRequiredService<UserManager<IdentityUser>>();
@@ -39,7 +43,12 @@ namespace PeaceInternational.Infrastructure
                     PhoneNumber = "4413262"                  
                 };
 
-                var res = await userManager.CreateAsync(admin, "Admin@123");
+                if (string.IsNullOrWhiteSpace(adminPassword))
+                {
+                    throw new InvalidOperationException("Seed:AdminPassword is not configured; it is needed to create the initial admin user.");
+                }
+
+                var res = await userManager.CreateAsync(admin, adminPassword);
                 if (!res.Succeeded)
                 {
                     var errors = string.Join("; ", res.Errors.Select(error => error.Description));
@@ -61,6 +70,11 @@ namespace PeaceInternational.Infrastructure
 
             if (seedDemoData)
             {
+                if (string.IsNullOrWhiteSpace(demoUserPassword))
+                {
+                    throw new InvalidOperationException("DemoData:UserPassword is not configured; it is needed when DemoData:Enabled is true.");
+                }
+
                 await DemoDataSeeder.SeedAsync(db, userManager, admin.Id, demoUserPassword);
             }
         }
